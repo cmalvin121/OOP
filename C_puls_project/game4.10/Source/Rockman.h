@@ -32,7 +32,7 @@ class Rockman
         bool getInjuredState();			//回傳受傷狀態
         void setkickWall();				//判斷是否正在踢牆
         void KickWall();				//踢牆
-        void setCannon(int x, int y, int lastMovingState);				//設置子彈
+        void setCannon(int x, int y, int lastMovingState);			//設置子彈
         RockCannon* getCannon();		//return rockcannon[20]
     private:
         bool isMovingLeft;			// 是否正在往左移動

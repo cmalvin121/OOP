@@ -13,8 +13,6 @@ class RockCannon
         void SetY(int);
         void SetCatchAction(bool);
         bool GetUsingState();
-        //void SetShowing(bool flag);
-        //bool GetShowing();
         void SetUsingState(bool flag);
     private:
         int x1, y1;							//腳色當前座標
@@ -39,6 +37,5 @@ class RockCannon
         bool showLock;						//顯示鎖定
         bool usingState;					//是否被使用中
         int distance;
-        //bool showing;						//是否顯示中
 };
 }

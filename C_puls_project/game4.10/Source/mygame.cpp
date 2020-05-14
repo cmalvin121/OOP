@@ -408,7 +408,6 @@ void CGameStateRun::OnShow()
     //        否則當視窗重新繪圖時(OnDraw)，物件就會移動，看起來會很怪。換個術語
     //        說，Move負責MVC中的Model，Show負責View，而View不應更動Model。
     //
-    //
     //  貼上背景圖、撞擊數、球、擦子、彈跳的球
     //
     help.ShowBitmap();					// 貼上說明圖

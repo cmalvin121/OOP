@@ -100,7 +100,7 @@ class CGameStateRun : public CGameState {
         Rockman x87_1;				// 洛克人
         Terrain fireDragonMap;		// 地圖:火龍
         CInteger  life;				// 生命值
-        RockCannon* _cannon;		//Cannon的陣列
+        RockCannon* _cannon;		//子彈的陣列
         //Monster* monster;			//怪物
         //const int monster_num, terrain_num;
         //int map[6][5];

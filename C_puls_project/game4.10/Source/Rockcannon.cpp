@@ -52,16 +52,6 @@ void RockCannon::SetUsingState(bool flag)
 {
     usingState = flag;
 }
-/*
-void RockCannon::SetShowing(bool flag)
-{
-    showing = flag;
-}
-bool RockCannon::GetShowing()
-{
-    return showing;
-}
-*/
 void RockCannon::SetScreen()
 {
     if (lastMovingState == 0)
