@@ -37,7 +37,7 @@
  *      2. Replace the demonstration of animation as a new bouncing ball.
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
-//Áú°ê·ì½T¶E
+//
 #include "Monster.h"
 #include "Terrain.h"
 #include "RockCannon.h"
