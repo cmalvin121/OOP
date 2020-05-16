@@ -12,6 +12,7 @@ namespace game_framework
 		int getScreenY();
 		void OnShow();
 		void DeterminAttack(int, int);
+		bool MonsterCollision(int, int);
 	private:
 		bool isAlive;
 		int x, y;

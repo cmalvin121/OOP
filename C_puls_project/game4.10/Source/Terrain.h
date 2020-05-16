@@ -16,6 +16,7 @@ namespace game_framework
 		int crashright();
 		int crashtop();
 		int crashdown();
+		bool MonsterCollision();
 	protected:
 		CMovingBitmap	background;	// ­I´º¹Ï
 		CMovingBitmap	background2;// ­I´º¹Ï2

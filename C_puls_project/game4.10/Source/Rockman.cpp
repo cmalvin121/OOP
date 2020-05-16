@@ -43,6 +43,8 @@ void Rockman::Initialize()
     isKickWall = false;
     isKickWallSlide = false;
 	life = 64;
+	injureDelay = 20;
+	injureShine = 3;
     for (int i = 0; i < 20; i++)
         rockcannon[i].SetUsingState(false);
 }
@@ -101,7 +103,6 @@ bool Rockman::showDropping()
 void Rockman::OnMove()
 {
     const int STEP_SIZE = 20;
-    isInjured = false;
     animationRight.OnMove();
     animationLeft.OnMove();
     animationMovingRight.OnMove();
@@ -126,12 +127,22 @@ void Rockman::OnMove()
     animation_kickWallRightAttack.OnMove();
     animation_kickWallSlideLeftAttack.OnMove();
     animation_kickWallSlideRightAttack.OnMove();
+	animation_InjureLeft.OnMove();
+	animation_InjureRight.OnMove();
+	if ((isInjured) && (lastMovingState == 1) && (injureDelay == 30))//碰撞到怪物後，腳色往後退
+	{
+		x += STEP_SIZE * 5;
+	}
+	if ((isInjured) && (lastMovingState == 0) && (injureDelay == 30))//碰撞到怪物後，腳色往後退
+	{
+		x -= STEP_SIZE * 5;
+	}
 
     if ((isSprinting) && (sprintDegree < 20) && (jumpDegree == 0) && (crashState_wall == 0) && (!isKickWall)) //衝刺
     {
-        if (lastMovingState == 0)
+		if (lastMovingState == 0 && (!isInjured || injureDelay < 30))
             x += velocity_sprint;
-        else if (lastMovingState == 1)
+        else if (lastMovingState == 1 && (!isInjured || injureDelay < 30))
             x -= velocity_sprint;
 
         if (sprintDegree < 8)
@@ -155,37 +166,29 @@ void Rockman::OnMove()
         velocity_sprint = initial_velocity_sprint;
     }
 
-    if ((isMovingLeft) && (x >= 0) && !isKickWall)//往左移動
+	if ((isMovingLeft) && (x >= 0) && !isKickWall && (!isInjured || injureDelay < 30))//往左移動
     {
         if ((keepkeydownSprinting) && (jumpDegree > 0))//彈射跳躍
             x -= STEP_SIZE * 3;
         else if (!isSprinting)//往左移動
             x -= STEP_SIZE;
     }
-    else if ((isInjured) && (isMovingLeft))//碰撞到怪物後，腳色往後退
-    {
-        x += STEP_SIZE * 5;
-    }
 
-    if (isMovingRight && !isKickWall) //往右移動
+	if (isMovingRight && !isKickWall && (!isInjured || injureDelay < 30)) //往右移動
     {
         if ((keepkeydownSprinting) && (jumpDegree > 0))//彈射跳躍
             x += STEP_SIZE * 3;
         else if (!isSprinting)//往右移動
             x += STEP_SIZE;
     }
-    else if ((isInjured) && (isMovingRight))//碰撞到怪物後，腳色往後退
-    {
-        x -= STEP_SIZE * 5;
-    }
 
     if ((isJumping) && (jumpDegree < 10))//跳躍
     {
         y -= velocity_jump;
 
-        if (jumpDegree < 4)
+        if (jumpDegree < 4 && (!isInjured || injureDelay < 30))
             velocity_jump += 10;
-        else if (jumpDegree >= 4)
+        else if (jumpDegree >= 4 && (!isInjured || injureDelay < 30))
             velocity_jump -= 10;
 
         jumpDegree++;
@@ -225,6 +228,13 @@ void Rockman::OnMove()
         if (determineCharge > 5)
             charge = determineCharge;
     }
+	if (isInjured&&injureDelay==30)
+	{
+		injureDelay = 0;
+		isInjured = false;
+	}
+	if (injureDelay < 30)
+		injureDelay++;
 }
 
 void Rockman::SetMovingLeft(bool flag)
@@ -318,11 +328,11 @@ void Rockman::isAlreadyOnGround()
             dropDegree = 0;
             velocity_drop = initial_velocity_drop;
         }
-        else if ((crashState_wall != 0) && (jumpDegree == 0))//踢牆滑落
+        else if ((crashState_wall != 0) && (jumpDegree == 0)&&(!isInjured || injureDelay < 30))//踢牆滑落
         {
             y += 10;
         }
-        else if ((crashState == 0) && (jumpDegree == 0))
+        else if ((crashState == 0) && (jumpDegree == 0)&& (!isInjured || injureDelay < 30))
         {
             y += velocity_drop;
             dropDegree++;
@@ -414,9 +424,25 @@ void Rockman::setCannon(int x, int y, int lastMovingState)
         }
     }
 }
+void Rockman::SetInjuredState(bool state,int injureValue)
+{
+	isInjured = state;
+	TRACE("isInjured:%d\n", state);
+	if (injureDelay == 30)
+	{
+		animation_InjureLeft.Reset();
+		animation_InjureRight.Reset();
+	}
+	if (injureDelay == 30 && state == true)
+		life -= injureValue;
+}
 bool Rockman::getInjuredState()
 {
     return isInjured;
+}
+void Rockman::AddLife(int value)
+{
+	life += value;
 }
 RockCannon* Rockman::getCannon()
 {
@@ -587,6 +613,22 @@ void Rockman::LoadKickWallSlideRightBitmap()
     animation_kickWallSlideRight.AddBitmap("RES\\super armor kickwall4.bmp", RGB(255, 255, 255));
     animation_kickWallSlideRight.SetDelayCount(2);
 }
+void Rockman::LoadInjureLeftBitmap() 
+{
+	animation_InjureLeft.AddBitmap("RES\\super armor injuredleft.bmp", RGB(255, 255, 255));
+	animation_InjureLeft.AddBitmap("RES\\super armor injuredleft2.bmp", RGB(255, 255, 255));
+	animation_InjureLeft.AddBitmap("RES\\super armor injuredleft3.bmp", RGB(255, 255, 255));
+	animation_InjureLeft.AddBitmap("RES\\super armor injuredleft4.bmp", RGB(255, 255, 255));
+	animation_InjureLeft.SetDelayCount(2);
+}
+void Rockman::LoadInjureRightBitmap() 
+{
+	animation_InjureRight.AddBitmap("RES\\super armor injured.bmp", RGB(255, 255, 255));
+	animation_InjureRight.AddBitmap("RES\\super armor injured2.bmp", RGB(255, 255, 255));
+	animation_InjureRight.AddBitmap("RES\\super armor injured3.bmp", RGB(255, 255, 255));
+	animation_InjureRight.AddBitmap("RES\\super armor injured4.bmp", RGB(255, 255, 255));
+	animation_InjureRight.SetDelayCount(2);
+}
 void Rockman::LoadBitmap()
 {
 	LoadLifeObjectBitmap();
@@ -602,6 +644,8 @@ void Rockman::LoadBitmap()
     LoadKickWallRightBitmap();
     LoadKickWallSlideLeftBitmap();
     LoadKickWallSlideRightBitmap();
+	LoadInjureLeftBitmap();
+	LoadInjureRightBitmap();
 }
 void Rockman::LoadRightAttackBitmap()
 {
@@ -781,7 +825,19 @@ void Rockman::OnShow()
     animation_kickWallRightAttack.SetTopLeft(x, y);
     animation_kickWallSlideLeftAttack.SetTopLeft(x, y);
     animation_kickWallSlideRightAttack.SetTopLeft(x, y);
-    if (crashState_wall == 1 && jumpDegree > 0)//踢牆:左
+	animation_InjureLeft.SetTopLeft(x, y);
+	animation_InjureRight.SetTopLeft(x, y);
+	if (injureDelay == 30)
+		injureShine = 3;
+	if (injureDelay < 30 && (animation_InjureRight.IsFinalBitmap() || animation_InjureLeft.IsFinalBitmap()))
+		injureShine++;
+	if (injureShine % 2 == 0)
+		injureShine += 0;
+	else if (injureDelay < 30 && lastMovingState == 0 && !animation_InjureRight.IsFinalBitmap())
+		animation_InjureRight.OnShow();
+	else if (injureDelay < 30 && lastMovingState == 1 && !animation_InjureLeft.IsFinalBitmap())
+		animation_InjureLeft.OnShow();
+    else if (crashState_wall == 1 && jumpDegree > 0)//踢牆:左
     {
         if (animation_kickWallLeft.IsFinalBitmap() || animation_kickWallLeftAttack.IsFinalBitmap())
         {
@@ -1095,5 +1151,7 @@ void Rockman::OnShow()
 		lifeValue.ShowBitmap();
 	}
 	//--------顯示生命值-------------
+	if (injureShine > 4)
+		injureShine = 0;
 }
 }

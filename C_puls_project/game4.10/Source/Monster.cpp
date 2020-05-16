@@ -64,7 +64,16 @@ namespace game_framework
 		if (AttackDelay == 10)
 			AttackDelay = 0;
 	}
+	bool Monster::MonsterCollision(int RockX, int RockY)
+	{
+		if (x + 254 > RockX && RockX + 160 > x && y + 225 > RockY && RockY > y)
+		{
+			return true;
+		}
 
+		else
+			return false;
+	}
 	void Monster::OnShow()
 	{
 		if (AttackDelay < 5 && AttackDirection == 0)

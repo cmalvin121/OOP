@@ -824,4 +824,8 @@ int Terrain::crashdown()
 
     return 0;
 }
+bool Terrain::MonsterCollision()
+{
+	return X6_1.MonsterCollision(nowX, nowY);
+}
 }

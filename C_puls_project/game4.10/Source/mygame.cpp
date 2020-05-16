@@ -221,6 +221,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         _cannon[i].OnMove();
 
     fireDragonMap.GetLastRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之前座標
+	x87_1.SetInjuredState(fireDragonMap.MonsterCollision(),4);
     x87_1.OnMove();
     fireDragonMap.GetNowRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之後座標
     left = fireDragonMap.crashleft();
