@@ -44,7 +44,8 @@ void Terrain::OnShow()
         }
     }
 
-    X6_1.OnShow();
+    if (X6_1.getAlive())
+        X6_1.OnShow();
 }
 void Terrain::Initialize()
 {
@@ -823,5 +824,20 @@ int Terrain::crashdown()
     }
 
     return 0;
+}
+
+void Terrain::setMonsterLife(int damage)
+{
+    X6_1.deductLife(damage);
+}
+
+int Terrain::getMonsterX()
+{
+    return X6_1.getX();
+}
+
+int Terrain::getMonsterY()
+{
+    return X6_1.getY();
 }
 }

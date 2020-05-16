@@ -42,7 +42,8 @@ void Rockman::Initialize()
     kickWallDegree = 0;
     isKickWall = false;
     isKickWallSlide = false;
-	life = 64;
+    life = 64;
+
     for (int i = 0; i < 20; i++)
         rockcannon[i].SetUsingState(false);
 }
@@ -383,11 +384,11 @@ void Rockman::SetKeyAttackingState(bool flag)
 }
 void Rockman::SetFixCannonScreenY(int fixY)
 {
-	for (int i = 0; i < 20; i++)
-	{
-		if (rockcannon[i].GetUsingState() == true)
-			rockcannon[i].SetFixScreenY(fixY);
-	}
+    for (int i = 0; i < 20; i++)
+    {
+        if (rockcannon[i].GetUsingState() == true)
+            rockcannon[i].SetFixScreenY(fixY);
+    }
 }
 void Rockman::setCannon(int x, int y, int lastMovingState)
 {
@@ -395,17 +396,19 @@ void Rockman::setCannon(int x, int y, int lastMovingState)
     {
         if (rockcannon[i].GetUsingState() == false)
         {
-            TRACE("\n\n%d  %d\n\n", x, y);				//傳的座標
+            //TRACE("\n\n%d  %d\n\n", x, y);				//傳的座標
             rockcannon[i].SetUsingState(true);
-			if (isKickWallSlide)
-			{
-				if (lastMovingState == 0)
-					rockcannon[i].SetLastMovingState(1);
-				else if (lastMovingState == 1)
-					rockcannon[i].SetLastMovingState(0);
-			}
-			else
-				rockcannon[i].SetLastMovingState(lastMovingState);
+
+            if (isKickWallSlide)
+            {
+                if (lastMovingState == 0)
+                    rockcannon[i].SetLastMovingState(1);
+                else if (lastMovingState == 1)
+                    rockcannon[i].SetLastMovingState(0);
+            }
+            else
+                rockcannon[i].SetLastMovingState(lastMovingState);
+
             rockcannon[i].SetX(x);
             rockcannon[i].SetY(y);
             rockcannon[i].SetCatchAction(1);
@@ -424,7 +427,7 @@ RockCannon* Rockman::getCannon()
 }
 int Rockman::Getlife()
 {
-	return life;
+    return life;
 }
 //------------------------------------------
 int Rockman::GetX()
@@ -448,8 +451,8 @@ void Rockman::SetY(int Y_BT)
 //------------------------------------------
 void Rockman::LoadLifeObjectBitmap()
 {
-	lifeItem.LoadBitmapA("RES\\life\\life_item.bmp", RGB(255, 255, 255));
-	lifeValue.LoadBitmapA("RES\\life\\life_value.bmp", RGB(255, 255, 255));
+    lifeItem.LoadBitmapA("RES\\life\\life_item.bmp", RGB(255, 255, 255));
+    lifeValue.LoadBitmapA("RES\\life\\life_value.bmp", RGB(255, 255, 255));
 }
 void Rockman::LoadRightBitmap()
 {
@@ -589,7 +592,7 @@ void Rockman::LoadKickWallSlideRightBitmap()
 }
 void Rockman::LoadBitmap()
 {
-	LoadLifeObjectBitmap();
+    LoadLifeObjectBitmap();
     LoadRightBitmap();
     LoadLeftBitmap();
     LoadMovingLeftBitmap();
@@ -781,6 +784,7 @@ void Rockman::OnShow()
     animation_kickWallRightAttack.SetTopLeft(x, y);
     animation_kickWallSlideLeftAttack.SetTopLeft(x, y);
     animation_kickWallSlideRightAttack.SetTopLeft(x, y);
+
     if (crashState_wall == 1 && jumpDegree > 0)//踢牆:左
     {
         if (animation_kickWallLeft.IsFinalBitmap() || animation_kickWallLeftAttack.IsFinalBitmap())
@@ -1086,14 +1090,16 @@ void Rockman::OnShow()
 
     x = tmp;
     y = tmp2;
-	//--------顯示生命值-------------
-	lifeItem.SetTopLeft(100, 143);
-	lifeItem.ShowBitmap();
-	for (int i = 0; i < life; i++)
-	{
-		lifeValue.SetTopLeft(140, 403 - i * 4);
-		lifeValue.ShowBitmap();
-	}
-	//--------顯示生命值-------------
+    //--------顯示生命值-------------
+    lifeItem.SetTopLeft(100, 143);
+    lifeItem.ShowBitmap();
+
+    for (int i = 0; i < life; i++)
+    {
+        lifeValue.SetTopLeft(140, 403 - i * 4);
+        lifeValue.ShowBitmap();
+    }
+
+    //--------顯示生命值-------------
 }
 }
