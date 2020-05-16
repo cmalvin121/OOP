@@ -42,7 +42,7 @@ void Rockman::Initialize()
     kickWallDegree = 0;
     isKickWall = false;
     isKickWallSlide = false;
-
+	life = 64;
     for (int i = 0; i < 20; i++)
         rockcannon[i].SetUsingState(false);
 }
@@ -225,51 +225,6 @@ void Rockman::OnMove()
         if (determineCharge > 5)
             charge = determineCharge;
     }
-
-    /*
-    rockcannon1.OnMove();
-    rockcannon1.SetLastMovingState(lastMovingState);
-
-    if (isKickWallSlide)
-    {
-        if (lastMovingState == 0)
-            rockcannon1.SetLastMovingState(1);
-        else if (lastMovingState == 1)
-            rockcannon1.SetLastMovingState(0);
-    }
-
-    rockcannon1.SetNowCharge(chargeAttack);
-
-    if (!((isAttacking) && (charge == 0)) || (chargeAttack > 5))
-    {
-        if (lastMovingState == 0)
-        {
-            rockcannon1.SetX(x + 170);
-
-            if (chargeAttack > 60)
-                rockcannon1.SetY(y);
-            else
-                rockcannon1.SetY(y + 84);
-        }
-        else if (lastMovingState == 1)
-        {
-            if (chargeAttack > 60)
-            {
-                rockcannon1.SetX(x - 222);
-                rockcannon1.SetY(y);
-            }
-            else
-            {
-                rockcannon1.SetX(x);
-                rockcannon1.SetY(y + 84);
-            }
-        }
-
-        rockcannon1.SetCatchAction(0);
-    }
-
-    if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
-        rockcannon1.SetCatchAction(1);*/
 }
 
 void Rockman::SetMovingLeft(bool flag)
@@ -426,6 +381,14 @@ void Rockman::SetKeyAttackingState(bool flag)
         }
     }
 }
+void Rockman::SetFixCannonScreenY(int fixY)
+{
+	for (int i = 0; i < 20; i++)
+	{
+		if (rockcannon[i].GetUsingState() == true)
+			rockcannon[i].SetFixScreenY(fixY);
+	}
+}
 void Rockman::setCannon(int x, int y, int lastMovingState)
 {
     for (int i = 0; i < 20; i++)
@@ -434,7 +397,15 @@ void Rockman::setCannon(int x, int y, int lastMovingState)
         {
             TRACE("\n\n%d  %d\n\n", x, y);				//傳的座標
             rockcannon[i].SetUsingState(true);
-            rockcannon[i].SetLastMovingState(lastMovingState);
+			if (isKickWallSlide)
+			{
+				if (lastMovingState == 0)
+					rockcannon[i].SetLastMovingState(1);
+				else if (lastMovingState == 1)
+					rockcannon[i].SetLastMovingState(0);
+			}
+			else
+				rockcannon[i].SetLastMovingState(lastMovingState);
             rockcannon[i].SetX(x);
             rockcannon[i].SetY(y);
             rockcannon[i].SetCatchAction(1);
@@ -450,6 +421,10 @@ bool Rockman::getInjuredState()
 RockCannon* Rockman::getCannon()
 {
     return rockcannon;
+}
+int Rockman::Getlife()
+{
+	return life;
 }
 //------------------------------------------
 int Rockman::GetX()
@@ -471,6 +446,11 @@ void Rockman::SetY(int Y_BT)
     y = Y_BT;
 }
 //------------------------------------------
+void Rockman::LoadLifeObjectBitmap()
+{
+	lifeItem.LoadBitmapA("RES\\life\\life_item.bmp", RGB(255, 255, 255));
+	lifeValue.LoadBitmapA("RES\\life\\life_value.bmp", RGB(255, 255, 255));
+}
 void Rockman::LoadRightBitmap()
 {
     animationRight.AddBitmap("RES\\super armor.bmp", RGB(255, 255, 255));
@@ -609,6 +589,7 @@ void Rockman::LoadKickWallSlideRightBitmap()
 }
 void Rockman::LoadBitmap()
 {
+	LoadLifeObjectBitmap();
     LoadRightBitmap();
     LoadLeftBitmap();
     LoadMovingLeftBitmap();
@@ -800,7 +781,6 @@ void Rockman::OnShow()
     animation_kickWallRightAttack.SetTopLeft(x, y);
     animation_kickWallSlideLeftAttack.SetTopLeft(x, y);
     animation_kickWallSlideRightAttack.SetTopLeft(x, y);
-
     if (crashState_wall == 1 && jumpDegree > 0)//踢牆:左
     {
         if (animation_kickWallLeft.IsFinalBitmap() || animation_kickWallLeftAttack.IsFinalBitmap())
@@ -1106,5 +1086,14 @@ void Rockman::OnShow()
 
     x = tmp;
     y = tmp2;
+	//--------顯示生命值-------------
+	lifeItem.SetTopLeft(100, 143);
+	lifeItem.ShowBitmap();
+	for (int i = 0; i < life; i++)
+	{
+		lifeValue.SetTopLeft(140, 403 - i * 4);
+		lifeValue.ShowBitmap();
+	}
+	//--------顯示生命值-------------
 }
 }

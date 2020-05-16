@@ -34,6 +34,8 @@ class Rockman
         void KickWall();				//踢牆
         void setCannon(int x, int y, int lastMovingState);			//設置子彈
         RockCannon* getCannon();		//return rockcannon[20]
+		int Getlife();					//取得生命值
+		void SetFixCannonScreenY(int);	//修正洛克炮螢幕座標Y
     private:
         bool isMovingLeft;			// 是否正在往左移動
         bool isMovingRight;			// 是否正在往右移動
@@ -46,6 +48,8 @@ class Rockman
         bool keepkeydownAttacking;  // 一直按住攻擊
         bool isInjured;			    // 是否受傷
         bool showDropping();		// 判斷是否要顯示落下動作
+		CMovingBitmap lifeItem;		// 圖片:生命條
+		CMovingBitmap lifeValue;	// 圖片:生命值1
         CAnimation animationRight;				//動畫:向右站立
         CAnimation animationLeft;				//動畫:往左站立
         CAnimation animationMovingRight;		//動畫:往右移動
@@ -58,6 +62,7 @@ class Rockman
         CAnimation animation_kickWallRight;		//動畫:往右踢牆
         CAnimation animation_kickWallSlideLeft;	//動畫:往左踢牆滑落
         CAnimation animation_kickWallSlideRight;//動畫:往右踢牆滑落
+		void LoadLifeObjectBitmap();			//載入圖片:生命值、生命條
         void LoadRightBitmap();					//載入動畫:向右站立
         void LoadLeftBitmap();					//載入動畫:向左站立
         void LoadMovingLeftBitmap();			//載入動畫:向左移動
@@ -103,7 +108,7 @@ class Rockman
         int charge, chargeAttack;						//聚氣程度、聚氣攻擊(三段式)
         int determineCharge;							//判斷是否正在聚氣
         int attackActionDelay;							//攻擊動作延遲
-        RockCannon rockcannon[20];							//物件:洛克炮
+        RockCannon rockcannon[20];						//物件:洛克炮
         int dropDegree, landLevel;						//降落位置、降落基準點
         int velocity_drop, initial_velocity_drop;		//當前降落速度、初始降落速度
         int crashState;									//碰撞狀態
@@ -111,6 +116,6 @@ class Rockman
         int kickWallDegree;								//踢牆程度
         bool isKickWall;								//是否正在踢牆
         bool isKickWallSlide;							//是否正在踢牆滑落
-
+		int life;										//洛克人生命值
 };
 }

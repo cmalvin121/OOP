@@ -14,6 +14,7 @@ class RockCannon
         void SetCatchAction(bool);
         bool GetUsingState();
         void SetUsingState(bool flag);
+		void SetFixScreenY(int);
     private:
         int x1, y1;							//腳色當前座標
         int screenX, screenY;				//畫面的座標

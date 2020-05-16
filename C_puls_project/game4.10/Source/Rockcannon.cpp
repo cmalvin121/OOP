@@ -40,6 +40,10 @@ void RockCannon::SetY(int y)
     if (catchAction == 0)
         y1 = y;
 }
+void RockCannon::SetFixScreenY(int fix)
+{
+	screenY += fix;
+}
 void RockCannon::SetCatchAction(bool flag)
 {
     catchAction = flag;

@@ -202,8 +202,8 @@ void CGameStateRun::OnBeginState()
     const int HITS_LEFT = 10;				//生命值
     x87_1.Initialize();
     fireDragonMap.Initialize();
-    life.SetInteger(HITS_LEFT);
-    life.SetTopLeft(30, 30);
+    life.SetInteger(x87_1.Getlife());
+    life.SetTopLeft(149, 468);
     help.SetTopLeft(0, SIZE_Y - help.Height());			// 設定說明圖的起始座標
     CAudio::Instance()->Play(AUDIO_LAKE, true);			// 撥放 WAVE
     CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
@@ -213,6 +213,7 @@ void CGameStateRun::OnBeginState()
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
     int tmp;//洛克人座標修正值
+	int fixCannonY = x87_1.GetY();
     int left, right, top, down;
     _cannon = x87_1.getCannon();
 
@@ -228,7 +229,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     down = fireDragonMap.crashdown();
 
     if (left == -1 || right == -1 || top == -1 || down == -1) //碰到死亡地形，GAME OVER
-        life.Add(-10);
+        life.Add(-64);
 
     if (down != 0)//判斷是否站立於障礙物上
         x87_1.SetCrashState(1);
@@ -274,12 +275,16 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     //TRACE("%d %d %d %d\n", (x87_1.GetY()) / 80, x87_1.GetX() / 80, x87_1.GetY(), x87_1.GetX());
     fireDragonMap.GetNowRockmanXY(x87_1.GetX(), x87_1.GetY());
     fireDragonMap.MoveScreen();
+	fixCannonY -= x87_1.GetY();
+	x87_1.SetFixCannonScreenY(fixCannonY);
 
     if (x87_1.getInjuredState())//碰到怪物，生命-1
         life.Add(-1);
 
     if (life.GetInteger() <= 0)//血量歸0，GAME OVER
         GotoGameState(GAME_STATE_OVER);
+
+	life.SetInteger(x87_1.Getlife());
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
