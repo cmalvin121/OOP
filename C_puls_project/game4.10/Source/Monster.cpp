@@ -4,19 +4,20 @@
 #include <ddraw.h>
 #include "audio.h"
 #include "gamelib.h"
+#include "Rockcannon.h"
 #include "Monster.h"
 
 namespace game_framework
 {
 	Monster::Monster()
-	{
-		x = y = 0;
-		s_x = s_y = 0;
-		life = 4;
-		isAlive = true;
-		AttackDirection = 0;
-		AttackDelay = 0;
-	}
+{
+	x = y = 0;
+	s_x = s_y = 0;
+	life = 20;
+	isAlive = true;
+	AttackDirection = 0;
+	AttackDelay = 0;
+}
 
 	void Monster::LoadBitMap()
 	{
@@ -40,7 +41,14 @@ namespace game_framework
 	{
 		isAlive = state;
 	}
-
+	int Monster::getX()
+	{
+		return x;
+	}
+	int Monster::getY()
+	{
+		return y;
+	}
 	int Monster::getScreenX()
 	{
 		return s_x;
@@ -50,7 +58,19 @@ namespace game_framework
 	{
 		return s_y;
 	}
+	bool Monster::getAlive()
+	{
+		return isAlive;
+	}
+	void Monster::deductLife(int damage)
+	{
+		life -= damage;
 
+		if (life <= 0)
+			isAlive = false;
+
+		TRACE("\n\n--------------- life = %d --------------\n\n", life);
+	}
 	void Monster::DeterminAttack(int RockX,int RockY)
 	{
 		if (x - RockX > 400 || RockX - x > 400)
@@ -66,11 +86,10 @@ namespace game_framework
 	}
 	bool Monster::MonsterCollision(int RockX, int RockY)
 	{
-		if (x + 254 > RockX && RockX + 160 > x && y + 225 > RockY && RockY > y)
-		{
+		if (!isAlive)
+			return false;
+		else if (x + 254 > RockX && RockX + 160 > x && y + 225 > RockY && RockY > y)
 			return true;
-		}
-
 		else
 			return false;
 	}
@@ -81,7 +100,7 @@ namespace game_framework
 			monsRightAttack.SetTopLeft(s_x, s_y - 1492);
 			monsRightAttack.ShowBitmap();
 		}
-		else if (AttackDelay < 6 && AttackDirection == 1)
+		else if (AttackDelay < 5 && AttackDirection == 1)
 		{
 			monsLeftAttack.SetTopLeft(s_x, s_y - 1492);
 			monsLeftAttack.ShowBitmap();

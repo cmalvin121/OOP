@@ -11,7 +11,7 @@ RockCannon::RockCannon()
 {
     x1 = 0;
     y1 = 700;
-    velocity_cannon = 60;
+    velocity_cannon = 35;
     nowCharge = 0;
     lastMovingState = 0;
     catchAction = 0;
@@ -42,7 +42,7 @@ void RockCannon::SetY(int y)
 }
 void RockCannon::SetFixScreenY(int fix)
 {
-	screenY += fix;
+    screenY += fix;
 }
 void RockCannon::SetCatchAction(bool flag)
 {
@@ -55,6 +55,10 @@ bool RockCannon::GetUsingState()
 void RockCannon::SetUsingState(bool flag)
 {
     usingState = flag;
+    distance = 0;
+    catchAction = 0;
+    x1 = 0;
+    y1 = 0;
 }
 void RockCannon::SetScreen()
 {
@@ -100,6 +104,52 @@ void RockCannon::LoadBitmap()
     LoadChargeCannonLeftBitmap();
     LoadSuperChargeCannonLeftBitmap();
 }
+int RockCannon::collision(int x, int y)
+{
+    //TRACE("\n\n-------------%d   %d   %d   %d------------\n\n", x1, y1, x, y);
+    //TRACE("\n\n----------- NowCharge = %d  Moving = %d------------\n\n", nowCharge, lastMovingState);
+    if (nowCharge >= 60)
+    {
+        if (lastMovingState == 0)
+        {
+            if ((x1 + 222 >= x) && (x1 <= x + 254) && (y1 <= y + 255) && (y1 + 180 >= y))
+                return 8;
+        }
+        else if (lastMovingState == 1)
+        {
+            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 255) && (y1 + 180 >= y))
+                return 8;
+        }
+    }
+    else if (nowCharge >= 5 && nowCharge < 60)
+    {
+        if (lastMovingState == 0)
+        {
+            if ((x1 + 40 >= x) && (x1 <= x + 254) && (y1 <= y + 255) && (y1 + 27 >= y))
+                return 2;
+        }
+        else if (lastMovingState == 1)
+        {
+            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 255) && (y1 + 27 >= y))
+                return 2;
+        }
+    }
+    else
+    {
+        if (lastMovingState == 0)
+        {
+            if ((x1 + 19 >= x) && (x1 <= x + 254) && (y1 <= y + 255) && (y1 + 12 >= y))
+                return 1;
+        }
+        else if (lastMovingState == 1)
+        {
+            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 255) && (y1 + 12 >= y))
+                return 1;
+        }
+    }
+
+    return 0;
+}
 void RockCannon::OnMove()
 {
     if (distance >= 1920)
@@ -107,46 +157,51 @@ void RockCannon::OnMove()
         usingState = false;
         distance = 0;
         catchAction = 0;
+        x1 = 0;
+        y1 = 0;
     }
 
     if (catchAction == 0)
         showLock = 0;
 
-    normalCannon.OnMove();
-    chargeCannon.OnMove();
-    superChargeCannon.OnMove();
-    normalCannonLeft.OnMove();
-    chargeCannonLeft.OnMove();
-    superChargeCannonLeft.OnMove();
+    if (usingState)
+    {
+        normalCannon.OnMove();
+        chargeCannon.OnMove();
+        superChargeCannon.OnMove();
+        normalCannonLeft.OnMove();
+        chargeCannonLeft.OnMove();
+        superChargeCannonLeft.OnMove();
 
-    if (nowCharge >= 60)
-    {
-        if (lastMovingState == 0)
+        if (nowCharge >= 60)
         {
-            x1 += velocity_cannon * 2;
-            screenX += velocity_cannon * 2;
-            distance += velocity_cannon * 2;
+            if (lastMovingState == 0)
+            {
+                x1 += velocity_cannon * 2;
+                screenX += velocity_cannon * 2;
+                distance += velocity_cannon * 2;
+            }
+            else if (lastMovingState == 1)
+            {
+                x1 -= velocity_cannon * 2;
+                screenX -= velocity_cannon * 2;
+                distance += velocity_cannon * 2;
+            }
         }
-        else if (lastMovingState == 1)
+        else if (nowCharge < 60)
         {
-            x1 -= velocity_cannon * 2;
-            screenX -= velocity_cannon * 2;
-            distance += velocity_cannon * 2;
-        }
-    }
-    else if (nowCharge < 60)
-    {
-        if (lastMovingState == 0)
-        {
-            x1 += velocity_cannon;
-            screenX += velocity_cannon;
-            distance += velocity_cannon;
-        }
-        else if (lastMovingState == 1)
-        {
-            x1 -= velocity_cannon;
-            screenX -= velocity_cannon;
-            distance += velocity_cannon;
+            if (lastMovingState == 0)
+            {
+                x1 += velocity_cannon;
+                screenX += velocity_cannon;
+                distance += velocity_cannon;
+            }
+            else if (lastMovingState == 1)
+            {
+                x1 -= velocity_cannon;
+                screenX -= velocity_cannon;
+                distance += velocity_cannon;
+            }
         }
     }
 }

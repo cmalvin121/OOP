@@ -213,12 +213,29 @@ void CGameStateRun::OnBeginState()
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
     int tmp;//洛克人座標修正值
-	int fixCannonY = x87_1.GetY();
+    int fixCannonY = x87_1.GetY();
     int left, right, top, down;
     _cannon = x87_1.getCannon();
 
     for (int i = 0; i < 20; i++)
+    {
+        int monster_x, monster_y, damage;
+        monster_x = fireDragonMap.getMonsterX();
+        monster_y = fireDragonMap.getMonsterY();
+        //TRACE("\n\n------ MONSTER: %d  %d ------\n\n", monster_x, monster_y);
+
+        if (_cannon->GetUsingState())
+        {
+            damage = _cannon[i].collision(monster_x, monster_y);
+            //TRACE("\n\n------ Damge = %d ------\n\n", damage);
+            fireDragonMap.setMonsterLife(damage);
+
+            if (damage > 0)
+                _cannon[i].SetUsingState(0);
+        }
+
         _cannon[i].OnMove();
+    }
 
     fireDragonMap.GetLastRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之前座標
 	x87_1.SetInjuredState(fireDragonMap.MonsterCollision(),4);
@@ -230,7 +247,11 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     down = fireDragonMap.crashdown();
 
     if (left == -1 || right == -1 || top == -1 || down == -1) //碰到死亡地形，GAME OVER
-        life.Add(-64);
+    {
+        //life.Add(-64);
+        x87_1.SetX(320);
+        x87_1.SetY(1880);
+    }
 
     if (down != 0)//判斷是否站立於障礙物上
         x87_1.SetCrashState(1);
@@ -276,8 +297,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     //TRACE("%d %d %d %d\n", (x87_1.GetY()) / 80, x87_1.GetX() / 80, x87_1.GetY(), x87_1.GetX());
     fireDragonMap.GetNowRockmanXY(x87_1.GetX(), x87_1.GetY());
     fireDragonMap.MoveScreen();
-	fixCannonY -= x87_1.GetY();
-	x87_1.SetFixCannonScreenY(fixCannonY);
+    fixCannonY -= x87_1.GetY();
+    x87_1.SetFixCannonScreenY(fixCannonY);
 
     if (x87_1.getInjuredState())//碰到怪物，生命-1
         life.Add(-1);
@@ -285,7 +306,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     if (life.GetInteger() <= 0)//血量歸0，GAME OVER
         GotoGameState(GAME_STATE_OVER);
 
-	life.SetInteger(x87_1.Getlife());
+    life.SetInteger(x87_1.Getlife());
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定

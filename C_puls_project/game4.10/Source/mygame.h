@@ -102,7 +102,7 @@ class CGameStateRun : public CGameState {
         Terrain fireDragonMap;		// 地圖:火龍
         CInteger  life;				// 生命值
         RockCannon* _cannon;		//子彈的陣列
-        //Monster* monster;			//怪物
+        Monster monster;			//怪物
         //const int monster_num, terrain_num;
         //int map[6][5];
 };

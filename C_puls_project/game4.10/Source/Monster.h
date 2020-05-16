@@ -8,11 +8,15 @@ namespace game_framework
 		void setXY(int nx, int ny);
 		void setScreenXY(int nx, int ny);
 		void setAlive(bool state);
+		int getX();
+		int getY();
 		int getScreenX();
 		int getScreenY();
+		bool getAlive();
 		void OnShow();
 		void DeterminAttack(int, int);
 		bool MonsterCollision(int, int);
+		void deductLife(int damage);
 	private:
 		bool isAlive;
 		int x, y;

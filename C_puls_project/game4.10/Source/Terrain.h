@@ -17,6 +17,11 @@ namespace game_framework
 		int crashtop();
 		int crashdown();
 		bool MonsterCollision();
+		//////////////////////// Monster
+		int getMonsterX();
+		int getMonsterY();
+		void setMonsterLife(int damage);
+		////////////////////////////////
 	protected:
 		CMovingBitmap	background;	// ­I´º¹Ï
 		CMovingBitmap	background2;// ­I´º¹Ï2
