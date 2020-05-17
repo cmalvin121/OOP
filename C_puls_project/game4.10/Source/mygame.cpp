@@ -226,7 +226,7 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
 
         if (_cannon->GetUsingState())
         {
-            damage = _cannon[i].collision(monster_x, monster_y);
+            damage = _cannon[i].collision(monster_x, monster_y, fireDragonMap.getMonsterAliveState());
 
             //TRACE("\n\n------ Damge = %d ------\n\n", damage);
             if (fireDragonMap.getMonsterAliveState() == false)

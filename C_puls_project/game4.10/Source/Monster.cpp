@@ -69,7 +69,7 @@ namespace game_framework
 		if (life <= 0)
 			isAlive = false;
 
-		TRACE("\n\n--------------- life = %d --------------\n\n", life);
+		//TRACE("\n\n--------------- life = %d --------------\n\n", life);
 	}
 	void Monster::DeterminAttack(int RockX,int RockY)
 	{
