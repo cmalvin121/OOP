@@ -20,6 +20,7 @@ namespace game_framework
 		//////////////////////// Monster
 		int getMonsterX();
 		int getMonsterY();
+		bool getMonsterAliveState();
 		void setMonsterLife(int damage);
 		////////////////////////////////
 	protected:

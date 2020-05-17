@@ -147,7 +147,6 @@ int RockCannon::collision(int x, int y)
                 return 1;
         }
     }
-
     return 0;
 }
 void RockCannon::OnMove()
