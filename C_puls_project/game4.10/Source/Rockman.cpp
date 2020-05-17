@@ -408,7 +408,7 @@ void Rockman::setCannon(int x, int y, int lastMovingState)
             //TRACE("\n\n%d  %d\n\n", x, y);				//¶Çªº®y¼Ð
             rockcannon[i].SetUsingState(true);
 
-            if (isKickWallSlide)
+			if (isKickWallSlide&&crashState_wall != 0)
             {
                 if (lastMovingState == 0)
                     rockcannon[i].SetLastMovingState(1);

@@ -26,8 +26,8 @@ void Terrain::OnShow()
     background2.ShowBitmap();
     background3.ShowBitmap();
     background4.ShowBitmap();
-
-    for (int i = 0; i < 31; i++)
+	/*
+    for (int i = 0; i < 31; i++)//地形規劃方塊顯示
     {
         for (int j = 0; j < 315; j++)
         {
@@ -42,7 +42,7 @@ void Terrain::OnShow()
                 deadBlock.ShowBitmap();
             }
         }
-    }
+    }*/
     if (X6_1.getAlive())
         X6_1.OnShow();
 }
@@ -751,7 +751,7 @@ int Terrain::crashleft()
 
         if (map[map_y][map_x] == 1)
         {
-            //TRACE("%d %d %d %d左\n", map_x, map_y, nowY, i);
+            TRACE("%d %d %d %d左\n", map_x, map_y, nowY, i);
             return map_x * 80 + 80;
         }
 
@@ -772,7 +772,7 @@ int Terrain::crashright()
 
         if (map[map_y][map_x] == 1)
         {
-            //TRACE("%d %d %d %d右\n", map_x, map_y, nowY, i);
+            TRACE("%d %d %d %d右\n", map_x, map_y, nowY, i);
             return map_x * 80;
         }
 
@@ -793,7 +793,7 @@ int Terrain::crashtop()
 
         if (map[map_y][map_x] == 1)
         {
-            //TRACE("%d %d上\n", map_x, map_y);
+            TRACE("%d %d上\n", map_x, map_y);
             return map_y * 80 + 80;
         }
 
@@ -814,7 +814,7 @@ int Terrain::crashdown()
 
         if (map[map_y][map_x] == 1)
         {
-            //TRACE("%d %d下\n", map_x, map_y);
+            TRACE("%d %d下\n", map_x, map_y);
             return map_y * 80;
         }
 
@@ -839,5 +839,9 @@ int Terrain::getMonsterX()
 int Terrain::getMonsterY()
 {
     return X6_1.getY();
+}
+bool Terrain::getMonsterAliveState()
+{
+	return X6_1.getAlive();
 }
 }

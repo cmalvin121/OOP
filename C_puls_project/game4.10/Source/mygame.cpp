@@ -227,7 +227,11 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         if (_cannon->GetUsingState())
         {
             damage = _cannon[i].collision(monster_x, monster_y);
+
             //TRACE("\n\n------ Damge = %d ------\n\n", damage);
+            if (fireDragonMap.getMonsterAliveState() == false)
+                damage = 0;
+
             fireDragonMap.setMonsterLife(damage);
 
             if (damage > 0)
@@ -239,6 +243,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 
     fireDragonMap.GetLastRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之前座標
     x87_1.SetInjuredState(fireDragonMap.MonsterCollision(), 4);
+    x87_1.SetInjuredState(fireDragonMap.MonsterCollision(), 2);
     x87_1.OnMove();
     fireDragonMap.GetNowRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之後座標
     left = fireDragonMap.crashleft();
