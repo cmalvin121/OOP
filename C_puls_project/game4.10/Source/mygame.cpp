@@ -238,7 +238,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     }
 
     fireDragonMap.GetLastRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之前座標
-	x87_1.SetInjuredState(fireDragonMap.MonsterCollision(),4);
+    x87_1.SetInjuredState(fireDragonMap.MonsterCollision(), 4);
     x87_1.OnMove();
     fireDragonMap.GetNowRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之後座標
     left = fireDragonMap.crashleft();
@@ -248,9 +248,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 
     if (left == -1 || right == -1 || top == -1 || down == -1) //碰到死亡地形，GAME OVER
     {
-        //life.Add(-64);
-        x87_1.SetX(320);
-        x87_1.SetY(1880);
+        life.Add(-64);
     }
 
     if (down != 0)//判斷是否站立於障礙物上
