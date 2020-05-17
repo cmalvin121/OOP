@@ -20,6 +20,10 @@ RockCannon::RockCannon()
     showLock = 0;
     usingState = false;
     distance = 0;
+	isHitSomething = 0;
+	hitX = hitY = 0;
+	isCatchHitXY = false;
+
 }
 void RockCannon::SetNowCharge(int charge)
 {
@@ -44,6 +48,16 @@ void RockCannon::SetFixScreenY(int fix)
 {
     screenY += fix;
 }
+void RockCannon::SetHitXY()
+{
+	TRACE("isCatchHitXY:%d\n", isCatchHitXY);
+	if(!isCatchHitXY)
+	{
+		hitX = screenX;
+		hitY = screenY;
+		isCatchHitXY = true;
+	}
+}
 void RockCannon::SetCatchAction(bool flag)
 {
     catchAction = flag;
@@ -59,6 +73,13 @@ void RockCannon::SetUsingState(bool flag)
     catchAction = 0;
     x1 = 0;
     y1 = 0;
+	if(usingState)
+	{
+		normalCannonHit.Reset();
+		normalCannonHitLeft.Reset();
+		superChargeCannonHit.Reset();
+		superChargeCannonHitLeft.Reset();
+	}
 }
 void RockCannon::SetScreen()
 {
@@ -103,22 +124,70 @@ void RockCannon::LoadBitmap()
     LoadNormalCannonLeftBitmap();
     LoadChargeCannonLeftBitmap();
     LoadSuperChargeCannonLeftBitmap();
+	LoadNormalCannonHitBitmap();
+	LoadNormalCannonHitLeftBitmap();
+	LoadSuperChargeCannonHitBitmap();
+	LoadSuperChargeCannonHitLeftBitmap();
 }
-int RockCannon::collision(int x, int y)
+void RockCannon::HitAnimationLock()
 {
+	if (normalCannonHit.IsFinalBitmap())
+	{
+		isCatchHitXY = false;
+		isHitSomething = 0;
+		normalCannonHit.setToSpecifyBitmap(3);
+	}
+	if (normalCannonHitLeft.IsFinalBitmap())
+	{
+		isCatchHitXY = false;
+		isHitSomething = 0;
+		normalCannonHitLeft.setToSpecifyBitmap(3);
+	}
+	if (superChargeCannonHit.IsFinalBitmap())
+	{
+		isCatchHitXY = false;
+		isHitSomething = 0;
+		superChargeCannonHit.setToSpecifyBitmap(3);
+	}
+
+	if (superChargeCannonHitLeft.IsFinalBitmap())
+	{
+		isCatchHitXY = false;
+		isHitSomething = 0;
+		superChargeCannonHitLeft.setToSpecifyBitmap(3);
+	}
+}
+int RockCannon::collision(int x, int y,bool MonsterisAlive)
+{
+	TRACE("MonsterisAlive:%d\n", MonsterisAlive);
     //TRACE("\n\n-------------%d   %d   %d   %d------------\n\n", x1, y1, x, y);
     //TRACE("\n\n----------- NowCharge = %d  Moving = %d------------\n\n", nowCharge, lastMovingState);
-    if (nowCharge >= 60)
+	if (!MonsterisAlive)
+	{
+		isHitSomething = 0;
+		return 0;
+	}
+	if (nowCharge >= 60)
     {
         if (lastMovingState == 0)
         {
             if ((x1 + 222 >= x) && (x1 <= x + 254) && (y1 <= y + 255) && (y1 + 180 >= y))
-                return 8;
+			{
+				isHitSomething = 8;
+				TRACE("isHitSomething:%d\n", isHitSomething);
+				SetHitXY();
+				return 8;
+			}
         }
         else if (lastMovingState == 1)
         {
             if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 255) && (y1 + 180 >= y))
-                return 8;
+			{
+				isHitSomething = 8;
+				TRACE("isHitSomething:%d\n", isHitSomething);
+				SetHitXY();
+				return 8;
+			}
         }
     }
     else if (nowCharge >= 5 && nowCharge < 60)
@@ -126,12 +195,22 @@ int RockCannon::collision(int x, int y)
         if (lastMovingState == 0)
         {
             if ((x1 + 40 >= x) && (x1 <= x + 254) && (y1 <= y + 255) && (y1 + 27 >= y))
-                return 2;
+			{
+				isHitSomething = 2;
+				TRACE("isHitSomething:%d\n", isHitSomething);
+				SetHitXY();
+				return 2;
+			}
         }
         else if (lastMovingState == 1)
         {
             if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 255) && (y1 + 27 >= y))
-                return 2;
+			{
+				isHitSomething = 2;
+				TRACE("isHitSomething:%d\n", isHitSomething);
+				SetHitXY();
+				return 2;
+			}
         }
     }
     else
@@ -139,12 +218,22 @@ int RockCannon::collision(int x, int y)
         if (lastMovingState == 0)
         {
             if ((x1 + 19 >= x) && (x1 <= x + 254) && (y1 <= y + 255) && (y1 + 12 >= y))
-                return 1;
+			{
+				isHitSomething = 1;
+				TRACE("isHitSomething:%d\n", isHitSomething);
+				SetHitXY();
+				return 1;
+			}
         }
         else if (lastMovingState == 1)
         {
             if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 255) && (y1 + 12 >= y))
-                return 1;
+			{
+				isHitSomething = 1;
+				TRACE("isHitSomething:%d\n", isHitSomething);
+				SetHitXY();
+				return 1;
+			}
         }
     }
     return 0;
@@ -203,10 +292,17 @@ void RockCannon::OnMove()
             }
         }
     }
+	else
+	{
+		normalCannonHit.OnMove();
+		normalCannonHitLeft.OnMove();
+		superChargeCannonHit.OnMove();
+		superChargeCannonHitLeft.OnMove();
+	}
 }
 void RockCannon::OnShow()
 {
-    if (showLock == 0)
+	if (showLock == 0)
         SetScreen();
 
     //TRACE("nowCharge:%d\n", nowCharge);
@@ -218,14 +314,12 @@ void RockCannon::OnShow()
 
     if (y1 <= 2700)
         y1 = screenY;
-
     normalCannon.SetTopLeft(x1, y1);
     chargeCannon.SetTopLeft(x1, y1);
     superChargeCannon.SetTopLeft(x1, y1);
     normalCannonLeft.SetTopLeft(x1, y1);
     chargeCannonLeft.SetTopLeft(x1, y1);
     superChargeCannonLeft.SetTopLeft(x1, y1);
-
     if (lastMovingState == 0 && usingState == true)
     {
         if (nowCharge >= 60)
@@ -244,9 +338,40 @@ void RockCannon::OnShow()
         else
             normalCannonLeft.OnShow();
     }
-
     x1 = tmp;
     y1 = tmp2;
+}
+void RockCannon::OnShowHit()
+{
+	normalCannonHit.SetTopLeft(hitX, hitY);
+	normalCannonHitLeft.SetTopLeft(hitX, hitY);
+	superChargeCannonHit.SetTopLeft(hitX, hitY);
+	superChargeCannonHitLeft.SetTopLeft(hitX, hitY);
+	HitAnimationLock();
+	if (lastMovingState == 0 && usingState == false)
+	{
+		if (isHitSomething > 0&& !superChargeCannonHit.IsFinalBitmap())
+		{
+			TRACE("isCatchHitXY:%d\n", isCatchHitXY);
+			TRACE("isHitSomething:%d\n", isHitSomething);
+		}
+	if (isHitSomething > 0 && isHitSomething < 8)
+		normalCannonHit.OnShow();
+	else if (isHitSomething == 8)
+		superChargeCannonHit.OnShow();
+	}
+	else if (lastMovingState == 1 && usingState == false)
+	{
+		if (isHitSomething > 0 && !superChargeCannonHit.IsFinalBitmap())
+		{
+			TRACE("isCatchHitXY:%d\n", isCatchHitXY);
+			TRACE("isHitSomething:%d\n", isHitSomething);
+		}
+	if (isHitSomething > 0 && isHitSomething < 8)
+		normalCannonHitLeft.OnShow();
+	else if (isHitSomething == 8)
+		superChargeCannonHitLeft.OnShow();
+	}
 }
 void RockCannon::LoadNormalCannonBitmap()
 {
@@ -277,5 +402,37 @@ void RockCannon::LoadSuperChargeCannonLeftBitmap()
     superChargeCannonLeft.AddBitmap("RES\\attack\\charge attack left2.bmp", RGB(255, 255, 255));
     superChargeCannonLeft.AddBitmap("RES\\attack\\charge attack left3.bmp", RGB(255, 255, 255));
     superChargeCannonLeft.AddBitmap("RES\\attack\\charge attack left4.bmp", RGB(255, 255, 255));
+}
+void RockCannon::LoadNormalCannonHitBitmap()
+{
+	normalCannonHit.AddBitmap("RES\\attack\\attack hit.bmp", RGB(255, 255, 255));
+	normalCannonHit.AddBitmap("RES\\attack\\attack hit2.bmp", RGB(255, 255, 255));
+	normalCannonHit.AddBitmap("RES\\attack\\attack hit3.bmp", RGB(255, 255, 255));
+	normalCannonHit.AddBitmap("RES\\attack\\attack hit4.bmp", RGB(255, 255, 255));
+	normalCannonHit.SetDelayCount(2);
+}
+void RockCannon::LoadNormalCannonHitLeftBitmap()
+{
+	normalCannonHitLeft.AddBitmap("RES\\attack\\attack hit.bmp", RGB(255, 255, 255));
+	normalCannonHitLeft.AddBitmap("RES\\attack\\attack hit2left.bmp", RGB(255, 255, 255));
+	normalCannonHitLeft.AddBitmap("RES\\attack\\attack hit3left.bmp", RGB(255, 255, 255));
+	normalCannonHitLeft.AddBitmap("RES\\attack\\attack hit4left.bmp", RGB(255, 255, 255));
+	normalCannonHitLeft.SetDelayCount(2);
+}
+void RockCannon::LoadSuperChargeCannonHitBitmap()
+{
+	superChargeCannonHit.AddBitmap("RES\\attack\\charge attack hit.bmp", RGB(255, 255, 255));
+	superChargeCannonHit.AddBitmap("RES\\attack\\charge attack hit2.bmp", RGB(255, 255, 255));
+	superChargeCannonHit.AddBitmap("RES\\attack\\charge attack hit3.bmp", RGB(255, 255, 255));
+	superChargeCannonHit.AddBitmap("RES\\attack\\charge attack hit4.bmp", RGB(255, 255, 255));
+	superChargeCannonHit.SetDelayCount(2);
+}
+void RockCannon::LoadSuperChargeCannonHitLeftBitmap()
+{
+	superChargeCannonHitLeft.AddBitmap("RES\\attack\\charge attack hitleft.bmp", RGB(255, 255, 255));
+	superChargeCannonHitLeft.AddBitmap("RES\\attack\\charge attack hit2left.bmp", RGB(255, 255, 255));
+	superChargeCannonHitLeft.AddBitmap("RES\\attack\\charge attack hit3left.bmp", RGB(255, 255, 255));
+	superChargeCannonHitLeft.AddBitmap("RES\\attack\\charge attack hit4left.bmp", RGB(255, 255, 255));
+	superChargeCannonHitLeft.SetDelayCount(2);
 }
 }

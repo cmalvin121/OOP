@@ -751,7 +751,7 @@ int Terrain::crashleft()
 
         if (map[map_y][map_x] == 1)
         {
-            TRACE("%d %d %d %d左\n", map_x, map_y, nowY, i);
+            //TRACE("%d %d %d %d左\n", map_x, map_y, nowY, i);
             return map_x * 80 + 80;
         }
 
@@ -772,7 +772,7 @@ int Terrain::crashright()
 
         if (map[map_y][map_x] == 1)
         {
-            TRACE("%d %d %d %d右\n", map_x, map_y, nowY, i);
+            //TRACE("%d %d %d %d右\n", map_x, map_y, nowY, i);
             return map_x * 80;
         }
 
@@ -793,7 +793,7 @@ int Terrain::crashtop()
 
         if (map[map_y][map_x] == 1)
         {
-            TRACE("%d %d上\n", map_x, map_y);
+            //TRACE("%d %d上\n", map_x, map_y);
             return map_y * 80 + 80;
         }
 
@@ -814,7 +814,7 @@ int Terrain::crashdown()
 
         if (map[map_y][map_x] == 1)
         {
-            TRACE("%d %d下\n", map_x, map_y);
+            //TRACE("%d %d下\n", map_x, map_y);
             return map_y * 80;
         }
 

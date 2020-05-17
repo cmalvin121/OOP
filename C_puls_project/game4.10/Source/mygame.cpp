@@ -226,7 +226,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 
         if (_cannon->GetUsingState())
         {
-            damage = _cannon[i].collision(monster_x, monster_y);
+            damage = _cannon[i].collision(monster_x, monster_y,fireDragonMap.getMonsterAliveState());
             //TRACE("\n\n------ Damge = %d ------\n\n", damage);
 			if (fireDragonMap.getMonsterAliveState() == false)
 				damage = 0;
@@ -248,9 +248,9 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 
     if (left == -1 || right == -1 || top == -1 || down == -1) //碰到死亡地形，GAME OVER
     {
-        //life.Add(-64);
-        x87_1.SetX(320);
-        x87_1.SetY(1880);
+        life.Add(-64);
+        //x87_1.SetX(320);
+        //x87_1.SetY(1880);
     }
 
     if (down != 0)//判斷是否站立於障礙物上
@@ -294,7 +294,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
         x87_1.SetX(fireDragonMap.GetLastX());
     }
 
-    TRACE("%d %d %d %d\n", (x87_1.GetY()) / 80, x87_1.GetX() / 80, x87_1.GetY(), x87_1.GetX());
+    //TRACE("%d %d %d %d\n", (x87_1.GetY()) / 80, x87_1.GetX() / 80, x87_1.GetY(), x87_1.GetX());
     fireDragonMap.GetNowRockmanXY(x87_1.GetX(), x87_1.GetY());
     fireDragonMap.MoveScreen();
     fixCannonY -= x87_1.GetY();
