@@ -46,9 +46,11 @@ void Terrain::OnShow()
             }
         }
     }
-    for (int i = 0; i < 8; i++)
-        if (X6_1[i].getAlive())
-            X6_1[i].OnShow();
+	for (int i = 0; i < 8; i++)
+		if (X6_1[i].getAlive())
+			X6_1[i].OnShow();
+		else
+			X6_1[i].OnShowBoom();
 }
 void Terrain::Initialize()
 {

@@ -43,7 +43,7 @@ void Rockman::Initialize()
     isKickWall = false;
     isKickWallSlide = false;
 	life = 64;
-	injureDelay = 20;
+	injureDelay = 30;
 	injureShine = 3;
     for (int i = 0; i < 20; i++)
         rockcannon[i].SetUsingState(false);

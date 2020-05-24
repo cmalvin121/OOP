@@ -15,6 +15,7 @@ namespace game_framework
 		int getScreenY();
 		bool getAlive();
 		void OnShow();
+		void OnShowBoom();
 		void DeterminAttack(int, int);
 		bool MonsterCollision(int, int);
 		void deductLife(int damage);
@@ -30,5 +31,7 @@ namespace game_framework
 		CMovingBitmap monsLeft;
 		CMovingBitmap monsRightAttack;
 		CMovingBitmap monsLeftAttack;
+		CAnimation monsBoom;
+		void LoadBoomBitmap();
 	};
 }
