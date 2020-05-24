@@ -55,7 +55,7 @@ void Terrain::Initialize()
     picX = picY = 0;
     wallX = wallY = 0;
     lastX = lastY = 0;
-    /////////////monster////////////
+    /////////////monster/////////////
     X6_1[0].Initialize();
     X6_1[0].setXY(1920, 1295);
     X6_1[0].setScreenXY(1920, 1295);
