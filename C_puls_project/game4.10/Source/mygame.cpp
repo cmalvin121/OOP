@@ -71,6 +71,21 @@ CGameStateInit::CGameStateInit(CGame* g)
 
 void CGameStateInit::OnInit()
 {
+	gameStartBackground.LoadBitmap("RES\\gamestart\\gamestartUI background.bmp", RGB(255, 255, 255));
+	gameStartBackground.SetTopLeft(0, 0);
+	option1.LoadBitmap("RES\\gamestart\\option1.bmp", RGB(255, 255, 255));
+	option2.LoadBitmap("RES\\gamestart\\option2.bmp", RGB(255, 255, 255));
+	option3.LoadBitmap("RES\\gamestart\\option3.bmp", RGB(255, 255, 255));
+	option1Select.LoadBitmap("RES\\gamestart\\option1select.bmp", RGB(255, 255, 255));
+	option2Select.LoadBitmap("RES\\gamestart\\option2select.bmp", RGB(255, 255, 255));
+	option3Select.LoadBitmap("RES\\gamestart\\option3select.bmp", RGB(255, 255, 255));
+	option1.SetTopLeft(660, 450);
+	option2.SetTopLeft(660, 600);
+	option3.SetTopLeft(660, 750);
+	option1Select.SetTopLeft(660, 450);
+	option2Select.SetTopLeft(660, 600);
+	option3Select.SetTopLeft(660, 750);
+	option = 1;
     //
     // 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
     //     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
@@ -93,16 +108,30 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     const char KEY_ESC = 27;
     const char KEY_SPACE = ' ';
-
-    if (nChar == KEY_SPACE)
+	const char KEY_UP = 0x26; // keyboard上箭頭
+	const char KEY_DOWN = 0x28; // keyboard下箭頭
+	const char KEY_ENTER = 0x0D;
+	if (nChar == KEY_UP)
+	{
+		option--;
+		if (option <= 0)
+			option = 3;
+	}
+	if (nChar == KEY_DOWN)
+	{
+		option++;
+		if (option > 3)
+			option = 1;
+	}
+	if (nChar == KEY_ENTER && option == 1)
         GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
-    else if (nChar == KEY_ESC)								// Demo 關閉遊戲的方法
+	else if (nChar == KEY_ENTER && option == 3)			// Demo 關閉遊戲的方法
         PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
 }
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 {
-    GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
+    //GotoGameState(GAME_STATE_RUN);		// 切換至GAME_STATE_RUN
 }
 
 void CGameStateInit::OnShow()
@@ -111,21 +140,25 @@ void CGameStateInit::OnShow()
     //
     // Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
     //
-    CDC* pDC = CDDraw::GetBackCDC();			// 取得 Back Plain 的 CDC
-    CFont f, *fp;
-    f.CreatePointFont(160, "Times New Roman");	// 產生 font f; 160表示16 point的字
-    fp = pDC->SelectObject(&f);					// 選用 font f
-    pDC->SetBkColor(RGB(0, 0, 0));
-    pDC->SetTextColor(RGB(255, 255, 0));
-    pDC->TextOut(120, 220, "Please click mouse or press SPACE to begin.");
-    pDC->TextOut(5, 395, "Press Ctrl-F to switch in between window mode and full screen mode.");
-
-    if (ENABLE_GAME_PAUSE)
-        pDC->TextOut(5, 425, "Press Ctrl-Q to pause the Game.");
-
-    pDC->TextOut(5, 455, "Press Alt-F4 or ESC to Quit.");
-    pDC->SelectObject(fp);						// 放掉 font f (千萬不要漏了放掉)
-    CDDraw::ReleaseBackCDC();					// 放掉 Back Plain 的 CDC
+	gameStartBackground.ShowBitmap();
+	if (option == 1)
+	{
+		option1Select.ShowBitmap();
+		option2.ShowBitmap();
+		option3.ShowBitmap();
+	}
+	else if (option == 2)
+	{
+		option1.ShowBitmap();
+		option2Select.ShowBitmap();
+		option3.ShowBitmap();
+	}
+	else if (option == 3)
+	{
+		option1.ShowBitmap();
+		option2.ShowBitmap();
+		option3Select.ShowBitmap();
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////
