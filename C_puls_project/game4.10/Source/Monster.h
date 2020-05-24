@@ -4,6 +4,7 @@ namespace game_framework
 	{
 	public:
 		Monster();
+		void Initialize();
 		void LoadBitMap();
 		void setXY(int nx, int ny);
 		void setScreenXY(int nx, int ny);

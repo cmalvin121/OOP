@@ -44,9 +44,19 @@ void RockCannon::SetY(int y)
     if (catchAction == 0)
         y1 = y;
 }
-void RockCannon::SetFixScreenY(int fix)
+void RockCannon::SetFixScreen(int fixX,int fixY)
 {
-    screenY += fix;
+	if (usingState == true)
+	{
+		screenY += fixY;
+		screenX += fixX;
+	}
+
+	if (usingState == false)
+	{
+		hitY += fixY;
+		hitX += fixX;
+	}
 }
 void RockCannon::SetHitXY()
 {

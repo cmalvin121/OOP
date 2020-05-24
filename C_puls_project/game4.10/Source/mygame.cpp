@@ -214,6 +214,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 {
     int tmp;//洛克人座標修正值
     int fixCannonY = x87_1.GetY();
+	int fixCannonX = x87_1.GetX();
     int left, right, top, down;
     _cannon = x87_1.getCannon();
 
@@ -298,7 +299,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     fireDragonMap.GetNowRockmanXY(x87_1.GetX(), x87_1.GetY());
     fireDragonMap.MoveScreen();
     fixCannonY -= x87_1.GetY();
-    x87_1.SetFixCannonScreenY(fixCannonY);
+	fixCannonX -= x87_1.GetX();
+    x87_1.SetFixCannonScreen(fixCannonY,fixCannonX);
 
     if (x87_1.getInjuredState())//碰到怪物，生命-1
         life.Add(-1);

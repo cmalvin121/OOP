@@ -391,13 +391,10 @@ void Rockman::SetKeyAttackingState(bool flag)
         }
     }
 }
-void Rockman::SetFixCannonScreenY(int fixY)
+void Rockman::SetFixCannonScreen(int fixY,int fixX)
 {
     for (int i = 0; i < 20; i++)
-    {
-        if (rockcannon[i].GetUsingState() == true)
-            rockcannon[i].SetFixScreenY(fixY);
-    }
+		rockcannon[i].SetFixScreen(fixX,fixY);
 }
 void Rockman::setCannon(int x, int y, int lastMovingState)
 {

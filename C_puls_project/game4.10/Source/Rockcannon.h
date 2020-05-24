@@ -15,7 +15,7 @@ class RockCannon
         void SetCatchAction(bool);
         bool GetUsingState();
         void SetUsingState(bool flag);
-        void SetFixScreenY(int);
+        void SetFixScreen(int,int);
         int collision(int x, int y,bool MonsterisAlive);
     private:
         int x1, y1;								//腳色當前座標

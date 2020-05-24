@@ -37,7 +37,7 @@ class Rockman
         void setCannon(int x, int y, int lastMovingState);			//設置子彈
         RockCannon* getCannon();		//return rockcannon[20]
 		int Getlife();					//取得生命值
-		void SetFixCannonScreenY(int);	//修正洛克炮螢幕座標Y
+		void SetFixCannonScreen(int,int);	//修正洛克炮螢幕座標XY
     private:
         bool isMovingLeft;			// 是否正在往左移動
         bool isMovingRight;			// 是否正在往右移動

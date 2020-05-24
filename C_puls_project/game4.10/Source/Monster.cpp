@@ -10,14 +10,16 @@
 namespace game_framework
 {
 	Monster::Monster()
-{
-	x = y = 0;
-	s_x = s_y = 0;
-	life = 20;
-	isAlive = true;
-	AttackDirection = 0;
-	AttackDelay = 0;
-}
+	{}
+	void Monster::Initialize()
+	{
+		x = y = 0;
+		s_x = s_y = 0;
+		life = 20;
+		isAlive = true;
+		AttackDirection = 0;
+		AttackDelay = 0;
+	}
 
 	void Monster::LoadBitMap()
 	{

@@ -26,7 +26,7 @@ void Terrain::OnShow()
     background2.ShowBitmap();
     background3.ShowBitmap();
     background4.ShowBitmap();
-	/*
+	
     for (int i = 0; i < 31; i++)//地形規劃方塊顯示
     {
         for (int j = 0; j < 315; j++)
@@ -42,7 +42,7 @@ void Terrain::OnShow()
                 deadBlock.ShowBitmap();
             }
         }
-    }*/
+    }
     if (X6_1.getAlive())
         X6_1.OnShow();
 }
@@ -51,6 +51,7 @@ void Terrain::Initialize()
     picX = picY = 0;
     wallX = wallY = 0;
     lastX = lastY = 0;
+	X6_1.Initialize();
     X6_1.setXY(1920, 1295);
     X6_1.setScreenXY(1920, 1295);
 
