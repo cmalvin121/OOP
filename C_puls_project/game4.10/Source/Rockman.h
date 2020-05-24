@@ -20,7 +20,7 @@ class Rockman
         int GetSprintDegree();			//取得衝刺長度
         int GetCharge();				//取得聚氣程度
         int GetX();						//return x;
-        int GetY();						// return y;
+        int GetY();						//return y;
         void SetX(int);					//設定X
         void SetY(int);					//設定Y
         void JumpDropping();			//跳躍後落下
@@ -30,8 +30,8 @@ class Rockman
         void SetCrashState(int);		//設定碰撞狀態
         void SetCrashStateWall(int);    //設定碰撞牆壁狀態
         bool getInjuredState();			//回傳受傷狀態
-		void SetInjuredState(bool,int);	//設定受傷狀態
-		void AddLife(int);				//增加、減少生命值
+        void SetInjuredState(bool, int);	//設定受傷狀態
+        void AddLife(int);				//增加、減少生命值
         void setkickWall();				//判斷是否正在踢牆
         void KickWall();				//踢牆
         void setCannon(int x, int y, int lastMovingState);			//設置子彈
@@ -50,8 +50,8 @@ class Rockman
         bool keepkeydownAttacking;  // 一直按住攻擊
         bool isInjured;			    // 是否受傷
         bool showDropping();		// 判斷是否要顯示落下動作
-		CMovingBitmap lifeItem;		// 圖片:生命條
-		CMovingBitmap lifeValue;	// 圖片:生命值1
+        CMovingBitmap lifeItem;		// 圖片:生命條
+        CMovingBitmap lifeValue;	// 圖片:生命值1
         CAnimation animationRight;				//動畫:向右站立
         CAnimation animationLeft;				//動畫:往左站立
         CAnimation animationMovingRight;		//動畫:往右移動
@@ -64,9 +64,9 @@ class Rockman
         CAnimation animation_kickWallRight;		//動畫:往右踢牆
         CAnimation animation_kickWallSlideLeft;	//動畫:往左踢牆滑落
         CAnimation animation_kickWallSlideRight;//動畫:往右踢牆滑落
-		CAnimation animation_InjureLeft;		//動畫:往左受傷
-		CAnimation animation_InjureRight;		//動畫:往右受傷
-		void LoadLifeObjectBitmap();			//載入圖片:生命值、生命條
+        CAnimation animation_InjureLeft;		//動畫:往左受傷
+        CAnimation animation_InjureRight;		//動畫:往右受傷
+        void LoadLifeObjectBitmap();			//載入圖片:生命值、生命條
         void LoadRightBitmap();					//載入動畫:向右站立
         void LoadLeftBitmap();					//載入動畫:向左站立
         void LoadMovingLeftBitmap();			//載入動畫:向左移動
@@ -79,8 +79,8 @@ class Rockman
         void LoadKickWallRightBitmap();			//載入動畫:向右踢牆
         void LoadKickWallSlideLeftBitmap();		//載入動畫:向左踢牆滑落
         void LoadKickWallSlideRightBitmap();	//載入動畫:向右踢牆滑落
-		void LoadInjureLeftBitmap();			//載入動畫:往左受傷
-		void LoadInjureRightBitmap();			//載入動畫:往右受傷
+        void LoadInjureLeftBitmap();			//載入動畫:往左受傷
+        void LoadInjureRightBitmap();			//載入動畫:往右受傷
         //------以下為攻擊動畫-----------------------------------------------------------
         CAnimation animationRightAttack;				//動畫:向右站立攻擊
         CAnimation animationLeftAttack;					//動畫:往左站立攻擊
@@ -122,8 +122,8 @@ class Rockman
         int kickWallDegree;								//踢牆程度
         bool isKickWall;								//是否正在踢牆
         bool isKickWallSlide;							//是否正在踢牆滑落
-		int life;										//洛克人生命值
-		int injureDelay;								//受傷無敵時間
-		int injureShine;								//受傷無敵閃爍變數
+        int life;										//洛克人生命值
+        int injureDelay;								//受傷無敵時間
+        int injureShine;								//受傷無敵閃爍變數
 };
 }
