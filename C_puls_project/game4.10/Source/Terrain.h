@@ -18,10 +18,11 @@ class Terrain     //地形(箱子、方塊)
         int crashdown();
         bool MonsterCollision();
         //////////////////////// Monster
+        Monster getMonster(int index);
         int getMonsterX();
         int getMonsterY();
         bool getMonsterAliveState();
-        void setMonsterLife(int damage);
+        void setMonsterLife(int index, int damage);
         ////////////////////////////////
     protected:
         CMovingBitmap	background;	// 背景圖

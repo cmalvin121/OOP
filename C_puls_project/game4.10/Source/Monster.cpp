@@ -9,37 +9,37 @@
 
 namespace game_framework
 {
-	Monster::Monster()
-	{}
-	void Monster::Initialize()
-	{
-		x = y = 0;
-		s_x = s_y = 0;
-		life = 20;
-		isAlive = true;
-		AttackDirection = 0;
-		AttackDelay = 0;
-		monsBoom.Reset();
-	}
+Monster::Monster()
+{}
+void Monster::Initialize()
+{
+    x = y = 0;
+    s_x = s_y = 0;
+    life = 10;
+    isAlive = true;
+    AttackDirection = 0;
+    AttackDelay = 0;
+    monsBoom.Reset();
+}
 void Monster::LoadBitMap()
 {
     monsRight.LoadBitmap("RES\\enemy\\enemy_X6_1.bmp", RGB(255, 255, 255));
     monsLeft.LoadBitmap("RES\\enemy\\enemy_X6_1left.bmp", RGB(255, 255, 255));
     monsRightAttack.LoadBitmap("RES\\enemy\\enemy_X6_1 attack.bmp", RGB(255, 255, 255));
     monsLeftAttack.LoadBitmap("RES\\enemy\\enemy_X6_1 attackleft.bmp", RGB(255, 255, 255));
-	LoadBoomBitmap();
+    LoadBoomBitmap();
 }
 void Monster::LoadBoomBitmap()
 {
-	monsBoom.AddBitmap("RES\\enemy\\explosion.bmp", RGB(255, 255, 255));
-	monsBoom.AddBitmap("RES\\enemy\\explosion2.bmp", RGB(255, 255, 255));
-	monsBoom.AddBitmap("RES\\enemy\\explosion3.bmp", RGB(255, 255, 255));
-	monsBoom.AddBitmap("RES\\enemy\\explosion4.bmp", RGB(255, 255, 255));
-	monsBoom.AddBitmap("RES\\enemy\\explosion5.bmp", RGB(255, 255, 255));
-	monsBoom.AddBitmap("RES\\enemy\\explosion6.bmp", RGB(255, 255, 255));
-	monsBoom.AddBitmap("RES\\enemy\\explosion7.bmp", RGB(255, 255, 255));
-	monsBoom.AddBitmap("RES\\enemy\\explosion8.bmp", RGB(255, 255, 255));
-	monsBoom.SetDelayCount(2);
+    monsBoom.AddBitmap("RES\\enemy\\explosion.bmp", RGB(255, 255, 255));
+    monsBoom.AddBitmap("RES\\enemy\\explosion2.bmp", RGB(255, 255, 255));
+    monsBoom.AddBitmap("RES\\enemy\\explosion3.bmp", RGB(255, 255, 255));
+    monsBoom.AddBitmap("RES\\enemy\\explosion4.bmp", RGB(255, 255, 255));
+    monsBoom.AddBitmap("RES\\enemy\\explosion5.bmp", RGB(255, 255, 255));
+    monsBoom.AddBitmap("RES\\enemy\\explosion6.bmp", RGB(255, 255, 255));
+    monsBoom.AddBitmap("RES\\enemy\\explosion7.bmp", RGB(255, 255, 255));
+    monsBoom.AddBitmap("RES\\enemy\\explosion8.bmp", RGB(255, 255, 255));
+    monsBoom.SetDelayCount(2);
 }
 void Monster::setXY(int nx, int ny)
 {
@@ -135,11 +135,13 @@ void Monster::OnShow()
 }
 void Monster::OnShowBoom()
 {
-	if (monsBoom.IsFinalBitmap())
-		monsBoom.setToSpecifyBitmap(7);
-	monsBoom.OnMove();
-	monsBoom.SetTopLeft(s_x, s_y - 1492);
-	if (isAlive == false && !monsBoom.IsFinalBitmap())
-		monsBoom.OnShow();
+    if (monsBoom.IsFinalBitmap())
+        monsBoom.setToSpecifyBitmap(7);
+
+    monsBoom.OnMove();
+    monsBoom.SetTopLeft(s_x, s_y - 1492);
+
+    if (isAlive == false && !monsBoom.IsFinalBitmap())
+        monsBoom.OnShow();
 }
 }

@@ -214,18 +214,42 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 {
     int tmp;//洛克人座標修正值
     int fixCannonY = x87_1.GetY();
-	int fixCannonX = x87_1.GetX();
+    int fixCannonX = x87_1.GetX();
     int left, right, top, down;
     _cannon = x87_1.getCannon();
 
     for (int i = 0; i < 20; i++)
     {
         int monster_x, monster_y, damage;
-        monster_x = fireDragonMap.getMonsterX();
-        monster_y = fireDragonMap.getMonsterY();
-        //TRACE("\n\n------ MONSTER: %d  %d ------\n\n", monster_x, monster_y);
 
-        if (_cannon[i].GetUsingState())
+        for (int j = 0; j < 8; j++)
+        {
+            monster[j] = fireDragonMap.getMonster(j);
+            monster_x = monster[j].getX();
+            monster_y = monster[j].getY();
+
+            if (_cannon[i].GetUsingState())
+            {
+                damage = _cannon[i].collision(monster_x, monster_y, monster[j].getAlive());
+
+                //TRACE("\n\n------ Damge = %d ------\n\n", damage);
+                if (monster[j].getAlive() == false)
+                    damage = 0;
+
+                fireDragonMap.setMonsterLife(j, damage);
+
+                if (damage > 0)
+                {
+                    _cannon[i].SetUsingState(0);
+                    break;
+                }
+            }
+        }
+
+        //monster_x = fireDragonMap.getMonsterX();
+        //monster_y = fireDragonMap.getMonsterY();
+        //TRACE("\n\n------ MONSTER: %d  %d ------\n\n", monster_x, monster_y);
+        /*if (_cannon[i].GetUsingState())
         {
             damage = _cannon[i].collision(monster_x, monster_y, fireDragonMap.getMonsterAliveState());
 
@@ -236,9 +260,11 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             fireDragonMap.setMonsterLife(damage);
 
             if (damage > 0)
+            {
                 _cannon[i].SetUsingState(0);
-        }
-
+                break;
+            }
+        }*/
         _cannon[i].OnMove();
     }
 
@@ -301,10 +327,12 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     fireDragonMap.GetNowRockmanXY(x87_1.GetX(), x87_1.GetY());
     fireDragonMap.MoveScreen();
     fixCannonY -= x87_1.GetY();
-	fixCannonX -= x87_1.GetX();
-    x87_1.SetFixCannonScreen(fixCannonY,fixCannonX);
+    fixCannonX -= x87_1.GetX();
+    x87_1.SetFixCannonScreen(fixCannonY, fixCannonX);
+
     if (life.GetInteger() <= 0)//血量歸0，GAME OVER
         GotoGameState(GAME_STATE_OVER);
+
     life.SetInteger(x87_1.Getlife());
 }
 

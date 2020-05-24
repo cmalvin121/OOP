@@ -29,7 +29,6 @@ void Terrain::OnShow()
     background3.ShowBitmap();
     background4.ShowBitmap();
 
-    
     for (int i = 0; i < 31; i++)//地形規劃方塊顯示
     {
         for (int j = 0; j < 315; j++)
@@ -46,11 +45,12 @@ void Terrain::OnShow()
             }
         }
     }
-	for (int i = 0; i < 8; i++)
-		if (X6_1[i].getAlive())
-			X6_1[i].OnShow();
-		else
-			X6_1[i].OnShowBoom();
+
+    for (int i = 0; i < 8; i++)
+        if (X6_1[i].getAlive())
+            X6_1[i].OnShow();
+        else
+            X6_1[i].OnShowBoom();
 }
 void Terrain::Initialize()
 {
@@ -62,26 +62,26 @@ void Terrain::Initialize()
     X6_1[0].setXY(1920, 1295);
     X6_1[0].setScreenXY(1920, 1295);
     X6_1[1].Initialize();
-    X6_1[1].setXY(4560, 1760);
-    X6_1[1].setScreenXY(4560, 1760);
+    X6_1[1].setXY(5360, 1370);
+    X6_1[1].setScreenXY(5360, 1370);
     X6_1[2].Initialize();
-    X6_1[2].setXY(7520, 1760);
-    X6_1[2].setScreenXY(7520, 1760);
+    X6_1[2].setXY(7520, 1500);
+    X6_1[2].setScreenXY(7520, 1500);
     X6_1[3].Initialize();
-    X6_1[3].setXY(10560, 880);
-    X6_1[3].setScreenXY(10560, 880);
+    X6_1[3].setXY(10560, 640);
+    X6_1[3].setScreenXY(10560, 640);
     X6_1[4].Initialize();
-    X6_1[4].setXY(14640, 1760);
-    X6_1[4].setScreenXY(14640, 1760);
+    X6_1[4].setXY(14640, 1520);
+    X6_1[4].setScreenXY(14640, 1520);
     X6_1[5].Initialize();
-    X6_1[5].setXY(18240, 1840);
-    X6_1[5].setScreenXY(18240, 1840);
+    X6_1[5].setXY(18240, 1560);
+    X6_1[5].setScreenXY(18240, 1560);
     X6_1[6].Initialize();
-    X6_1[6].setXY(23120, 80);
-    X6_1[6].setScreenXY(23120, 80);
+    X6_1[6].setXY(23120, 530);
+    X6_1[6].setScreenXY(23120, 530);
     X6_1[7].Initialize();
-    X6_1[7].setXY(23360, 1840);
-    X6_1[7].setScreenXY(23360, 1840);
+    X6_1[7].setXY(23360, 1600);
+    X6_1[7].setScreenXY(23360, 1600);
     ////////////////////////////////
 
     for (int i = 0; i < 31; i++)
@@ -725,6 +725,10 @@ void Terrain::Initialize()
     background3.SetTopLeft(background.Width() + background2.Width(), 0 - 1492);
     background4.SetTopLeft(background.Width() + background2.Width() + background3.Width(), 0 - 1492);
 }
+Monster Terrain::getMonster(int index)
+{
+    return X6_1[index];
+}
 void Terrain::GetLastRockmanXY(int x, int y)
 {
     lastX = x;
@@ -853,7 +857,7 @@ int Terrain::crashdown()
 
         if (map[map_y][map_x] == 1)
         {
-           // TRACE("%d %d下\n", map_x, map_y);
+            TRACE("%d %d下\n", map_x, map_y);
             return map_y * 80;
         }
 
@@ -871,9 +875,9 @@ bool Terrain::MonsterCollision()
 
     return false;
 }
-void Terrain::setMonsterLife(int damage)
+void Terrain::setMonsterLife(int index, int damage)
 {
-    X6_1[0].deductLife(damage);
+    X6_1[index].deductLife(damage);
 }
 int Terrain::getMonsterX()
 {
