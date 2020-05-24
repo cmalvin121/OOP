@@ -60,7 +60,7 @@ void RockCannon::SetFixScreen(int fixX,int fixY)
 }
 void RockCannon::SetHitXY()
 {
-	TRACE("isCatchHitXY:%d\n", isCatchHitXY);
+//	TRACE("isCatchHitXY:%d\n", isCatchHitXY);
 	if(!isCatchHitXY)
 	{
 		hitX = screenX;
@@ -169,7 +169,7 @@ void RockCannon::HitAnimationLock()
 }
 int RockCannon::collision(int x, int y,bool MonsterisAlive)
 {
-	TRACE("MonsterisAlive:%d\n", MonsterisAlive);
+	//TRACE("MonsterisAlive:%d\n", MonsterisAlive);
     //TRACE("\n\n-------------%d   %d   %d   %d------------\n\n", x1, y1, x, y);
     //TRACE("\n\n----------- NowCharge = %d  Moving = %d------------\n\n", nowCharge, lastMovingState);
 	if (!MonsterisAlive)
