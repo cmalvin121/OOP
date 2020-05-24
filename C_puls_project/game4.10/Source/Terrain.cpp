@@ -18,7 +18,9 @@ void Terrain::LoadBitMap()
     background4.LoadBitmap("Bitmaps\\map4.bmp");
     block.LoadBitmap("Bitmaps\\wall.bmp");
     deadBlock.LoadBitmap("Bitmaps\\deadBlock.bmp");
-    X6_1.LoadBitMap();
+
+    for (int i = 0; i < 8; i++)
+        X6_1[i].LoadBitMap();
 }
 void Terrain::OnShow()
 {
@@ -26,7 +28,8 @@ void Terrain::OnShow()
     background2.ShowBitmap();
     background3.ShowBitmap();
     background4.ShowBitmap();
-	/*
+
+    /*
     for (int i = 0; i < 31; i++)//地形規劃方塊顯示
     {
         for (int j = 0; j < 315; j++)
@@ -43,16 +46,42 @@ void Terrain::OnShow()
             }
         }
     }*/
-    if (X6_1.getAlive())
-        X6_1.OnShow();
+
+    for (int i = 0; i < 8; i++)
+        if (X6_1[i].getAlive())
+            X6_1[i].OnShow();
 }
 void Terrain::Initialize()
 {
     picX = picY = 0;
     wallX = wallY = 0;
     lastX = lastY = 0;
-    X6_1.setXY(1920, 1295);
-    X6_1.setScreenXY(1920, 1295);
+    /////////////monster////////////
+    X6_1[0].Initialize();
+    X6_1[0].setXY(1920, 1295);
+    X6_1[0].setScreenXY(1920, 1295);
+    X6_1[1].Initialize();
+    X6_1[1].setXY(4560, 1760);
+    X6_1[1].setScreenXY(4560, 1760);
+    X6_1[2].Initialize();
+    X6_1[2].setXY(7520, 1760);
+    X6_1[2].setScreenXY(7520, 1760);
+    X6_1[3].Initialize();
+    X6_1[3].setXY(10560, 880);
+    X6_1[3].setScreenXY(10560, 880);
+    X6_1[4].Initialize();
+    X6_1[4].setXY(14640, 1760);
+    X6_1[4].setScreenXY(14640, 1760);
+    X6_1[5].Initialize();
+    X6_1[5].setXY(18240, 1840);
+    X6_1[5].setScreenXY(18240, 1840);
+    X6_1[6].Initialize();
+    X6_1[6].setXY(23120, 80);
+    X6_1[6].setScreenXY(23120, 80);
+    X6_1[7].Initialize();
+    X6_1[7].setXY(23360, 1840);
+    X6_1[7].setScreenXY(23360, 1840);
+    ////////////////////////////////
 
     for (int i = 0; i < 31; i++)
     {
@@ -716,29 +745,38 @@ int Terrain::GetLastY()
 void Terrain::MoveScreen()
 {
     int mon_posX, mon_posY;
-    mon_posX = X6_1.getScreenX();
-    mon_posY = X6_1.getScreenY();
+
+    for (int i = 0; i < 8; i++)
+    {
+        mon_posX = X6_1[i].getScreenX();
+        mon_posY = X6_1[i].getScreenY();
+
+        if (nowX > 900)
+            mon_posX -= (nowX - lastX);
+
+        if (nowY < 2700)
+            mon_posY -= (nowY - lastY);
+
+        X6_1[i].setScreenXY(mon_posX, mon_posY);
+        X6_1[i].DeterminAttack(nowX, nowY);
+    }
 
     if (nowX > 900)
     {
         wallX -= (nowX - lastX);
         picX -= (nowX - lastX);
-        mon_posX -= (nowX - lastX);
     }
 
     if (nowY < 2700)
     {
         wallY -= (nowY - lastY);
         picY -= (nowY - lastY);
-        mon_posY -= (nowY - lastY);
     }
 
     background.SetTopLeft(picX, picY - 1492);
     background2.SetTopLeft(picX + background.Width(), picY - 1492);
     background3.SetTopLeft(picX + background.Width() + background2.Width(), picY - 1492);
     background4.SetTopLeft(picX + background.Width() + background2.Width() + background3.Width(), picY - 1492);
-    X6_1.setScreenXY(mon_posX, mon_posY);
-    X6_1.DeterminAttack(nowX, nowY);
 }
 int Terrain::crashleft()
 {
@@ -814,7 +852,7 @@ int Terrain::crashdown()
 
         if (map[map_y][map_x] == 1)
         {
-            //TRACE("%d %d下\n", map_x, map_y);
+            TRACE("%d %d下\n", map_x, map_y);
             return map_y * 80;
         }
 
@@ -826,7 +864,11 @@ int Terrain::crashdown()
 }
 bool Terrain::MonsterCollision()
 {
-	return X6_1.MonsterCollision(nowX, nowY);
+    for (int i = 0; i < 8; i++)
+        if (X6_1[i].MonsterCollision(nowX, nowY))
+            return true;
+
+    return false;
 }
 void Terrain::setMonsterLife(int damage)
 {
@@ -842,6 +884,6 @@ int Terrain::getMonsterY()
 }
 bool Terrain::getMonsterAliveState()
 {
-	return X6_1.getAlive();
+    return X6_1.getAlive();
 }
 }
