@@ -71,7 +71,7 @@ CGameStateInit::CGameStateInit(CGame* g)
 
 void CGameStateInit::OnInit()
 {
-	gameStartBackground.LoadBitmap("RES\\gamestart\\gamestartUI background.bmp", RGB(255, 255, 255));
+	gameStartBackground.LoadBitmap("RES\\gamestart\\gamestartUI background.bmp");
 	gameStartBackground.SetTopLeft(0, 0);
 	option1.LoadBitmap("RES\\gamestart\\option1.bmp", RGB(255, 255, 255));
 	option2.LoadBitmap("RES\\gamestart\\option2.bmp", RGB(255, 255, 255));
@@ -85,7 +85,22 @@ void CGameStateInit::OnInit()
 	option1Select.SetTopLeft(660, 450);
 	option2Select.SetTopLeft(660, 600);
 	option3Select.SetTopLeft(660, 750);
+	controlGuide.LoadBitmap("RES\\gamestart\\background.bmp");
+	controlGuide.SetTopLeft(0, 0);
+	text1.LoadBitmap("RES\\gamestart\\right.bmp", RGB(255, 255, 255));
+	text2.LoadBitmap("RES\\gamestart\\left.bmp", RGB(255, 255, 255));
+	text3.LoadBitmap("RES\\gamestart\\jump.bmp", RGB(255, 255, 255));
+	text4.LoadBitmap("RES\\gamestart\\attack.bmp", RGB(255, 255, 255));
+	text5.LoadBitmap("RES\\gamestart\\sprint.bmp", RGB(255, 255, 255));
+	text6.LoadBitmap("RES\\gamestart\\wall.bmp", RGB(255, 255, 255));
+	text1.SetTopLeft(573, 62);
+	text2.SetTopLeft(573, 212);
+	text3.SetTopLeft(573, 362);
+	text4.SetTopLeft(573, 512);
+	text5.SetTopLeft(689, 662);
+	text6.SetTopLeft(750, 814);
 	option = 1;
+	startGuide = false;
     //
     // 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
     //     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
@@ -123,10 +138,27 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 		if (option > 3)
 			option = 1;
 	}
-	if (nChar == KEY_ENTER && option == 1)
-        GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
+	if (startGuide == true)
+		option = 2;
+	if (nChar == KEY_ESC)
+		startGuide = false;
+	else if (nChar == KEY_ENTER && option == 1)
+		GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
+	else if (nChar == KEY_ENTER && option == 2)
+		startGuide = true;
 	else if (nChar == KEY_ENTER && option == 3)			// Demo 關閉遊戲的方法
         PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+
+}
+void CGameStateInit::GotoGuide()
+{
+	controlGuide.ShowBitmap();
+	text1.ShowBitmap();
+	text2.ShowBitmap();
+	text3.ShowBitmap();
+	text4.ShowBitmap();
+	text5.ShowBitmap();
+	text6.ShowBitmap();
 }
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
@@ -141,7 +173,9 @@ void CGameStateInit::OnShow()
     // Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
     //
 	gameStartBackground.ShowBitmap();
-	if (option == 1)
+	if (startGuide == true)
+		GotoGuide();
+	else if (option == 1)
 	{
 		option1Select.ShowBitmap();
 		option2.ShowBitmap();

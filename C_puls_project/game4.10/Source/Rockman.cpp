@@ -836,7 +836,7 @@ void Rockman::OnShow()
 		animation_InjureRight.OnShow();
 	else if (injureDelay < 30 && lastMovingState == 1 && !animation_InjureLeft.IsFinalBitmap())
 		animation_InjureLeft.OnShow();
-    else if (crashState_wall == 1 && jumpDegree > 0)//金鲤:オ
+	else if (lastMovingState == 1 && isKickWall)//金鲤:オ
     {
         if (animation_kickWallLeft.IsFinalBitmap() || animation_kickWallLeftAttack.IsFinalBitmap())
         {
@@ -860,7 +860,7 @@ void Rockman::OnShow()
         else
             animation_kickWallLeft.OnShow();
     }
-    else if (crashState_wall == 2 && jumpDegree > 0)//金鲤:
+    else if (lastMovingState == 0 && isKickWall)//金鲤:
     {
         if (animation_kickWallRight.IsFinalBitmap() || animation_kickWallRightAttack.IsFinalBitmap())
         {

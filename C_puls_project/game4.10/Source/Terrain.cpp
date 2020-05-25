@@ -857,7 +857,7 @@ int Terrain::crashdown()
 
         if (map[map_y][map_x] == 1)
         {
-            TRACE("%d %d¤U\n", map_x, map_y);
+            //TRACE("%d %d¤U\n", map_x, map_y);
             return map_y * 80;
         }
 

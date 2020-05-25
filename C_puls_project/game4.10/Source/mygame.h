@@ -71,6 +71,7 @@ class CGameStateInit : public CGameState {
     protected:
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
+		void GotoGuide();
         CMovingBitmap logo;								// csie的logo
 		CMovingBitmap gameStartBackground;
 		CMovingBitmap option1;
@@ -79,7 +80,15 @@ class CGameStateInit : public CGameState {
 		CMovingBitmap option1Select;
 		CMovingBitmap option2Select;
 		CMovingBitmap option3Select;
+		CMovingBitmap controlGuide;
+		CMovingBitmap text1;
+		CMovingBitmap text2;
+		CMovingBitmap text3;
+		CMovingBitmap text4;
+		CMovingBitmap text5;
+		CMovingBitmap text6;
 		int option;
+		bool startGuide;
 };
 
 /////////////////////////////////////////////////////////////////////////////
