@@ -45,11 +45,17 @@ namespace game_framework
 	}
 	void TrashCannon::AddScreenX_fix(int fix)
 	{
-		screenX += fix;
+		if (usingState == true)
+			screenX += fix;
+		if (usingState == false)
+			hitX += fix;
 	}
 	void TrashCannon::AddScreenY_fix(int fix)
 	{
-		screenY += fix;
+		if (usingState == true)
+			screenY += fix;
+		if (usingState == false)
+			hitY += fix;
 	}
 	void TrashCannon::SetHitXY()
 	{
@@ -75,6 +81,8 @@ namespace game_framework
 		catchAction = 0;
 		x1 = 0;
 		y1 = 0;
+		if(usingState)
+			trashCannonHit.Reset();
 	}
 	void TrashCannon::SetScreenXY(int x,int y)
 	{
@@ -96,6 +104,8 @@ namespace game_framework
 	}
 	int TrashCannon::collision(int x, int y)
 	{
+		if (!usingState)
+			return 0;
 		if (lastMovingState == 0)
 		{
 			if ((x1 + 32 >= x) && (x1 <= x + 160) && (y1 <= y + 200) && (y1 + 32 >= y))
@@ -120,13 +130,17 @@ namespace game_framework
 	}
 	void TrashCannon::OnMove()
 	{
-		if (distance >= 800)
+		if (distance >= 800 || isHitSomething != 0)
 		{
 			usingState = false;
-			distance = 0;
 			catchAction = 0;
 			x1 = 0;
 			y1 = 0;
+		}
+		if (distance >= 800 && trashCannonHit.GetCurrentBitmapNumber() == 0)
+		{
+			hitX = screenX;
+			hitY = screenY;
 		}
 
 		if (catchAction == 0)
@@ -168,10 +182,13 @@ namespace game_framework
 	{
 		trashCannonHit.SetTopLeft(hitX, hitY);
 		HitAnimationLock();
-		if (lastMovingState == 0 && usingState == false)
+		if (usingState == false && !trashCannonHit.IsFinalBitmap())
 		{
-			if (isHitSomething > 0 && isHitSomething < 8)
+			if ((isHitSomething > 0 && isHitSomething < 8) || distance >= 800)
+			{
 				trashCannonHit.OnShow();
+				TRACE("in\n");
+			}
 		}
 	}
 	void TrashCannon::LoadTrashCannonHitBitmap()

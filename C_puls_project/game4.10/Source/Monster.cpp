@@ -18,7 +18,7 @@ void Monster::Initialize()
     life = 10;
     isAlive = true;
     AttackDirection = 0;
-    AttackDelay = 0;
+    AttackDelay = 49;
     monsBoom.Reset();
 }
 void Monster::LoadBitMap()
@@ -75,11 +75,8 @@ int Monster::getScreenY()
 }
 void Monster::FixCannonScreenXY(int fixX, int fixY)
 {
-	if(cannon.GetUsingState())
-	{
-		cannon.AddScreenX_fix(-fixX);
-		cannon.AddScreenY_fix(-fixY);
-	}
+	cannon.AddScreenX_fix(-fixX);
+	cannon.AddScreenY_fix(-fixY);
 }
 bool Monster::getAlive()
 {
@@ -96,10 +93,9 @@ void Monster::deductLife(int damage)
 }
 void Monster::DeterminAttack(int RockX, int RockY)
 {
-    if (x - RockX > 400 || RockX - x > 400)
-        AttackDelay = 49;
-
-    if (((x - RockX < 400) && (x - RockX > 0)) || ((RockX - x < 400) && (RockX - x > 0)))//往左對主角攻擊,往右對主角攻擊
+	if ((x - RockX > 400 || RockX - x > 400) && AttackDelay < 49)
+        AttackDelay++;
+    else if (((x - RockX < 400) && (x - RockX > 0)) || ((RockX - x < 400) && (RockX - x > 0)))//往左對主角攻擊,往右對主角攻擊
         AttackDelay++;
 
     if (x - RockX > 0)
