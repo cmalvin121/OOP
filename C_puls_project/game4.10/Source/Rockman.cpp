@@ -184,11 +184,12 @@ void Rockman::OnMove()
 
     if ((isJumping) && (jumpDegree < 10))//¸õÅD
     {
-        y -= velocity_jump;
+		if((!isInjured || injureDelay < 30))
+			y -= velocity_jump;
 
-        if (jumpDegree < 4 && (!isInjured || injureDelay < 30))
+        if (jumpDegree < 4 )
             velocity_jump += 10;
-        else if (jumpDegree >= 4 && (!isInjured || injureDelay < 30))
+        else if (jumpDegree >= 4)
             velocity_jump -= 10;
 
         jumpDegree++;
@@ -234,7 +235,10 @@ void Rockman::OnMove()
 		isInjured = false;
 	}
 	if (injureDelay < 30)
+	{
 		injureDelay++;
+		isInjured = false;
+	}
 }
 
 void Rockman::SetMovingLeft(bool flag)
@@ -426,7 +430,7 @@ void Rockman::setCannon(int x, int y, int lastMovingState)
 void Rockman::SetInjuredState(bool state,int injureValue)
 {
 	isInjured = state;
-	//TRACE("isInjured:%d\n", state);
+	TRACE("isInjured:%d\n", state);
 	if (injureDelay == 30)
 	{
 		animation_InjureLeft.Reset();

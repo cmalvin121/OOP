@@ -140,7 +140,7 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	if (startGuide == true)
 		option = 2;
-	if (nChar == KEY_ESC)
+	if (nChar == KEY_ENTER && startGuide == true)
 		startGuide = false;
 	else if (nChar == KEY_ENTER && option == 1)
 		GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
@@ -271,7 +271,6 @@ void CGameStateRun::OnBeginState()
     fireDragonMap.Initialize();
     life.SetInteger(x87_1.Getlife());
     life.SetTopLeft(149, 468);
-    help.SetTopLeft(0, SIZE_Y - help.Height());			// 設定說明圖的起始座標
     CAudio::Instance()->Play(AUDIO_LAKE, true);			// 撥放 WAVE
     CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
     CAudio::Instance()->Play(AUDIO_NTUT, true);			// 撥放 MIDI
@@ -336,7 +335,11 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     }
 
     fireDragonMap.GetLastRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之前座標
-    x87_1.SetInjuredState(fireDragonMap.MonsterCollision(), 2);
+	int injureMC = fireDragonMap.MosterCannonCollision();
+	if(fireDragonMap.MonsterCollision())
+		x87_1.SetInjuredState(true, 2);
+	else if(injureMC != 0)
+		x87_1.SetInjuredState(true, injureMC);
     x87_1.OnMove();
     fireDragonMap.GetNowRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之後座標
     left = fireDragonMap.crashleft();
@@ -421,8 +424,6 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     //
     // 繼續載入其他資料
     //
-    help.LoadBitmap(IDB_HELP, RGB(255, 255, 255));				// 載入說明的圖形
-    corner.LoadBitmap(IDB_CORNER);							// 載入角落圖形
     x87_1.LoadBitmap();
     x87_1.LoadAttackBitmap();
     fireDragonMap.LoadBitMap();
@@ -531,15 +532,10 @@ void CGameStateRun::OnShow()
     //
     //  貼上背景圖、撞擊數、球、擦子、彈跳的球
     //
-    help.ShowBitmap();					// 貼上說明圖
     fireDragonMap.OnShow();
     //
     //  貼上左上及右下角落的圖
     //
-    corner.SetTopLeft(0, 0);
-    corner.ShowBitmap();
-    corner.SetTopLeft(SIZE_X - corner.Width(), SIZE_Y - corner.Height());
-    corner.ShowBitmap();
     x87_1.OnShow();
     life.ShowBitmap();
 }
