@@ -18,7 +18,9 @@ namespace game_framework
 		void OnShowBoom();
 		void DeterminAttack(int, int);
 		bool MonsterCollision(int, int);
+		int  MonsterCannonCollision(int, int);
 		void deductLife(int damage);
+		void FixCannonScreenXY(int, int);
 	private:
 		bool isAlive;
 		int x, y;
@@ -32,6 +34,7 @@ namespace game_framework
 		CMovingBitmap monsRightAttack;
 		CMovingBitmap monsLeftAttack;
 		CAnimation monsBoom;
+		TrashCannon cannon;
 		void LoadBoomBitmap();
 	};
 }

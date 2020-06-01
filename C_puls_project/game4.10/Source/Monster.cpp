@@ -4,7 +4,7 @@
 #include <ddraw.h>
 #include "audio.h"
 #include "gamelib.h"
-#include "Rockcannon.h"
+#include "Trashcannon.h"
 #include "Monster.h"
 
 namespace game_framework
@@ -28,6 +28,7 @@ void Monster::LoadBitMap()
     monsRightAttack.LoadBitmap("RES\\enemy\\enemy_X6_1 attack.bmp", RGB(255, 255, 255));
     monsLeftAttack.LoadBitmap("RES\\enemy\\enemy_X6_1 attackleft.bmp", RGB(255, 255, 255));
     LoadBoomBitmap();
+	cannon.LoadBitmapA();
 }
 void Monster::LoadBoomBitmap()
 {
@@ -72,6 +73,14 @@ int Monster::getScreenY()
 {
     return s_y;
 }
+void Monster::FixCannonScreenXY(int fixX, int fixY)
+{
+	if(cannon.GetUsingState())
+	{
+		cannon.AddScreenX_fix(-fixX);
+		cannon.AddScreenY_fix(-fixY);
+	}
+}
 bool Monster::getAlive()
 {
     return isAlive;
@@ -88,7 +97,7 @@ void Monster::deductLife(int damage)
 void Monster::DeterminAttack(int RockX, int RockY)
 {
     if (x - RockX > 400 || RockX - x > 400)
-        AttackDelay = 9;
+        AttackDelay = 49;
 
     if (((x - RockX < 400) && (x - RockX > 0)) || ((RockX - x < 400) && (RockX - x > 0)))//往左對主角攻擊,往右對主角攻擊
         AttackDelay++;
@@ -98,8 +107,18 @@ void Monster::DeterminAttack(int RockX, int RockY)
     else if (RockX - x > 0)
         AttackDirection = 1;
 
-    if (AttackDelay == 10)
-        AttackDelay = 0;
+    if (AttackDelay == 50)
+	{
+		AttackDelay = 0;
+		cannon.SetUsingState(true);
+		cannon.SetX(x + 121);
+		cannon.SetY(y + 48);
+		cannon.SetScreenXY(s_x + 121, s_y + 48 - 1492);
+		cannon.SetLastMovingState(AttackDirection);
+		cannon.SetCatchAction(1);
+	}
+	cannon.OnMove();
+
 }
 bool Monster::MonsterCollision(int RockX, int RockY)
 {
@@ -109,6 +128,12 @@ bool Monster::MonsterCollision(int RockX, int RockY)
         return true;
     else
         return false;
+}
+int Monster::MonsterCannonCollision(int RockX, int RockY)
+{
+	if(isAlive)
+		return cannon.collision(RockX, RockY);
+	return false;
 }
 void Monster::OnShow()
 {
@@ -132,6 +157,10 @@ void Monster::OnShow()
         monsLeft.SetTopLeft(s_x, s_y - 1492);
         monsLeft.ShowBitmap();
     }
+	if (cannon.GetUsingState())
+		cannon.OnShow();
+	else
+		cannon.OnShowHit();
 }
 void Monster::OnShowBoom()
 {

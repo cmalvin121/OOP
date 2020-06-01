@@ -4,6 +4,7 @@
 #include <ddraw.h>
 #include "audio.h"
 #include "gamelib.h"
+#include "Trashcannon.h"
 #include "Monster.h"
 #include "Terrain.h"
 namespace game_framework
@@ -764,6 +765,7 @@ void Terrain::MoveScreen()
 
         X6_1[i].setScreenXY(mon_posX, mon_posY);
         X6_1[i].DeterminAttack(nowX, nowY);
+		X6_1[i].FixCannonScreenXY((nowX - lastX), (nowY - lastY));
     }
 
     if (nowX > 900)
@@ -870,10 +872,22 @@ int Terrain::crashdown()
 bool Terrain::MonsterCollision()
 {
     for (int i = 0; i < 8; i++)
+
         if (X6_1[i].MonsterCollision(nowX, nowY))
             return true;
 
     return false;
+}
+int Terrain::MosterCannonCollision()
+{
+	int tmp;
+	for (int i = 0; i < 8; i++)
+	{
+		tmp = X6_1[i].MonsterCannonCollision(nowX, nowY);
+		if (tmp != 0)
+			return tmp;
+	}
+	return 0;
 }
 void Terrain::setMonsterLife(int index, int damage)
 {

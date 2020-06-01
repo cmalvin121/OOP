@@ -17,6 +17,7 @@ class Terrain     //地形(箱子、方塊)
         int crashtop();
         int crashdown();
         bool MonsterCollision();
+		int MosterCannonCollision();
         //////////////////////// Monster
         Monster getMonster(int index);
         int getMonsterX();

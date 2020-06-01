@@ -38,6 +38,7 @@
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
 //
+#include "Trashcannon.h"
 #include "Monster.h"
 #include "Terrain.h"
 #include "RockCannon.h"
@@ -113,8 +114,6 @@ class CGameStateRun : public CGameState {
         void OnMove();									// 移動遊戲元素
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
-        CMovingBitmap	help;		// 說明圖
-        CMovingBitmap	corner;		// 角落圖
         Rockman x87_1;				// 洛克人
         Terrain fireDragonMap;		// 地圖:火龍
         CInteger  life;				// 生命值

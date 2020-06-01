@@ -181,7 +181,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
     {
         if (lastMovingState == 0)
         {
-            if ((x1 + 222 >= x) && (x1 <= x + 254) && (y1 <= y + 255) && (y1 + 180 >= y))
+            if ((x1 + 222 >= x) && (x1 <= x + 254) && (y1 <= y + 225) && (y1 + 180 >= y))
 			{
 				isHitSomething = 8;
 				TRACE("isHitSomething:%d\n", isHitSomething);
@@ -191,7 +191,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
         }
         else if (lastMovingState == 1)
         {
-            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 255) && (y1 + 180 >= y))
+            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 225) && (y1 + 180 >= y))
 			{
 				isHitSomething = 8;
 				TRACE("isHitSomething:%d\n", isHitSomething);
@@ -204,7 +204,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
     {
         if (lastMovingState == 0)
         {
-            if ((x1 + 40 >= x) && (x1 <= x + 254) && (y1 <= y + 255) && (y1 + 27 >= y))
+            if ((x1 + 40 >= x) && (x1 <= x + 254) && (y1 <= y + 225) && (y1 + 27 >= y))
 			{
 				isHitSomething = 2;
 				TRACE("isHitSomething:%d\n", isHitSomething);
@@ -214,7 +214,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
         }
         else if (lastMovingState == 1)
         {
-            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 255) && (y1 + 27 >= y))
+            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 225) && (y1 + 27 >= y))
 			{
 				isHitSomething = 2;
 				TRACE("isHitSomething:%d\n", isHitSomething);
@@ -227,7 +227,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
     {
         if (lastMovingState == 0)
         {
-            if ((x1 + 19 >= x) && (x1 <= x + 254) && (y1 <= y + 255) && (y1 + 12 >= y))
+            if ((x1 + 19 >= x) && (x1 <= x + 254) && (y1 <= y + 225) && (y1 + 12 >= y))
 			{
 				isHitSomething = 1;
 				TRACE("isHitSomething:%d\n", isHitSomething);
@@ -237,7 +237,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
         }
         else if (lastMovingState == 1)
         {
-            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 255) && (y1 + 12 >= y))
+            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 225) && (y1 + 12 >= y))
 			{
 				isHitSomething = 1;
 				TRACE("isHitSomething:%d\n", isHitSomething);
