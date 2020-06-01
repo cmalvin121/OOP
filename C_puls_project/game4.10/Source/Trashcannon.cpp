@@ -182,12 +182,11 @@ namespace game_framework
 	{
 		trashCannonHit.SetTopLeft(hitX, hitY);
 		HitAnimationLock();
-		if (usingState == false && !trashCannonHit.IsFinalBitmap())
+		if (usingState == false && !trashCannonHit.IsFinalBitmap())//
 		{
 			if ((isHitSomething > 0 && isHitSomething < 8) || distance >= 800)
 			{
 				trashCannonHit.OnShow();
-				TRACE("in\n");
 			}
 		}
 	}
