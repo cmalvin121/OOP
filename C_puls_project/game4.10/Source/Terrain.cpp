@@ -766,6 +766,25 @@ void Terrain::MoveScreen()
         X6_1[i].setScreenXY(mon_posX, mon_posY);
         X6_1[i].DeterminAttack(nowX, nowY);
 		X6_1[i].FixCannonScreenXY((nowX - lastX), (nowY - lastY));
+		if (nowX <= 900)
+		{
+			if (i == 0)
+				X6_1[0].setScreenXY(1920, mon_posY);
+			if (i == 1)
+				X6_1[1].setScreenXY(5360, mon_posY);
+			if (i == 2)
+				X6_1[2].setScreenXY(7520, mon_posY);
+			if (i == 3)
+				X6_1[3].setScreenXY(10560, mon_posY);
+			if (i == 4)
+				X6_1[4].setScreenXY(14640, mon_posY);
+			if (i == 5)
+				X6_1[5].setScreenXY(18240, mon_posY);
+			if (i == 6)
+				X6_1[6].setScreenXY(23120, mon_posY);
+			if (i == 7)
+				X6_1[7].setScreenXY(23360, mon_posY);
+		}
     }
 
     if (nowX > 900)
@@ -773,7 +792,11 @@ void Terrain::MoveScreen()
         wallX -= (nowX - lastX);
         picX -= (nowX - lastX);
     }
-
+	else
+	{
+		wallX = 0;
+		picX = 0;
+	}
     if (nowY < 2700)
     {
         wallY -= (nowY - lastY);
