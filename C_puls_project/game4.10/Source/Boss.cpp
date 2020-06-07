@@ -4,6 +4,7 @@
 #include <ddraw.h>
 #include "audio.h"
 #include "gamelib.h"
+#include "BossCannon.h"
 #include "Boss.h"
 
 namespace game_framework
@@ -46,6 +47,12 @@ void Boss::setXY(int nx, int ny)
     y = ny;
 }
 
+void Boss::setScreen_XY(int nx, int ny)
+{
+    screen_x = nx;
+    screen_y = ny;
+}
+
 void Boss::deductLife(int damage)
 {
     life -= damage;
@@ -55,11 +62,18 @@ void Boss::OnMove()
 {
     if (life % 20 == 0)
     {
-        lacerate.SetTopLeft(x - 20, y - 20);
-        lacerate.OnMove();
+        cannon.setCannon(1);
+        cannon.SetX(x - 20);
+        cannon.SetY(y - 20);
+        cannon.OnMove();
+        cannon.setCannon(2);
+        cannon.SetX(x - 20);
+        cannon.SetY(y - 20);
+        cannon.OnMove();
+        cannon.setCannon(3);
+        cannon.SetX(x - 20);
+        cannon.SetY(y - 20);
+        cannon.OnMove();
     }
-
-    cannon.SetTopLeft(x - 20, y - 20);
-    cannon.OnMove();
 }
 }

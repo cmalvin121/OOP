@@ -15,11 +15,9 @@ class Boss
         void OnMove();
     private:
         CMovingBitmap boss;
-        CAnimation lacerate;
-        CAnimation cannon;
+        BossCannon cannon;
         int x, y;
         int screen_x, screen_y;
         int life;
-
 };
 }
