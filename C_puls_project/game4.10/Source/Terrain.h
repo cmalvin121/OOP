@@ -20,10 +20,8 @@ class Terrain     //地形(箱子、方塊)
 		int MosterCannonCollision();
         //////////////////////// Monster
         Monster getMonster(int index);
-        int getMonsterX();
-        int getMonsterY();
-        bool getMonsterAliveState();
-        void setMonsterLife(int index, int damage);
+		Nightmare getNightmare(int index);
+		void setMonsterLife(int index, int damage, int monsterNum);
         ////////////////////////////////
     protected:
         CMovingBitmap	background;	// 背景圖
@@ -33,6 +31,7 @@ class Terrain     //地形(箱子、方塊)
         CMovingBitmap	block;		// 障礙物
         CMovingBitmap	deadBlock;	// 尖刺、無底洞
         Monster X6_1[8];
+		Nightmare X6_2[6];
         int picX, picY;
         int wallX, wallY;
         int lastX, lastY;

@@ -293,17 +293,12 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             monster[j] = fireDragonMap.getMonster(j);
             monster_x = monster[j].getX();
             monster_y = monster[j].getY();
-
             if (_cannon[i].GetUsingState())
             {
-                damage = _cannon[i].collision(monster_x, monster_y, monster[j].getAlive());
-
-                //TRACE("\n\n------ Damge = %d ------\n\n", damage);
+                damage = _cannon[i].collision(monster_x, monster_y, monster[j].getAlive(),1);
                 if (monster[j].getAlive() == false)
                     damage = 0;
-
-                fireDragonMap.setMonsterLife(j, damage);
-
+                fireDragonMap.setMonsterLife(j, damage,1);
                 if (damage > 0)
                 {
                     _cannon[i].SetUsingState(0);
@@ -311,26 +306,24 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                 }
             }
         }
-
-        //monster_x = fireDragonMap.getMonsterX();
-        //monster_y = fireDragonMap.getMonsterY();
-        //TRACE("\n\n------ MONSTER: %d  %d ------\n\n", monster_x, monster_y);
-        /*if (_cannon[i].GetUsingState())
-        {
-            damage = _cannon[i].collision(monster_x, monster_y, fireDragonMap.getMonsterAliveState());
-
-            //TRACE("\n\n------ Damge = %d ------\n\n", damage);
-            if (fireDragonMap.getMonsterAliveState() == false)
-                damage = 0;
-
-            fireDragonMap.setMonsterLife(damage);
-
-            if (damage > 0)
-            {
-                _cannon[i].SetUsingState(0);
-                break;
-            }
-        }*/
+		for (int j = 0; j < 6; j++)
+		{
+			nightmare[j] = fireDragonMap.getNightmare(j);
+			monster_x = nightmare[j].getX();
+			monster_y = nightmare[j].getY();
+			if (_cannon[i].GetUsingState())
+			{
+				damage = _cannon[i].collision(monster_x, monster_y, nightmare[j].getAlive(), 2);
+				if (nightmare[j].getAlive() == false)
+					damage = 0;
+				fireDragonMap.setMonsterLife(j, damage,2);
+				if (damage > 0)
+				{
+					_cannon[i].SetUsingState(0);
+					break;
+				}
+			}
+		}
         _cannon[i].OnMove();
     }
 

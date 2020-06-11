@@ -40,6 +40,8 @@
 //
 #include "Trashcannon.h"
 #include "Monster.h"
+#include "nightmareCannon.h"
+#include "nightmare.h"
 #include "Terrain.h"
 #include "RockCannon.h"
 #include "Rockman.h"
@@ -119,6 +121,7 @@ class CGameStateRun : public CGameState {
         CInteger  life;				// 生命值
         RockCannon* _cannon;		//子彈的陣列
         Monster monster[8];			//怪物
+		Nightmare nightmare[6];		//夢魘
         //const int monster_num, terrain_num;
         //int map[6][5];
 };

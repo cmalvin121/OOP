@@ -6,6 +6,8 @@
 #include "gamelib.h"
 #include "Trashcannon.h"
 #include "Monster.h"
+#include "nightmareCannon.h"
+#include "nightmare.h"
 #include "Terrain.h"
 namespace game_framework
 {
@@ -22,6 +24,8 @@ void Terrain::LoadBitMap()
 
     for (int i = 0; i < 8; i++)
         X6_1[i].LoadBitMap();
+	for (int i = 0; i < 6; i++)
+		X6_2[i].LoadBitMap();
 }
 void Terrain::OnShow()
 {
@@ -52,6 +56,11 @@ void Terrain::OnShow()
             X6_1[i].OnShow();
         else
             X6_1[i].OnShowBoom();
+	for (int i = 0; i < 6; i++)
+		if (X6_2[i].getAlive())
+			X6_2[i].OnShow();
+		else
+			X6_2[i].OnShowBoom();
 }
 void Terrain::Initialize()
 {
@@ -84,7 +93,20 @@ void Terrain::Initialize()
     X6_1[7].setXY(23360, 1600);
     X6_1[7].setScreenXY(23360, 1600);
     ////////////////////////////////
-
+	srand((unsigned)time(NULL));
+	X6_2[0].Initialize();
+	X6_2[0].setXY(3440, 1440);
+	X6_2[1].Initialize();
+	X6_2[1].setXY(7040, 1600);
+	X6_2[2].Initialize();
+	X6_2[2].setXY(9360, 320);
+	X6_2[3].Initialize();
+	X6_2[3].setXY(13600, 1440);
+	X6_2[4].Initialize();
+	X6_2[4].setXY(17440, 1520);
+	X6_2[5].Initialize();
+	X6_2[5].setXY(21200, 1600);
+	////////////////////////////////
     for (int i = 0; i < 31; i++)
     {
         for (int j = 0; j < 315; j++)
@@ -730,6 +752,10 @@ Monster Terrain::getMonster(int index)
 {
     return X6_1[index];
 }
+Nightmare Terrain::getNightmare(int index)
+{
+	return X6_2[index];
+}
 void Terrain::GetLastRockmanXY(int x, int y)
 {
     lastX = x;
@@ -751,7 +777,6 @@ int Terrain::GetLastY()
 void Terrain::MoveScreen()
 {
     int mon_posX, mon_posY;
-
     for (int i = 0; i < 8; i++)
     {
         mon_posX = X6_1[i].getScreenX();
@@ -786,7 +811,6 @@ void Terrain::MoveScreen()
 				X6_1[7].setScreenXY(23360, mon_posY);
 		}
     }
-
     if (nowX > 900)
     {
         wallX -= (nowX - lastX);
@@ -802,6 +826,12 @@ void Terrain::MoveScreen()
         wallY -= (nowY - lastY);
         picY -= (nowY - lastY);
     }
+	for (int i = 0; i < 6; i++)
+	{
+		X6_2[i].setScreenXY(picX, picY);
+		X6_2[i].DeterminAttack(nowX, nowY);
+		X6_2[i].FixCannonScreenXY((nowX - lastX), (nowY - lastY));
+	}
 
     background.SetTopLeft(picX, picY - 1492);
     background2.SetTopLeft(picX + background.Width(), picY - 1492);
@@ -895,10 +925,11 @@ int Terrain::crashdown()
 bool Terrain::MonsterCollision()
 {
     for (int i = 0; i < 8; i++)
-
         if (X6_1[i].MonsterCollision(nowX, nowY))
             return true;
-
+	for (int i = 0; i < 6; i++)
+		if (X6_2[i].MonsterCollision(nowX, nowY))
+			return true;
     return false;
 }
 int Terrain::MosterCannonCollision()
@@ -910,22 +941,19 @@ int Terrain::MosterCannonCollision()
 		if (tmp != 0)
 			return tmp;
 	}
+	for (int i = 0; i < 6; i++)
+	{
+		tmp = X6_2[i].MonsterCannonCollision(nowX, nowY);
+		if (tmp != 0)
+			return tmp;
+	}
 	return 0;
 }
-void Terrain::setMonsterLife(int index, int damage)
+void Terrain::setMonsterLife(int index, int damage,int monsterNum)
 {
-    X6_1[index].deductLife(damage);
-}
-int Terrain::getMonsterX()
-{
-    return X6_1[0].getX();
-}
-int Terrain::getMonsterY()
-{
-    return X6_1[0].getY();
-}
-bool Terrain::getMonsterAliveState()
-{
-    return X6_1[0].getAlive();
+	if (monsterNum == 1)
+		X6_1[index].deductLife(damage);
+	else if (monsterNum == 2)
+		X6_2[index].deductLife(damage);
 }
 }

@@ -167,11 +167,19 @@ void RockCannon::HitAnimationLock()
 		superChargeCannonHitLeft.setToSpecifyBitmap(3);
 	}
 }
-int RockCannon::collision(int x, int y,bool MonsterisAlive)
+int RockCannon::collision(int x, int y,bool MonsterisAlive,int monsterNum)
 {
-	//TRACE("MonsterisAlive:%d\n", MonsterisAlive);
-    //TRACE("\n\n-------------%d   %d   %d   %d------------\n\n", x1, y1, x, y);
-    //TRACE("\n\n----------- NowCharge = %d  Moving = %d------------\n\n", nowCharge, lastMovingState);
+	int monsWidth, monsHeight;
+	if (monsterNum == 1)//©U§£©ÇÅé«¬
+	{
+		monsWidth = 254;
+		monsHeight = 225;
+	}
+	else if(monsterNum == 2)//¹ÚÆL(³¹³½©Ç)Åé«¬
+	{
+		monsWidth = 196;
+		monsHeight = 90;
+	}
 	if (!MonsterisAlive)
 	{
 		isHitSomething = 0;
@@ -181,7 +189,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
     {
         if (lastMovingState == 0)
         {
-            if ((x1 + 222 >= x) && (x1 <= x + 254) && (y1 <= y + 225) && (y1 + 180 >= y))
+            if ((x1 + 222 >= x) && (x1 <= x + monsWidth) && (y1 <= y + monsHeight) && (y1 + 180 >= y))
 			{
 				isHitSomething = 8;
 				TRACE("isHitSomething:%d\n", isHitSomething);
@@ -191,7 +199,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
         }
         else if (lastMovingState == 1)
         {
-            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 225) && (y1 + 180 >= y))
+            if ((x1 <= x + monsWidth) && (x1 >= x) && (y1 <= y + monsHeight) && (y1 + 180 >= y))
 			{
 				isHitSomething = 8;
 				TRACE("isHitSomething:%d\n", isHitSomething);
@@ -204,7 +212,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
     {
         if (lastMovingState == 0)
         {
-            if ((x1 + 40 >= x) && (x1 <= x + 254) && (y1 <= y + 225) && (y1 + 27 >= y))
+            if ((x1 + 40 >= x) && (x1 <= x + monsWidth) && (y1 <= y + monsHeight) && (y1 + 27 >= y))
 			{
 				isHitSomething = 2;
 				TRACE("isHitSomething:%d\n", isHitSomething);
@@ -214,7 +222,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
         }
         else if (lastMovingState == 1)
         {
-            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 225) && (y1 + 27 >= y))
+            if ((x1 <= x + monsWidth) && (x1 >= x) && (y1 <= y + monsHeight) && (y1 + 27 >= y))
 			{
 				isHitSomething = 2;
 				TRACE("isHitSomething:%d\n", isHitSomething);
@@ -227,7 +235,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
     {
         if (lastMovingState == 0)
         {
-            if ((x1 + 19 >= x) && (x1 <= x + 254) && (y1 <= y + 225) && (y1 + 12 >= y))
+            if ((x1 + 19 >= x) && (x1 <= x + monsWidth) && (y1 <= y + monsHeight) && (y1 + 12 >= y))
 			{
 				isHitSomething = 1;
 				TRACE("isHitSomething:%d\n", isHitSomething);
@@ -237,7 +245,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive)
         }
         else if (lastMovingState == 1)
         {
-            if ((x1 <= x + 254) && (x1 >= x) && (y1 <= y + 225) && (y1 + 12 >= y))
+            if ((x1 <= x + monsWidth) && (x1 >= x) && (y1 <= y + monsHeight) && (y1 + 12 >= y))
 			{
 				isHitSomething = 1;
 				TRACE("isHitSomething:%d\n", isHitSomething);
