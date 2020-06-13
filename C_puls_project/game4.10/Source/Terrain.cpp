@@ -8,6 +8,7 @@
 #include "Monster.h"
 #include "nightmareCannon.h"
 #include "nightmare.h"
+#include "Bat.h"
 #include "Terrain.h"
 namespace game_framework
 {
@@ -26,6 +27,8 @@ void Terrain::LoadBitMap()
         X6_1[i].LoadBitMap();
 	for (int i = 0; i < 6; i++)
 		X6_2[i].LoadBitMap();
+	for (int i = 0; i < 6; i++)
+		X4_1[i].LoadBitMap();
 }
 void Terrain::OnShow()
 {
@@ -61,6 +64,11 @@ void Terrain::OnShow()
 			X6_2[i].OnShow();
 		else
 			X6_2[i].OnShowBoom();
+	for (int i = 0; i < 6; i++)
+		if (X4_1[i].getAlive())
+			X4_1[i].OnShow();
+		else
+			X4_1[i].OnShowBoom();
 }
 void Terrain::Initialize()
 {
@@ -106,6 +114,19 @@ void Terrain::Initialize()
 	X6_2[4].setXY(17440, 1520);
 	X6_2[5].Initialize();
 	X6_2[5].setXY(21200, 1600);
+	////////////////////////////////
+	X4_1[0].Initialize();
+	X4_1[0].setXY(3440, 1440);
+	X4_1[1].Initialize();
+	X4_1[1].setXY(7040, 1600);
+	X4_1[2].Initialize();
+	X4_1[2].setXY(9360, 320);
+	X4_1[3].Initialize();
+	X4_1[3].setXY(13600, 1440);
+	X4_1[4].Initialize();
+	X4_1[4].setXY(17440, 1520);
+	X4_1[5].Initialize();
+	X4_1[5].setXY(21200, 1600);
 	////////////////////////////////
     for (int i = 0; i < 31; i++)
     {
@@ -756,6 +777,10 @@ Nightmare Terrain::getNightmare(int index)
 {
 	return X6_2[index];
 }
+Bat Terrain::getBat(int index)
+{
+	return X4_1[index];
+}
 void Terrain::GetLastRockmanXY(int x, int y)
 {
     lastX = x;
@@ -831,8 +856,9 @@ void Terrain::MoveScreen()
 		X6_2[i].setScreenXY(picX, picY);
 		X6_2[i].DeterminAttack(nowX, nowY);
 		X6_2[i].FixCannonScreenXY((nowX - lastX), (nowY - lastY));
+		X4_1[i].setScreenXY(picX, picY);
+		X4_1[i].DeterminAttack(nowX, nowY);
 	}
-
     background.SetTopLeft(picX, picY - 1492);
     background2.SetTopLeft(picX + background.Width(), picY - 1492);
     background3.SetTopLeft(picX + background.Width() + background2.Width(), picY - 1492);
@@ -930,6 +956,9 @@ bool Terrain::MonsterCollision()
 	for (int i = 0; i < 6; i++)
 		if (X6_2[i].MonsterCollision(nowX, nowY))
 			return true;
+	for (int i = 0; i < 6; i++)
+		if (X4_1[i].MonsterCollision(nowX, nowY))
+			return true;
     return false;
 }
 int Terrain::MosterCannonCollision()
@@ -955,5 +984,7 @@ void Terrain::setMonsterLife(int index, int damage,int monsterNum)
 		X6_1[index].deductLife(damage);
 	else if (monsterNum == 2)
 		X6_2[index].deductLife(damage);
+	else if (monsterNum == 3)
+		X4_1[index].deductLife(damage);
 }
 }

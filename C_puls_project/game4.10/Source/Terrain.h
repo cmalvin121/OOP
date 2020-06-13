@@ -21,6 +21,7 @@ class Terrain     //地形(箱子、方塊)
         //////////////////////// Monster
         Monster getMonster(int index);
 		Nightmare getNightmare(int index);
+		Bat getBat(int index);
 		void setMonsterLife(int index, int damage, int monsterNum);
         ////////////////////////////////
     protected:
@@ -32,6 +33,7 @@ class Terrain     //地形(箱子、方塊)
         CMovingBitmap	deadBlock;	// 尖刺、無底洞
         Monster X6_1[8];
 		Nightmare X6_2[6];
+		Bat X4_1[6];
         int picX, picY;
         int wallX, wallY;
         int lastX, lastY;

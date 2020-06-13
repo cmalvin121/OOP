@@ -42,6 +42,7 @@
 #include "Monster.h"
 #include "nightmareCannon.h"
 #include "nightmare.h"
+#include "Bat.h"
 #include "Terrain.h"
 #include "RockCannon.h"
 #include "Rockman.h"
@@ -122,6 +123,7 @@ class CGameStateRun : public CGameState {
         RockCannon* _cannon;		//¤l¼uªº°}¦C
         Monster monster[8];			//©Çª«
 		Nightmare nightmare[6];		//¹ÚÆL
+		Bat bat[6];					//½¿½»
         //const int monster_num, terrain_num;
         //int map[6][5];
 };

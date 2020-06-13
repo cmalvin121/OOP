@@ -324,6 +324,24 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
 				}
 			}
 		}
+		for (int j = 0; j < 6; j++)
+		{
+			bat[j] = fireDragonMap.getBat(j);
+			monster_x = bat[j].getX();
+			monster_y = bat[j].getY();
+			if (_cannon[i].GetUsingState())
+			{
+				damage = _cannon[i].collision(monster_x, monster_y, bat[j].getAlive(), 3);
+				if (bat[j].getAlive() == false)
+					damage = 0;
+				fireDragonMap.setMonsterLife(j, damage, 3);
+				if (damage > 0)
+				{
+					_cannon[i].SetUsingState(0);
+					break;
+				}
+			}
+		}
         _cannon[i].OnMove();
     }
 
