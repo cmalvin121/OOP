@@ -58,7 +58,16 @@ namespace game_framework {
 enum AUDIO_ID {				// 定義各種音效的編號
     AUDIO_DING,				// 0
     AUDIO_LAKE,				// 1
-    AUDIO_NTUT				// 2
+    AUDIO_NTUT,				// 2
+	AUDIO_JUMP,				// 3
+	AUDIO_SPRINT,			// 4
+	AUDIO_INJURE,			// 5
+	AUDIO_CANNON1,			// 6
+	AUDIO_CANNON2,			// 7
+	AUDIO_CANNON3,			// 8
+	AUDIO_CANNON3_2,		// 9
+	AUDIO_CHARGE,			// 10
+	AUDIO_CHARGE_LOOP,		// 11
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -116,6 +125,7 @@ class CGameStateRun : public CGameState {
     protected:
         void OnMove();									// 移動遊戲元素
         void OnShow();									// 顯示這個狀態的遊戲畫面
+		void PlayRockmanSound();
     private:
         Rockman x87_1;				// 洛克人
         Terrain fireDragonMap;		// 地圖:火龍
@@ -124,6 +134,7 @@ class CGameStateRun : public CGameState {
         Monster monster[8];			//怪物
 		Nightmare nightmare[6];		//夢魘
 		Bat bat[6];					//蝙蝠
+		bool isplay[2] = { false };
         //const int monster_num, terrain_num;
         //int map[6][5];
 };

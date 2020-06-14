@@ -18,7 +18,10 @@ class Rockman
         void SetKeyAttackingState(bool);//設定攻擊按鍵是否按住
         int GetJumpDegree();			//取得跳躍高度
         int GetSprintDegree();			//取得衝刺長度
+		int GetDetermineCharge();		//取得判斷聚氣
         int GetCharge();				//取得聚氣程度
+		int GetChargeAttack();			//取得衝能攻擊
+		bool GetIsAttacking();			//取得是否正在攻擊
         int GetX();						//return x;
         int GetY();						//return y;
         void SetX(int);					//設定X
@@ -26,12 +29,13 @@ class Rockman
         void JumpDropping();			//跳躍後落下
         void Dropping();				//是否正在降落
         bool GetDropping();				//回傳落下狀態
+		bool GetJumping();				//回傳跳躍狀態
         void isAlreadyOnGround();		//是否正在地面
         void SetCrashState(int);		//設定碰撞狀態
         void SetCrashStateWall(int);    //設定碰撞牆壁狀態
-        bool getInjuredState();			//回傳受傷狀態
-        void SetInjuredState(bool, int);	//設定受傷狀態
-        void AddLife(int);				//增加、減少生命值
+		int getInjuredDelay();			//回傳受傷狀態
+        void SetInjuredState(bool, int);//設定受傷狀態
+        void SetLife(int);				//設定生命值(作弊)
         void setkickWall();				//判斷是否正在踢牆
         void KickWall();				//踢牆
         void setCannon(int x, int y, int lastMovingState);			//設置子彈

@@ -229,7 +229,7 @@ void Rockman::OnMove()
         if (determineCharge > 5)
             charge = determineCharge;
     }
-	if (isInjured&&injureDelay==30)
+	if (isInjured&&injureDelay == 30)
 	{
 		injureDelay = 0;
 		isInjured = false;
@@ -263,9 +263,21 @@ int Rockman::GetSprintDegree()
 {
     return sprintDegree;
 }
+int Rockman::GetDetermineCharge()
+{
+	return determineCharge;
+}
 int Rockman::GetCharge()
 {
     return charge;
+}
+int Rockman::GetChargeAttack()
+{
+	return chargeAttack;
+}
+bool Rockman::GetIsAttacking()
+{
+	return isAttacking;
 }
 void Rockman::SetJumping(bool flag)
 {
@@ -274,6 +286,10 @@ void Rockman::SetJumping(bool flag)
     animation_jumpRightAttack.Reset();
     animation_jumpLeftAttack.Reset();
     isJumping = flag;
+}
+bool Rockman::GetJumping()
+{
+	return isJumping;
 }
 //------------------------------------------
 void Rockman::SetCrashState(int state)
@@ -439,13 +455,13 @@ void Rockman::SetInjuredState(bool state,int injureValue)
 	if (injureDelay == 30 && state == true)
 		life -= injureValue;
 }
-bool Rockman::getInjuredState()
+int Rockman::getInjuredDelay()
 {
-    return isInjured;
+    return injureDelay;
 }
-void Rockman::AddLife(int value)
+void Rockman::SetLife(int value)
 {
-	life += value;
+	life = value;
 }
 RockCannon* Rockman::getCannon()
 {

@@ -410,13 +410,49 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     fixCannonY -= x87_1.GetY();
     fixCannonX -= x87_1.GetX();
     x87_1.SetFixCannonScreen(fixCannonY, fixCannonX);
-
     if (life.GetInteger() <= 0)//血量歸0，GAME OVER
         GotoGameState(GAME_STATE_OVER);
-
     life.SetInteger(x87_1.Getlife());
+	PlayRockmanSound();
 }
+void CGameStateRun::PlayRockmanSound()
+{
+	if (x87_1.GetJumpDegree() == 1 && x87_1.GetJumping())
+		CAudio::Instance()->Play(AUDIO_JUMP, false);
+	if (x87_1.GetSprintDegree() == 1)
+		CAudio::Instance()->Play(AUDIO_SPRINT, false);
+	if (x87_1.getInjuredDelay() == 1)
+		CAudio::Instance()->Play(AUDIO_INJURE, false);
 
+	if (x87_1.GetChargeAttack() > 0)
+	{
+		CAudio::Instance()->Stop(AUDIO_CHARGE_LOOP);
+		CAudio::Instance()->Stop(AUDIO_CHARGE);
+	}
+	if (x87_1.GetCharge() == 6)
+		CAudio::Instance()->Play(AUDIO_CHARGE, false);
+	if (x87_1.GetCharge() == 60)
+		CAudio::Instance()->Play(AUDIO_CHARGE_LOOP, true);
+
+	if (x87_1.GetChargeAttack() == 0)
+	{
+		for (int i = 0; i < 2; i++)
+			isplay[i] = false;
+	}
+	if (x87_1.GetIsAttacking() && x87_1.GetDetermineCharge() == 1)
+		CAudio::Instance()->Play(AUDIO_CANNON1, false);
+	if (x87_1.GetChargeAttack() > 5 && x87_1.GetChargeAttack() < 60 && !isplay[0])
+	{
+		CAudio::Instance()->Play(AUDIO_CANNON2, false);
+		isplay[0] = true;
+	}
+	if (x87_1.GetChargeAttack() >= 60 && !isplay[1])
+	{
+		CAudio::Instance()->Play(AUDIO_CANNON3, false);
+		CAudio::Instance()->Play(AUDIO_CANNON3_2, false);
+		isplay[1] = true;
+	}
+}
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
     //
@@ -442,6 +478,15 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
     CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
     CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\Jakob.wav");	// 載入編號2的聲音ntut.mid
+	CAudio::Instance()->Load(AUDIO_JUMP, "sounds\\jump.wav");
+	CAudio::Instance()->Load(AUDIO_SPRINT, "sounds\\sprint.wav");
+	CAudio::Instance()->Load(AUDIO_INJURE, "sounds\\injure.wav");
+	CAudio::Instance()->Load(AUDIO_CANNON1, "sounds\\cannon1.wav");
+	CAudio::Instance()->Load(AUDIO_CANNON2, "sounds\\cannon2.wav");
+	CAudio::Instance()->Load(AUDIO_CANNON3, "sounds\\cannon3.wav");
+	CAudio::Instance()->Load(AUDIO_CANNON3_2, "sounds\\cannon3-2.wav");
+	CAudio::Instance()->Load(AUDIO_CHARGE, "sounds\\charge.wav");
+	CAudio::Instance()->Load(AUDIO_CHARGE_LOOP, "sounds\\charge-loop.wav");
     //
     // 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
     //
@@ -449,13 +494,14 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 //----------------------------------------------------------------------
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-    const char KEY_LEFT  = 0x25; // keyboard左箭頭
-    const char KEY_UP    = 0x26; // keyboard上箭頭
-    const char KEY_RIGHT = 0x27; // keyboard右箭頭
-    const char KEY_DOWN  = 0x28; // keyboard下箭頭
-    const char KEY_JUMP  = 0x5A; // keyboard按鍵Z
+    const char KEY_LEFT  = 0x25;  // keyboard左箭頭
+    const char KEY_UP    = 0x26;  // keyboard上箭頭
+    const char KEY_RIGHT = 0x27;  // keyboard右箭頭
+    const char KEY_DOWN  = 0x28;  // keyboard下箭頭
+    const char KEY_JUMP  = 0x5A;  // keyboard按鍵Z
     const char KEY_SPRINT = 0x20; // keyboard空白鍵
     const char KEY_ATTACK = 0x58; // keyboard按鍵X
+	const char KEY_CHEAT = 0x43;  // keyboard按鍵C
 
     if (nChar == KEY_LEFT)
         x87_1.SetMovingLeft(true);
@@ -479,6 +525,8 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
     if (nChar == KEY_ATTACK)
         x87_1.SetKeyAttackingState(true);
+	if (nChar == KEY_CHEAT)
+		x87_1.SetLife(64);
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
