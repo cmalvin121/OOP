@@ -100,7 +100,7 @@ void RockCannon::SetScreen()
 
         if (y1 <= 2700)
         {
-            if (nowCharge > 60)
+            if (nowCharge > 50)
                 screenY = 380;
             else
                 screenY = 380 + 84;
@@ -108,7 +108,7 @@ void RockCannon::SetScreen()
     }
     else if (lastMovingState == 1)
     {
-        if (nowCharge >= 60)
+        if (nowCharge > 50)
         {
             if (x1 >= 900)
                 screenX = 900 - 222;
@@ -190,7 +190,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive,int monsterNum)
 		isHitSomething = 0;
 		return 0;
 	}
-	if (nowCharge >= 60)
+	if (nowCharge > 50)
     {
         if (lastMovingState == 0)
         {
@@ -213,7 +213,7 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive,int monsterNum)
 			}
         }
     }
-    else if (nowCharge >= 5 && nowCharge < 60)
+    else if (nowCharge >= 5 && nowCharge <= 50)
     {
         if (lastMovingState == 0)
         {
@@ -284,7 +284,7 @@ void RockCannon::OnMove()
         chargeCannonLeft.OnMove();
         superChargeCannonLeft.OnMove();
 
-        if (nowCharge >= 60)
+        if (nowCharge > 50)
         {
             if (lastMovingState == 0)
             {
@@ -299,7 +299,7 @@ void RockCannon::OnMove()
                 distance += velocity_cannon * 2;
             }
         }
-        else if (nowCharge < 60)
+        else if (nowCharge <= 50)
         {
             if (lastMovingState == 0)
             {
@@ -345,18 +345,18 @@ void RockCannon::OnShow()
     superChargeCannonLeft.SetTopLeft(x1, y1);
     if (lastMovingState == 0 && usingState == true)
     {
-        if (nowCharge >= 60)
+        if (nowCharge > 50)
             superChargeCannon.OnShow();
-        else if ((nowCharge < 60) && (nowCharge > 5))
+        else if ((nowCharge <= 50) && (nowCharge > 5))
             chargeCannon.OnShow();
         else
             normalCannon.OnShow();
     }
     else if (lastMovingState == 1 && usingState == true)
     {
-        if (nowCharge > 60)
+        if (nowCharge > 50)
             superChargeCannonLeft.OnShow();
-        else if ((nowCharge < 60) && (nowCharge > 5))
+        else if ((nowCharge <= 50) && (nowCharge > 5))
             chargeCannonLeft.OnShow();
         else
             normalCannonLeft.OnShow();

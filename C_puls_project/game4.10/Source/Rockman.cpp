@@ -223,7 +223,7 @@ void Rockman::OnMove()
 
     if (keepkeydownAttacking)
     {
-        if (determineCharge <= 60)
+        if (determineCharge <= 50)
             determineCharge++;
 
         if (determineCharge > 5)
@@ -396,14 +396,14 @@ void Rockman::SetKeyAttackingState(bool flag)
         {
             if (lastMovingState == 0)
             {
-                if (chargeAttack > 60)
+                if (chargeAttack > 50)
                     setCannon(x + 170, y, 0);
                 else
                     setCannon(x + 170, y + 84, 0);
             }
             else if (lastMovingState == 1)
             {
-                if (chargeAttack > 60)
+                if (chargeAttack > 50)
                     setCannon(x - 222, y, 1);
                 else
                     setCannon(x, y + 84, 1);

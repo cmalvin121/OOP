@@ -431,7 +431,7 @@ void CGameStateRun::PlayRockmanSound()
 	}
 	if (x87_1.GetCharge() == 6)
 		CAudio::Instance()->Play(AUDIO_CHARGE, false);
-	if (x87_1.GetCharge() == 60)
+	if (x87_1.GetCharge() == 50)
 		CAudio::Instance()->Play(AUDIO_CHARGE_LOOP, true);
 
 	if (x87_1.GetChargeAttack() == 0)
@@ -441,12 +441,12 @@ void CGameStateRun::PlayRockmanSound()
 	}
 	if (x87_1.GetIsAttacking() && x87_1.GetDetermineCharge() == 1)
 		CAudio::Instance()->Play(AUDIO_CANNON1, false);
-	if (x87_1.GetChargeAttack() > 5 && x87_1.GetChargeAttack() < 60 && !isplay[0])
+	if (x87_1.GetChargeAttack() > 5 && x87_1.GetChargeAttack() <= 50 && !isplay[0])
 	{
 		CAudio::Instance()->Play(AUDIO_CANNON2, false);
 		isplay[0] = true;
 	}
-	if (x87_1.GetChargeAttack() >= 60 && !isplay[1])
+	if (x87_1.GetChargeAttack() > 50 && !isplay[1])
 	{
 		CAudio::Instance()->Play(AUDIO_CANNON3, false);
 		CAudio::Instance()->Play(AUDIO_CANNON3_2, false);
