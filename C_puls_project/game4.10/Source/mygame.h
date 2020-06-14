@@ -38,6 +38,8 @@
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
 //
+#include "BossCannon.h"
+#include "Boss.h"
 #include "Trashcannon.h"
 #include "Monster.h"
 #include "nightmareCannon.h"
@@ -84,24 +86,24 @@ class CGameStateInit : public CGameState {
     protected:
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
-		void GotoGuide();
+        void GotoGuide();
         CMovingBitmap logo;								// csie的logo
-		CMovingBitmap gameStartBackground;
-		CMovingBitmap option1;
-		CMovingBitmap option2;
-		CMovingBitmap option3;
-		CMovingBitmap option1Select;
-		CMovingBitmap option2Select;
-		CMovingBitmap option3Select;
-		CMovingBitmap controlGuide;
-		CMovingBitmap text1;
-		CMovingBitmap text2;
-		CMovingBitmap text3;
-		CMovingBitmap text4;
-		CMovingBitmap text5;
-		CMovingBitmap text6;
-		int option;
-		bool startGuide;
+        CMovingBitmap gameStartBackground;
+        CMovingBitmap option1;
+        CMovingBitmap option2;
+        CMovingBitmap option3;
+        CMovingBitmap option1Select;
+        CMovingBitmap option2Select;
+        CMovingBitmap option3Select;
+        CMovingBitmap controlGuide;
+        CMovingBitmap text1;
+        CMovingBitmap text2;
+        CMovingBitmap text3;
+        CMovingBitmap text4;
+        CMovingBitmap text5;
+        CMovingBitmap text6;
+        int option;
+        bool startGuide;
 };
 
 /////////////////////////////////////////////////////////////////////////////
