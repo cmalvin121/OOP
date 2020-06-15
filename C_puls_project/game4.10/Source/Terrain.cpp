@@ -830,6 +830,22 @@ int Terrain::GetLastY()
 void Terrain::MoveScreen()
 {
     int mon_posX, mon_posY;
+    //////////////////boss///////////////////////
+    mon_posX = boss.getScreenX();
+    mon_posY = boss.getScreenY();
+
+    if (nowX > 900)
+        mon_posX -= (nowX - lastX);
+
+    if (nowY < 2700)
+        mon_posY -= (nowY - lastY);
+
+    boss.setScreen_XY(mon_posX, mon_posY);
+    boss.DeterminAttack(nowX, nowY);
+    TRACE("\n----- %d   %d -----\n", boss.getScreenX(), boss.getScreenY());
+    //boss.FixCannonScreenXY((nowX - lastX), (nowY - lastY));
+    boss.setScreen_XY(23360, mon_posY);
+    ///////////////////////////////////////////////
 
     for (int i = 0; i < 8; i++)
     {

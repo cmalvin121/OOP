@@ -28,6 +28,8 @@ void Boss::LoadBitMap()
 
 void Boss::OnShow()
 {
+    boss.SetTopLeft(screen_x, screen_y - 1492);
+
     if (life > 0)
         boss.ShowBitmap();
 }
@@ -40,6 +42,16 @@ int Boss::getX()
 int Boss::getY()
 {
     return y;
+}
+
+int Boss::getScreenX()
+{
+    return screen_x;
+}
+
+int Boss::getScreenY()
+{
+    return screen_y;
 }
 
 bool Boss::getAlive()
@@ -97,5 +109,13 @@ void Boss::OnMove()
     {
         delayTime = 0;
     }
+}
+
+void Boss::DeterminAttack(int RockX, int RockY)
+{
+    if (x - RockX > 0)
+        AttackDirection = 0;
+    else if (RockX - x > 0)
+        AttackDirection = 1;
 }
 }
