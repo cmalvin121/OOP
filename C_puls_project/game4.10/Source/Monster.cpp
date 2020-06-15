@@ -82,6 +82,10 @@ bool Monster::getAlive()
 {
     return isAlive;
 }
+int Monster::getLife()
+{
+	return life;
+}
 void Monster::deductLife(int damage)
 {
     life -= damage;
@@ -103,7 +107,7 @@ void Monster::DeterminAttack(int RockX, int RockY)
     else if (RockX - x > 0)
         AttackDirection = 1;
 
-    if (AttackDelay == 50)
+	if (AttackDelay == 50 && isAlive)
 	{
 		AttackDelay = 0;
 		cannon.SetUsingState(true);

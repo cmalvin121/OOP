@@ -23,6 +23,7 @@ class Terrain     //地形(箱子、方塊)
         Nightmare getNightmare(int index);
         Bat getBat(int index);
         void setMonsterLife(int index, int damage, int monsterNum);
+		int getMonsterLife(int index, int monsterNum);
         ////////////////////////////////
     protected:
         CMovingBitmap	background;	// 背景圖

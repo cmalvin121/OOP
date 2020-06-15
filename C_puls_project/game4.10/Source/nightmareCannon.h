@@ -23,6 +23,7 @@ namespace game_framework
 		int x1, y1;								//腳色當前座標
 		int screenX, screenY;					//畫面的座標
 		int hitX, hitY;							//子彈擊中座標
+		bool boomsound;
 		CMovingBitmap nightmareCannon;			//圖片:夢魘炮
 		CAnimation nightmareCannonHit;			//圖片:夢魘炮擊中
 		void LoadNightmareCannonHitBitmap();	//載入動畫:夢魘炮擊中

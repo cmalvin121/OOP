@@ -23,12 +23,12 @@ void Boss::Initialize()
 
 void Boss::LoadBitMap()
 {
-    boss.LoadBitmap("RES\\bitmap3.bmp", RGB(255, 255, 255));
+    boss.LoadBitmap("RES\\boss\\bossleft.bmp", RGB(255, 255, 255));
 }
 
 void Boss::OnShow()
 {
-    boss.SetTopLeft(screen_x, screen_y - 1492);
+	boss.SetTopLeft(x + screen_x, y + screen_y - 1492);
 
     if (life > 0)
         boss.ShowBitmap();

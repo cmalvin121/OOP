@@ -76,31 +76,29 @@ void CGameStateInit::OnInit()
 	option1.LoadBitmap("RES\\gamestart\\option1.bmp", RGB(255, 255, 255));
 	option2.LoadBitmap("RES\\gamestart\\option2.bmp", RGB(255, 255, 255));
 	option3.LoadBitmap("RES\\gamestart\\option3.bmp", RGB(255, 255, 255));
+	option4.LoadBitmap("RES\\gamestart\\option4.bmp", RGB(255, 255, 255));
 	option1Select.LoadBitmap("RES\\gamestart\\option1select.bmp", RGB(255, 255, 255));
 	option2Select.LoadBitmap("RES\\gamestart\\option2select.bmp", RGB(255, 255, 255));
 	option3Select.LoadBitmap("RES\\gamestart\\option3select.bmp", RGB(255, 255, 255));
-	option1.SetTopLeft(660, 450);
-	option2.SetTopLeft(660, 600);
-	option3.SetTopLeft(660, 750);
-	option1Select.SetTopLeft(660, 450);
-	option2Select.SetTopLeft(660, 600);
-	option3Select.SetTopLeft(660, 750);
+	option4Select.LoadBitmap("RES\\gamestart\\option4select.bmp", RGB(255, 255, 255));
+	option1.SetTopLeft(771, 450);
+	option2.SetTopLeft(771, 570);
+	option3.SetTopLeft(771, 690);
+	option4.SetTopLeft(771, 810);
+	option1Select.SetTopLeft(771, 450);
+	option2Select.SetTopLeft(771, 570);
+	option3Select.SetTopLeft(771, 690);
+	option4Select.SetTopLeft(771, 810);
+	about.LoadBitmap("RES\\gamestart\\about.bmp");
+	about.SetTopLeft(0, 0);
 	controlGuide.LoadBitmap("RES\\gamestart\\background.bmp");
 	controlGuide.SetTopLeft(0, 0);
-	text1.LoadBitmap("RES\\gamestart\\right.bmp", RGB(255, 255, 255));
-	text2.LoadBitmap("RES\\gamestart\\left.bmp", RGB(255, 255, 255));
-	text3.LoadBitmap("RES\\gamestart\\jump.bmp", RGB(255, 255, 255));
-	text4.LoadBitmap("RES\\gamestart\\attack.bmp", RGB(255, 255, 255));
-	text5.LoadBitmap("RES\\gamestart\\sprint.bmp", RGB(255, 255, 255));
-	text6.LoadBitmap("RES\\gamestart\\wall.bmp", RGB(255, 255, 255));
-	text1.SetTopLeft(573, 62);
-	text2.SetTopLeft(573, 212);
-	text3.SetTopLeft(573, 362);
-	text4.SetTopLeft(573, 512);
-	text5.SetTopLeft(689, 662);
-	text6.SetTopLeft(750, 814);
 	option = 1;
+	CAudio::Instance()->Load(AUDIO_OPTIONMOVE, "sounds\\optionmove.wav");	// 載入編號0的聲音ding.wav
+	CAudio::Instance()->Load(AUDIO_ENTER, "sounds\\enter.wav");	// 載入編號0的聲音ding.wav
+	CAudio::Instance()->Load(AUDIO_START, "sounds\\gamestart.mp3");
 	startGuide = false;
+	isplaysound = true;
     //
     // 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
     //     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
@@ -126,39 +124,47 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	const char KEY_UP = 0x26; // keyboard上箭頭
 	const char KEY_DOWN = 0x28; // keyboard下箭頭
 	const char KEY_ENTER = 0x0D;
+	if (isplaysound)
+	{
+		CAudio::Instance()->Play(AUDIO_START, true);
+		isplaysound = false;
+	}
 	if (nChar == KEY_UP)
 	{
 		option--;
 		if (option <= 0)
-			option = 3;
+			option = 4;
+		CAudio::Instance()->Play(AUDIO_OPTIONMOVE, false);
 	}
 	if (nChar == KEY_DOWN)
 	{
 		option++;
-		if (option > 3)
+		if (option > 4)
 			option = 1;
+		CAudio::Instance()->Play(AUDIO_OPTIONMOVE, false);
 	}
 	if (startGuide == true)
 		option = 2;
+	if (startabout == true)
+		option = 3;
+	if(nChar == KEY_ENTER)
+		CAudio::Instance()->Play(AUDIO_ENTER, false);
 	if (nChar == KEY_ENTER && startGuide == true)
 		startGuide = false;
+	else if (nChar == KEY_ENTER && startabout == true)
+		startabout = false;
 	else if (nChar == KEY_ENTER && option == 1)
+	{
+		isplaysound = true;
 		GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
+	}
 	else if (nChar == KEY_ENTER && option == 2)
 		startGuide = true;
 	else if (nChar == KEY_ENTER && option == 3)			// Demo 關閉遊戲的方法
-        PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+		startabout = true;	// 關閉遊戲
+	else if (nChar == KEY_ENTER && option == 4)			// Demo 關閉遊戲的方法
+		PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
 
-}
-void CGameStateInit::GotoGuide()
-{
-	controlGuide.ShowBitmap();
-	text1.ShowBitmap();
-	text2.ShowBitmap();
-	text3.ShowBitmap();
-	text4.ShowBitmap();
-	text5.ShowBitmap();
-	text6.ShowBitmap();
 }
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
@@ -174,24 +180,36 @@ void CGameStateInit::OnShow()
     //
 	gameStartBackground.ShowBitmap();
 	if (startGuide == true)
-		GotoGuide();
+		controlGuide.ShowBitmap();
+	else if (startabout == true)
+		about.ShowBitmap();
 	else if (option == 1)
 	{
 		option1Select.ShowBitmap();
 		option2.ShowBitmap();
 		option3.ShowBitmap();
+		option4.ShowBitmap();
 	}
 	else if (option == 2)
 	{
 		option1.ShowBitmap();
 		option2Select.ShowBitmap();
 		option3.ShowBitmap();
+		option4.ShowBitmap();
 	}
 	else if (option == 3)
 	{
 		option1.ShowBitmap();
 		option2.ShowBitmap();
 		option3Select.ShowBitmap();
+		option4.ShowBitmap();
+	}
+	else if (option == 4)
+	{
+		option1.ShowBitmap();
+		option2.ShowBitmap();
+		option3.ShowBitmap();
+		option4Select.ShowBitmap();
 	}
 }
 
@@ -207,7 +225,9 @@ CGameStateOver::CGameStateOver(CGame* g)
 void CGameStateOver::OnMove()
 {
     counter--;
-
+	CAudio::Instance()->Stop(AUDIO_NTUT);
+	CAudio::Instance()->Stop(AUDIO_CHARGE_LOOP);
+	CAudio::Instance()->Stop(AUDIO_CHARGE);
     if (counter < 0)
         GotoGameState(GAME_STATE_INIT);
 }
@@ -271,9 +291,9 @@ void CGameStateRun::OnBeginState()
     fireDragonMap.Initialize();
     life.SetInteger(x87_1.Getlife());
     life.SetTopLeft(149, 468);
-    CAudio::Instance()->Play(AUDIO_LAKE, true);			// 撥放 WAVE
-    CAudio::Instance()->Play(AUDIO_DING, false);		// 撥放 WAVE
     CAudio::Instance()->Play(AUDIO_NTUT, true);			// 撥放 MIDI
+	CAudio::Instance()->Stop(AUDIO_START);
+	isplayboom = false;
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
@@ -298,6 +318,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                 damage = _cannon[i].collision(monster_x, monster_y, monster[j].getAlive(),1);
                 if (monster[j].getAlive() == false)
                     damage = 0;
+				if (fireDragonMap.getMonsterLife(j, 1) - damage <= 0 && fireDragonMap.getMonsterLife(j, 1) > 0)
+					isplayboom = true;
                 fireDragonMap.setMonsterLife(j, damage,1);
                 if (damage > 0)
                 {
@@ -316,6 +338,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 				damage = _cannon[i].collision(monster_x, monster_y, nightmare[j].getAlive(), 2);
 				if (nightmare[j].getAlive() == false)
 					damage = 0;
+				if (fireDragonMap.getMonsterLife(j, 2) - damage <= 0 && fireDragonMap.getMonsterLife(j, 2) > 0)
+					isplayboom = true;
 				fireDragonMap.setMonsterLife(j, damage,2);
 				if (damage > 0)
 				{
@@ -334,6 +358,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 				damage = _cannon[i].collision(monster_x, monster_y, bat[j].getAlive(), 3);
 				if (bat[j].getAlive() == false)
 					damage = 0;
+				if (fireDragonMap.getMonsterLife(j, 3) - damage <= 0 && fireDragonMap.getMonsterLife(j, 3) > 0)
+					isplayboom = true;
 				fireDragonMap.setMonsterLife(j, damage, 3);
 				if (damage > 0)
 				{
@@ -350,7 +376,10 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	if(fireDragonMap.MonsterCollision())
 		x87_1.SetInjuredState(true, 2);
 	else if(injureMC != 0)
+	{
+		isplayboom = true;
 		x87_1.SetInjuredState(true, injureMC);
+	}
     x87_1.OnMove();
     fireDragonMap.GetNowRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之後座標
     left = fireDragonMap.crashleft();
@@ -417,8 +446,16 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 }
 void CGameStateRun::PlayRockmanSound()
 {
+	if(isplayboom)
+	{
+		CAudio::Instance()->Play(AUDIO_BOOM, false);
+		isplayboom = false;
+	}
 	if (x87_1.GetJumpDegree() == 1 && x87_1.GetJumping())
+	{
 		CAudio::Instance()->Play(AUDIO_JUMP, false);
+		CAudio::Instance()->Play(AUDIO_JUMP2, false);
+	}
 	if (x87_1.GetSprintDegree() == 1)
 		CAudio::Instance()->Play(AUDIO_SPRINT, false);
 	if (x87_1.getInjuredDelay() == 1)
@@ -475,10 +512,9 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     x87_1.LoadAttackBitmap();
     fireDragonMap.LoadBitMap();
     life.LoadBitmap();
-    CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
-    CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
     CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\Jakob.wav");	// 載入編號2的聲音ntut.mid
 	CAudio::Instance()->Load(AUDIO_JUMP, "sounds\\jump.wav");
+	CAudio::Instance()->Load(AUDIO_JUMP2, "sounds\\jump2.wav");
 	CAudio::Instance()->Load(AUDIO_SPRINT, "sounds\\sprint.wav");
 	CAudio::Instance()->Load(AUDIO_INJURE, "sounds\\injure.wav");
 	CAudio::Instance()->Load(AUDIO_CANNON1, "sounds\\cannon1.wav");
@@ -487,6 +523,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	CAudio::Instance()->Load(AUDIO_CANNON3_2, "sounds\\cannon3-2.wav");
 	CAudio::Instance()->Load(AUDIO_CHARGE, "sounds\\charge.wav");
 	CAudio::Instance()->Load(AUDIO_CHARGE_LOOP, "sounds\\charge-loop.wav");
+	CAudio::Instance()->Load(AUDIO_BOOM, "sounds\\boom.wav");
+	CAudio::Instance()->Load(AUDIO_ENEMY_FIRE, "sounds\\enemyfire.wav");
     //
     // 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
     //

@@ -22,6 +22,7 @@ namespace game_framework
 		int x1, y1;								//腳色當前座標
 		int screenX, screenY;					//畫面的座標
 		int hitX, hitY;							//子彈擊中座標
+		bool boomsound;
 		CMovingBitmap trashCannon;				//圖片:垃圾炮
 		CAnimation trashCannonHit;				//圖片:垃圾炮擊中
 		void LoadTrashCannonHitBitmap();		//載入動畫:垃圾炮擊中

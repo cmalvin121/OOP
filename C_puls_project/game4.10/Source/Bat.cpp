@@ -93,6 +93,10 @@ namespace game_framework
 	{
 		return isAlive;
 	}
+	int Bat::getLife()
+	{
+		return life;
+	}
 	void Bat::deductLife(int damage)
 	{
 		life -= damage;

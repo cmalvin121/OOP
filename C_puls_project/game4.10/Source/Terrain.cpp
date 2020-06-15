@@ -112,7 +112,6 @@ void Terrain::Initialize()
     //X6_1[7].setScreenXY(23360, 1600);
     boss.Initialize();
     boss.setXY(23360, 1600);
-    boss.setScreen_XY(23360, 1600);
     ////////////////////////////////
     srand((unsigned)time(NULL));
     X6_2[0].Initialize();
@@ -830,22 +829,6 @@ int Terrain::GetLastY()
 void Terrain::MoveScreen()
 {
     int mon_posX, mon_posY;
-    //////////////////boss///////////////////////
-    mon_posX = boss.getScreenX();
-    mon_posY = boss.getScreenY();
-
-    if (nowX > 900)
-        mon_posX -= (nowX - lastX);
-
-    if (nowY < 2700)
-        mon_posY -= (nowY - lastY);
-
-    boss.setScreen_XY(mon_posX, mon_posY);
-    boss.DeterminAttack(nowX, nowY);
-    TRACE("\n----- %d   %d -----\n", boss.getScreenX(), boss.getScreenY());
-    //boss.FixCannonScreenXY((nowX - lastX), (nowY - lastY));
-    boss.setScreen_XY(23360, mon_posY);
-    ///////////////////////////////////////////////
 
     for (int i = 0; i < 8; i++)
     {
@@ -915,6 +898,8 @@ void Terrain::MoveScreen()
         X4_1[i].setScreenXY(picX, picY);
         X4_1[i].DeterminAttack(nowX, nowY);
     }
+	boss.setScreen_XY(picX, picY);
+	boss.DeterminAttack(nowX, nowY);
 
     background.SetTopLeft(picX, picY - 1492);
     background2.SetTopLeft(picX + background.Width(), picY - 1492);
@@ -1051,5 +1036,15 @@ void Terrain::setMonsterLife(int index, int damage, int monsterNum)
         X6_2[index].deductLife(damage);
     else if (monsterNum == 3)
         X4_1[index].deductLife(damage);
+}
+int Terrain::getMonsterLife(int index, int monsterNum)
+{
+	if (monsterNum == 1)
+		return X6_1[index].getLife();
+	else if (monsterNum == 2)
+		return X6_2[index].getLife();
+	else if (monsterNum == 3)
+		return X4_1[index].getLife();
+	return 0;
 }
 }

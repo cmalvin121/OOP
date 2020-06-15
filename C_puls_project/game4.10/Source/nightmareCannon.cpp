@@ -24,6 +24,7 @@ namespace game_framework
 		isHitSomething = 0;
 		hitX = hitY = 0;
 		isCatchHitXY = false;
+		boomsound = false;
 	}
 	void NightmareCannon::LoadBitmap()
 	{
@@ -154,6 +155,8 @@ namespace game_framework
 		CONST int velocity_cannon = 60;
 		if (distance >= 1600 || isHitSomething != 0)
 		{
+			if(usingState)
+				boomsound = true;
 			usingState = false;
 			catchAction = 0;
 			x1 = 0;
@@ -187,6 +190,11 @@ namespace game_framework
 		}
 		else
 			nightmareCannonHit.OnMove();
+		if (boomsound)
+		{
+			CAudio::Instance()->Play(14, false);
+			boomsound = false;
+		}
 	}
 	void NightmareCannon::OnShow()
 	{

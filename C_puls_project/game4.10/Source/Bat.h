@@ -14,6 +14,7 @@ namespace game_framework
 		int getScreenX();					//取得蝙蝠X螢幕座標
 		int getScreenY();					//取得蝙蝠Y螢幕座標
 		bool getAlive();					//取得存活狀態
+		int getLife();
 		void OnShow();						//顯示動畫
 		void OnShowBoom();					//顯示爆炸動畫
 		void DeterminAttack(int, int);		//決定攻擊模式
