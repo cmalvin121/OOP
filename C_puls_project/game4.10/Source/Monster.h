@@ -14,6 +14,7 @@ namespace game_framework
 		int getScreenX();
 		int getScreenY();
 		bool getAlive();
+		int getLife();
 		void OnShow();
 		void OnShowBoom();
 		void DeterminAttack(int, int);

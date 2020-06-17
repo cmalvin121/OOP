@@ -58,18 +58,22 @@ namespace game_framework {
 /////////////////////////////////////////////////////////////////////////////
 
 enum AUDIO_ID {				// 定義各種音效的編號
-    AUDIO_DING,				// 0
-    AUDIO_LAKE,				// 1
-    AUDIO_NTUT,				// 2
-	AUDIO_JUMP,				// 3
-	AUDIO_SPRINT,			// 4
-	AUDIO_INJURE,			// 5
-	AUDIO_CANNON1,			// 6
-	AUDIO_CANNON2,			// 7
-	AUDIO_CANNON3,			// 8
-	AUDIO_CANNON3_2,		// 9
-	AUDIO_CHARGE,			// 10
-	AUDIO_CHARGE_LOOP,		// 11
+    AUDIO_OPTIONMOVE,		// 0
+    AUDIO_ENTER,			// 1
+	AUDIO_START,			// 2
+    AUDIO_NTUT,				// 3
+	AUDIO_JUMP,				// 4
+	AUDIO_JUMP2,			// 5
+	AUDIO_SPRINT,			// 6
+	AUDIO_INJURE,			// 7
+	AUDIO_CANNON1,			// 8
+	AUDIO_CANNON2,			// 9
+	AUDIO_CANNON3,			// 10
+	AUDIO_CANNON3_2,		// 11
+	AUDIO_CHARGE,			// 12
+	AUDIO_CHARGE_LOOP,		// 13
+	AUDIO_BOOM,				// 14
+	AUDIO_ENEMY_FIRE		// 15
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -86,24 +90,22 @@ class CGameStateInit : public CGameState {
     protected:
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
-        void GotoGuide();
         CMovingBitmap logo;								// csie的logo
         CMovingBitmap gameStartBackground;
         CMovingBitmap option1;
         CMovingBitmap option2;
         CMovingBitmap option3;
+		CMovingBitmap option4;
         CMovingBitmap option1Select;
         CMovingBitmap option2Select;
         CMovingBitmap option3Select;
+		CMovingBitmap option4Select;
         CMovingBitmap controlGuide;
-        CMovingBitmap text1;
-        CMovingBitmap text2;
-        CMovingBitmap text3;
-        CMovingBitmap text4;
-        CMovingBitmap text5;
-        CMovingBitmap text6;
+		CMovingBitmap about;
         int option;
         bool startGuide;
+		bool startabout;
+		bool isplaysound;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -137,6 +139,7 @@ class CGameStateRun : public CGameState {
 		Nightmare nightmare[6];		//夢魘
 		Bat bat[6];					//蝙蝠
 		bool isplay[2] = { false };
+		bool isplayboom;
         //const int monster_num, terrain_num;
         //int map[6][5];
 };
@@ -156,6 +159,7 @@ class CGameStateOver : public CGameState {
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
         int counter;	// 倒數之計數器
+		CMovingBitmap youdead;
 };
 
 }

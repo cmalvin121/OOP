@@ -14,6 +14,7 @@ namespace game_framework
 		int getScreenX();					//取得夢魘X螢幕座標
 		int getScreenY();					//取得夢魘Y螢幕座標
 		bool getAlive();					//取得存活狀態
+		int getLife();
 		void OnShow();						//顯示動畫
 		void OnShowBoom();					//顯示爆炸動畫
 		void DeterminAttack(int, int);		//決定攻擊模式
@@ -31,6 +32,7 @@ namespace game_framework
 		int moveDelay;						//移動攻擊延遲
 		int determinActionDelay;			//決定攻擊模式延遲
 		int AttackMode;						//攻擊模式 0:靜止 1:移動 2:開火
+		bool firesound;
 		CAnimation monsRight;
 		CAnimation monsLeft;
 		CAnimation monsMovingRight;

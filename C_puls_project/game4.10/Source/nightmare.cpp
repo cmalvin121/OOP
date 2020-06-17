@@ -23,6 +23,7 @@ namespace game_framework
 		moveDelay = 0;
 		monsBoom.Reset();
 		AttackMode = 0;
+		firesound = false;
 		if (rand() % 2)
 			moveDelay = 200;
 		else
@@ -135,6 +136,10 @@ namespace game_framework
 	{
 		return isAlive;
 	}
+	int Nightmare::getLife()
+	{
+		return life;
+	}
 	void Nightmare::deductLife(int damage)
 	{
 		life -= damage;
@@ -163,7 +168,7 @@ namespace game_framework
 		monsRightAttack.OnMove();
 		monsLeftAttack.OnMove();
 		AttackDelay++;
-		if (AttackDelay % 35 == 0)
+		if (AttackDelay % 35 == 0 && isAlive)
 		{
 			cannon.SetUsingState(true);
 			cannon.SetX(x + 40);
@@ -172,6 +177,7 @@ namespace game_framework
 			cannon.SetVelocity(RockX + 80, RockY + 100);
 			cannon.SetLastMovingState(AttackDirection);
 			cannon.SetCatchAction(1);
+			firesound = true;
 		}
 	}
 	void Nightmare::stay()
@@ -224,6 +230,11 @@ namespace game_framework
 		else if (RockX - x > 0)
 			AttackDirection = 1;
 		cannon.OnMove();
+		if (firesound)
+		{
+			CAudio::Instance()->Play(15, false);
+			firesound = false;
+		}
 	}
 	bool Nightmare::MonsterCollision(int RockX, int RockY)
 	{

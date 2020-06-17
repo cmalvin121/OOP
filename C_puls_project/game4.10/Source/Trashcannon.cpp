@@ -22,6 +22,7 @@ namespace game_framework
 		isHitSomething = 0;
 		hitX = hitY = 0;
 		isCatchHitXY = false;
+		boomsound = false;
 	}
 	void TrashCannon::LoadBitmap()
 	{
@@ -132,6 +133,8 @@ namespace game_framework
 	{
 		if (distance >= 800 || isHitSomething != 0)
 		{
+			if (usingState)
+				boomsound = true;
 			usingState = false;
 			catchAction = 0;
 			x1 = 0;
@@ -163,6 +166,11 @@ namespace game_framework
 		}
 		else
 			trashCannonHit.OnMove();
+		if(boomsound)
+		{
+			CAudio::Instance()->Play(14, false);
+			boomsound = false;
+		}
 	}
 	void TrashCannon::OnShow()
 	{
