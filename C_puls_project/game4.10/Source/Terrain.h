@@ -10,6 +10,7 @@ class Terrain     //地形(箱子、方塊)
         void MoveScreen();
         void GetLastRockmanXY(int x, int y);
         void GetNowRockmanXY(int x, int y);
+        void setLifeToZero();
         int GetLastX();
         int GetLastY();
         int crashleft();

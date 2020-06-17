@@ -24,8 +24,9 @@ BossCannon::BossCannon()
     hitX = hitY = 0;
     isCatchHitXY = false;
 }
-void BossCannon::LoadBitmap()
+void BossCannon::LoadBitMap()
 {
+    bossCannonleft.LoadBitmap("RES\\boss\\cannonleft.bmp", RGB(255, 255, 255));
 }
 
 void BossCannon::setCannon(int t)
@@ -35,6 +36,16 @@ void BossCannon::setCannon(int t)
 
 void BossCannon::OnMove()
 {
+    if (distance >= 1600 || isHitSomething != 0)
+    {
+        usingState = false;
+        catchAction = 0;
+        x1 = 0;
+        y1 = 0;
+        distance = 0;
+        isHitSomething = 0;
+    }
+
     if (type == 1 || type == 2)			//1 = 劍氣  2 = 直線炮彈
     {
         if (catchAction == 0)
@@ -53,10 +64,9 @@ void BossCannon::OnMove()
                 x1 += velocity_cannon;
                 screenX += velocity_cannon;
                 distance += velocity_cannon;
+                //TRACE("\n------Hiiiii-----\n");
             }
         }
-        else
-            bossCannonHit.OnMove();
     }
     else if (type == 3)				//3 = 捶地板
     {
@@ -69,8 +79,6 @@ void BossCannon::OnMove()
             screenY -= velocity_cannon;
             distance += velocity_cannon;
         }
-        else
-            bossCannonHit.OnMove();
     }
 }
 void BossCannon::OnShow()
@@ -83,27 +91,15 @@ void BossCannon::OnShow()
     if (y1 <= 2700)
         y1 = screenY;
 
-    bossCannon.SetTopLeft(x1, y1);
+    bossCannonleft.SetTopLeft(x1 + 160, y1 - 85);
 
     if (usingState == true)
-        bossCannon.ShowBitmap();
+        bossCannonleft.ShowBitmap();
 
     x1 = tmp;
     y1 = tmp2;
 }
-void BossCannon::OnShowHit()
-{
-    bossCannonHit.SetTopLeft(hitX, hitY);
-    HitAnimationLock();
 
-    if (usingState == false && !bossCannonHit.IsFinalBitmap())//
-    {
-        if ((isHitSomething > 0 && isHitSomething < 8) || distance >= 800)
-        {
-            bossCannonHit.OnShow();
-        }
-    }
-}
 void BossCannon::SetLastMovingState(int flag)
 {
     if (catchAction == 0)
@@ -148,23 +144,18 @@ void BossCannon::SetCatchAction(bool flag)
 {
     catchAction = flag;
 }
+void BossCannon::SetUsingState(bool flag)
+{
+    usingState = flag;
+}
 bool BossCannon::GetUsingState()
 {
     return usingState;
 }
-void BossCannon::SetUsingState(bool flag)
-{
-    usingState = flag;
-    distance = 0;
-    catchAction = 0;
-    x1 = 0;
-    y1 = 0;
-
-    if (usingState)
-        bossCannonHit.Reset();
-}
 int BossCannon::collision(int x, int y)
 {
+    TRACE("\n---Test2: %d %d ; %d %d---\n", x, y, x1, y1);
+
     if (!usingState)
         return 0;
 
@@ -175,9 +166,8 @@ int BossCannon::collision(int x, int y)
             if ((x1 + 35 >= x) && (x1 <= x + 160) && (y1 <= y + 200) && (y1 + 60 >= y))
             {
                 isHitSomething = 1;
-                //TRACE("isHitSomethingMC:%d\n", isHitSomething);
-                SetHitXY();
-                return 1;
+                usingState = false;
+                return 5;
             }
         }
         else if (lastMovingState == 1)
@@ -185,9 +175,7 @@ int BossCannon::collision(int x, int y)
             if ((x1 <= x + 160) && (x1 >= x) && (y1 <= y + 200) && (y1 + 60 >= y))
             {
                 isHitSomething = 1;
-                //TRACE("isHitSomethingMC:%d\n", isHitSomething);
-                SetHitXY();
-                return 1;
+                return 5;
             }
         }
     }
@@ -199,8 +187,7 @@ int BossCannon::collision(int x, int y)
             {
                 isHitSomething = 2;
                 //TRACE("isHitSomethingMC:%d\n", isHitSomething);
-                SetHitXY();
-                return 2;
+                return 3;
             }
         }
         else if (lastMovingState == 1)
@@ -209,8 +196,7 @@ int BossCannon::collision(int x, int y)
             {
                 isHitSomething = 2;
                 //TRACE("isHitSomethingMC:%d\n", isHitSomething);
-                SetHitXY();
-                return 2;
+                return 3;
             }
         }
     }
@@ -223,7 +209,6 @@ int BossCannon::collision(int x, int y)
         {
             isHitSomething = 3;
             //TRACE("isHitSomethingMC:%d\n", isHitSomething);
-            SetHitXY();
             return 3;
         }
 
@@ -233,7 +218,6 @@ int BossCannon::collision(int x, int y)
         {
             isHitSomething = 3;
             //TRACE("isHitSomethingMC:%d\n", isHitSomething);
-            SetHitXY();
             return 3;
         }
 
@@ -243,7 +227,6 @@ int BossCannon::collision(int x, int y)
         {
             isHitSomething = 3;
             //TRACE("isHitSomethingMC:%d\n", isHitSomething);
-            SetHitXY();
             return 3;
         }
 
@@ -253,7 +236,6 @@ int BossCannon::collision(int x, int y)
         {
             isHitSomething = 3;
             //TRACE("isHitSomethingMC:%d\n", isHitSomething);
-            SetHitXY();
             return 3;
         }
 
@@ -263,7 +245,6 @@ int BossCannon::collision(int x, int y)
         {
             isHitSomething = 3;
             //TRACE("isHitSomethingMC:%d\n", isHitSomething);
-            SetHitXY();
             return 3;
         }
 
@@ -273,7 +254,6 @@ int BossCannon::collision(int x, int y)
         {
             isHitSomething = 3;
             //TRACE("isHitSomethingMC:%d\n", isHitSomething);
-            SetHitXY();
             return 3;
         }
 
@@ -281,26 +261,5 @@ int BossCannon::collision(int x, int y)
     }
 
     return 0;
-}
-void BossCannon::SetHitXY()
-{
-    if (!isCatchHitXY)
-    {
-        hitX = screenX;
-        hitY = screenY;
-        isCatchHitXY = true;
-    }
-}
-void BossCannon::HitAnimationLock()
-{
-    if (bossCannonHit.IsFinalBitmap())
-    {
-        isCatchHitXY = false;
-        isHitSomething = 0;
-        bossCannonHit.setToSpecifyBitmap(7);
-    }
-}
-void BossCannon::LoadTrashCannonHitBitmap()
-{
 }
 }

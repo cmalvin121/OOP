@@ -111,8 +111,8 @@ void Terrain::Initialize()
     //X6_1[7].setXY(23360, 1600);
     //X6_1[7].setScreenXY(23360, 1600);
     boss.Initialize();
-    boss.setXY(23360, 1600);
-    boss.setScreen_XY(23360, 1600);
+    boss.setXY(23360, 1650);
+    boss.setScreen_XY(23360, 1650);
     ////////////////////////////////
     srand((unsigned)time(NULL));
     X6_2[0].Initialize();
@@ -797,6 +797,17 @@ void Terrain::Initialize()
     background3.SetTopLeft(background.Width() + background2.Width(), 0 - 1492);
     background4.SetTopLeft(background.Width() + background2.Width() + background3.Width(), 0 - 1492);
 }
+void Terrain::setLifeToZero()
+{
+    for (int i = 0; i < 8; i++)
+        X6_1[i].deductLife(10);
+
+    for (int i = 0; i < 6; i++)
+        X6_2[i].deductLife(10);
+
+    for (int i = 0; i < 6; i++)
+        X4_1[i].deductLife(10);
+}
 Monster Terrain::getMonster(int index)
 {
     return X6_1[index];
@@ -830,22 +841,6 @@ int Terrain::GetLastY()
 void Terrain::MoveScreen()
 {
     int mon_posX, mon_posY;
-    //////////////////boss///////////////////////
-    mon_posX = boss.getScreenX();
-    mon_posY = boss.getScreenY();
-
-    if (nowX > 900)
-        mon_posX -= (nowX - lastX);
-
-    if (nowY < 2700)
-        mon_posY -= (nowY - lastY);
-
-    boss.setScreen_XY(mon_posX, mon_posY);
-    boss.DeterminAttack(nowX, nowY);
-    TRACE("\n----- %d   %d -----\n", boss.getScreenX(), boss.getScreenY());
-    //boss.FixCannonScreenXY((nowX - lastX), (nowY - lastY));
-    boss.setScreen_XY(23360, mon_posY);
-    ///////////////////////////////////////////////
 
     for (int i = 0; i < 8; i++)
     {
@@ -916,6 +911,8 @@ void Terrain::MoveScreen()
         X4_1[i].DeterminAttack(nowX, nowY);
     }
 
+    boss.setScreen_XY(picX, picY);
+    boss.DeterminAttack(nowX, nowY);
     background.SetTopLeft(picX, picY - 1492);
     background2.SetTopLeft(picX + background.Width(), picY - 1492);
     background3.SetTopLeft(picX + background.Width() + background2.Width(), picY - 1492);
@@ -1019,6 +1016,9 @@ bool Terrain::MonsterCollision()
         if (X4_1[i].MonsterCollision(nowX, nowY))
             return true;
 
+    if (boss.MonsterCollision(nowX, nowY))
+        return true;
+
     return false;
 }
 int Terrain::MosterCannonCollision()
@@ -1040,6 +1040,11 @@ int Terrain::MosterCannonCollision()
         if (tmp != 0)
             return tmp;
     }
+
+    tmp = boss.MonsterCannonCollision(nowX, nowY);
+
+    if (tmp != 0)
+        return tmp;
 
     return 0;
 }

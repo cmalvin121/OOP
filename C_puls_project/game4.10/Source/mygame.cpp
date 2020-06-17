@@ -71,36 +71,36 @@ CGameStateInit::CGameStateInit(CGame* g)
 
 void CGameStateInit::OnInit()
 {
-	gameStartBackground.LoadBitmap("RES\\gamestart\\gamestartUI background.bmp");
-	gameStartBackground.SetTopLeft(0, 0);
-	option1.LoadBitmap("RES\\gamestart\\option1.bmp", RGB(255, 255, 255));
-	option2.LoadBitmap("RES\\gamestart\\option2.bmp", RGB(255, 255, 255));
-	option3.LoadBitmap("RES\\gamestart\\option3.bmp", RGB(255, 255, 255));
-	option1Select.LoadBitmap("RES\\gamestart\\option1select.bmp", RGB(255, 255, 255));
-	option2Select.LoadBitmap("RES\\gamestart\\option2select.bmp", RGB(255, 255, 255));
-	option3Select.LoadBitmap("RES\\gamestart\\option3select.bmp", RGB(255, 255, 255));
-	option1.SetTopLeft(660, 450);
-	option2.SetTopLeft(660, 600);
-	option3.SetTopLeft(660, 750);
-	option1Select.SetTopLeft(660, 450);
-	option2Select.SetTopLeft(660, 600);
-	option3Select.SetTopLeft(660, 750);
-	controlGuide.LoadBitmap("RES\\gamestart\\background.bmp");
-	controlGuide.SetTopLeft(0, 0);
-	text1.LoadBitmap("RES\\gamestart\\right.bmp", RGB(255, 255, 255));
-	text2.LoadBitmap("RES\\gamestart\\left.bmp", RGB(255, 255, 255));
-	text3.LoadBitmap("RES\\gamestart\\jump.bmp", RGB(255, 255, 255));
-	text4.LoadBitmap("RES\\gamestart\\attack.bmp", RGB(255, 255, 255));
-	text5.LoadBitmap("RES\\gamestart\\sprint.bmp", RGB(255, 255, 255));
-	text6.LoadBitmap("RES\\gamestart\\wall.bmp", RGB(255, 255, 255));
-	text1.SetTopLeft(573, 62);
-	text2.SetTopLeft(573, 212);
-	text3.SetTopLeft(573, 362);
-	text4.SetTopLeft(573, 512);
-	text5.SetTopLeft(689, 662);
-	text6.SetTopLeft(750, 814);
-	option = 1;
-	startGuide = false;
+    gameStartBackground.LoadBitmap("RES\\gamestart\\gamestartUI background.bmp");
+    gameStartBackground.SetTopLeft(0, 0);
+    option1.LoadBitmap("RES\\gamestart\\option1.bmp", RGB(255, 255, 255));
+    option2.LoadBitmap("RES\\gamestart\\option2.bmp", RGB(255, 255, 255));
+    option3.LoadBitmap("RES\\gamestart\\option3.bmp", RGB(255, 255, 255));
+    option1Select.LoadBitmap("RES\\gamestart\\option1select.bmp", RGB(255, 255, 255));
+    option2Select.LoadBitmap("RES\\gamestart\\option2select.bmp", RGB(255, 255, 255));
+    option3Select.LoadBitmap("RES\\gamestart\\option3select.bmp", RGB(255, 255, 255));
+    option1.SetTopLeft(660, 450);
+    option2.SetTopLeft(660, 600);
+    option3.SetTopLeft(660, 750);
+    option1Select.SetTopLeft(660, 450);
+    option2Select.SetTopLeft(660, 600);
+    option3Select.SetTopLeft(660, 750);
+    controlGuide.LoadBitmap("RES\\gamestart\\background.bmp");
+    controlGuide.SetTopLeft(0, 0);
+    text1.LoadBitmap("RES\\gamestart\\right.bmp", RGB(255, 255, 255));
+    text2.LoadBitmap("RES\\gamestart\\left.bmp", RGB(255, 255, 255));
+    text3.LoadBitmap("RES\\gamestart\\jump.bmp", RGB(255, 255, 255));
+    text4.LoadBitmap("RES\\gamestart\\attack.bmp", RGB(255, 255, 255));
+    text5.LoadBitmap("RES\\gamestart\\sprint.bmp", RGB(255, 255, 255));
+    text6.LoadBitmap("RES\\gamestart\\wall.bmp", RGB(255, 255, 255));
+    text1.SetTopLeft(573, 62);
+    text2.SetTopLeft(573, 212);
+    text3.SetTopLeft(573, 362);
+    text4.SetTopLeft(573, 512);
+    text5.SetTopLeft(689, 662);
+    text6.SetTopLeft(750, 814);
+    option = 1;
+    startGuide = false;
     //
     // 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
     //     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
@@ -123,42 +123,47 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     const char KEY_ESC = 27;
     const char KEY_SPACE = ' ';
-	const char KEY_UP = 0x26; // keyboard上箭頭
-	const char KEY_DOWN = 0x28; // keyboard下箭頭
-	const char KEY_ENTER = 0x0D;
-	if (nChar == KEY_UP)
-	{
-		option--;
-		if (option <= 0)
-			option = 3;
-	}
-	if (nChar == KEY_DOWN)
-	{
-		option++;
-		if (option > 3)
-			option = 1;
-	}
-	if (startGuide == true)
-		option = 2;
-	if (nChar == KEY_ENTER && startGuide == true)
-		startGuide = false;
-	else if (nChar == KEY_ENTER && option == 1)
-		GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
-	else if (nChar == KEY_ENTER && option == 2)
-		startGuide = true;
-	else if (nChar == KEY_ENTER && option == 3)			// Demo 關閉遊戲的方法
-        PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
+    const char KEY_UP = 0x26; // keyboard上箭頭
+    const char KEY_DOWN = 0x28; // keyboard下箭頭
+    const char KEY_ENTER = 0x0D;
 
+    if (nChar == KEY_UP)
+    {
+        option--;
+
+        if (option <= 0)
+            option = 3;
+    }
+
+    if (nChar == KEY_DOWN)
+    {
+        option++;
+
+        if (option > 3)
+            option = 1;
+    }
+
+    if (startGuide == true)
+        option = 2;
+
+    if (nChar == KEY_ENTER && startGuide == true)
+        startGuide = false;
+    else if (nChar == KEY_ENTER && option == 1)
+        GotoGameState(GAME_STATE_RUN);						// 切換至GAME_STATE_RUN
+    else if (nChar == KEY_ENTER && option == 2)
+        startGuide = true;
+    else if (nChar == KEY_ENTER && option == 3)			// Demo 關閉遊戲的方法
+        PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// 關閉遊戲
 }
 void CGameStateInit::GotoGuide()
 {
-	controlGuide.ShowBitmap();
-	text1.ShowBitmap();
-	text2.ShowBitmap();
-	text3.ShowBitmap();
-	text4.ShowBitmap();
-	text5.ShowBitmap();
-	text6.ShowBitmap();
+    controlGuide.ShowBitmap();
+    text1.ShowBitmap();
+    text2.ShowBitmap();
+    text3.ShowBitmap();
+    text4.ShowBitmap();
+    text5.ShowBitmap();
+    text6.ShowBitmap();
 }
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
@@ -172,27 +177,28 @@ void CGameStateInit::OnShow()
     //
     // Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
     //
-	gameStartBackground.ShowBitmap();
-	if (startGuide == true)
-		GotoGuide();
-	else if (option == 1)
-	{
-		option1Select.ShowBitmap();
-		option2.ShowBitmap();
-		option3.ShowBitmap();
-	}
-	else if (option == 2)
-	{
-		option1.ShowBitmap();
-		option2Select.ShowBitmap();
-		option3.ShowBitmap();
-	}
-	else if (option == 3)
-	{
-		option1.ShowBitmap();
-		option2.ShowBitmap();
-		option3Select.ShowBitmap();
-	}
+    gameStartBackground.ShowBitmap();
+
+    if (startGuide == true)
+        GotoGuide();
+    else if (option == 1)
+    {
+        option1Select.ShowBitmap();
+        option2.ShowBitmap();
+        option3.ShowBitmap();
+    }
+    else if (option == 2)
+    {
+        option1.ShowBitmap();
+        option2Select.ShowBitmap();
+        option3.ShowBitmap();
+    }
+    else if (option == 3)
+    {
+        option1.ShowBitmap();
+        option2.ShowBitmap();
+        option3Select.ShowBitmap();
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -293,12 +299,16 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
             monster[j] = fireDragonMap.getMonster(j);
             monster_x = monster[j].getX();
             monster_y = monster[j].getY();
+
             if (_cannon[i].GetUsingState())
             {
-                damage = _cannon[i].collision(monster_x, monster_y, monster[j].getAlive(),1);
+                damage = _cannon[i].collision(monster_x, monster_y, monster[j].getAlive(), 1);
+
                 if (monster[j].getAlive() == false)
                     damage = 0;
-                fireDragonMap.setMonsterLife(j, damage,1);
+
+                fireDragonMap.setMonsterLife(j, damage, 1);
+
                 if (damage > 0)
                 {
                     _cannon[i].SetUsingState(0);
@@ -306,51 +316,64 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                 }
             }
         }
-		for (int j = 0; j < 6; j++)
-		{
-			nightmare[j] = fireDragonMap.getNightmare(j);
-			monster_x = nightmare[j].getX();
-			monster_y = nightmare[j].getY();
-			if (_cannon[i].GetUsingState())
-			{
-				damage = _cannon[i].collision(monster_x, monster_y, nightmare[j].getAlive(), 2);
-				if (nightmare[j].getAlive() == false)
-					damage = 0;
-				fireDragonMap.setMonsterLife(j, damage,2);
-				if (damage > 0)
-				{
-					_cannon[i].SetUsingState(0);
-					break;
-				}
-			}
-		}
-		for (int j = 0; j < 6; j++)
-		{
-			bat[j] = fireDragonMap.getBat(j);
-			monster_x = bat[j].getX();
-			monster_y = bat[j].getY();
-			if (_cannon[i].GetUsingState())
-			{
-				damage = _cannon[i].collision(monster_x, monster_y, bat[j].getAlive(), 3);
-				if (bat[j].getAlive() == false)
-					damage = 0;
-				fireDragonMap.setMonsterLife(j, damage, 3);
-				if (damage > 0)
-				{
-					_cannon[i].SetUsingState(0);
-					break;
-				}
-			}
-		}
+
+        for (int j = 0; j < 6; j++)
+        {
+            nightmare[j] = fireDragonMap.getNightmare(j);
+            monster_x = nightmare[j].getX();
+            monster_y = nightmare[j].getY();
+
+            if (_cannon[i].GetUsingState())
+            {
+                damage = _cannon[i].collision(monster_x, monster_y, nightmare[j].getAlive(), 2);
+
+                if (nightmare[j].getAlive() == false)
+                    damage = 0;
+
+                fireDragonMap.setMonsterLife(j, damage, 2);
+
+                if (damage > 0)
+                {
+                    _cannon[i].SetUsingState(0);
+                    break;
+                }
+            }
+        }
+
+        for (int j = 0; j < 6; j++)
+        {
+            bat[j] = fireDragonMap.getBat(j);
+            monster_x = bat[j].getX();
+            monster_y = bat[j].getY();
+
+            if (_cannon[i].GetUsingState())
+            {
+                damage = _cannon[i].collision(monster_x, monster_y, bat[j].getAlive(), 3);
+
+                if (bat[j].getAlive() == false)
+                    damage = 0;
+
+                fireDragonMap.setMonsterLife(j, damage, 3);
+
+                if (damage > 0)
+                {
+                    _cannon[i].SetUsingState(0);
+                    break;
+                }
+            }
+        }
+
         _cannon[i].OnMove();
     }
 
     fireDragonMap.GetLastRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之前座標
-	int injureMC = fireDragonMap.MosterCannonCollision();
-	if(fireDragonMap.MonsterCollision())
-		x87_1.SetInjuredState(true, 2);
-	else if(injureMC != 0)
-		x87_1.SetInjuredState(true, injureMC);
+    int injureMC = fireDragonMap.MosterCannonCollision();
+
+    if (fireDragonMap.MonsterCollision())
+        x87_1.SetInjuredState(true, 2);
+    else if (injureMC != 0)
+        x87_1.SetInjuredState(true, injureMC);
+
     x87_1.OnMove();
     fireDragonMap.GetNowRockmanXY(x87_1.GetX(), x87_1.GetY());//取得移動之後座標
     left = fireDragonMap.crashleft();
@@ -410,48 +433,57 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     fixCannonY -= x87_1.GetY();
     fixCannonX -= x87_1.GetX();
     x87_1.SetFixCannonScreen(fixCannonY, fixCannonX);
+
     if (life.GetInteger() <= 0)//血量歸0，GAME OVER
         GotoGameState(GAME_STATE_OVER);
+
     life.SetInteger(x87_1.Getlife());
-	PlayRockmanSound();
+    PlayRockmanSound();
 }
 void CGameStateRun::PlayRockmanSound()
 {
-	if (x87_1.GetJumpDegree() == 1 && x87_1.GetJumping())
-		CAudio::Instance()->Play(AUDIO_JUMP, false);
-	if (x87_1.GetSprintDegree() == 1)
-		CAudio::Instance()->Play(AUDIO_SPRINT, false);
-	if (x87_1.getInjuredDelay() == 1)
-		CAudio::Instance()->Play(AUDIO_INJURE, false);
+    if (x87_1.GetJumpDegree() == 1 && x87_1.GetJumping())
+        CAudio::Instance()->Play(AUDIO_JUMP, false);
 
-	if (x87_1.GetChargeAttack() > 0)
-	{
-		CAudio::Instance()->Stop(AUDIO_CHARGE_LOOP);
-		CAudio::Instance()->Stop(AUDIO_CHARGE);
-	}
-	if (x87_1.GetCharge() == 6)
-		CAudio::Instance()->Play(AUDIO_CHARGE, false);
-	if (x87_1.GetCharge() == 50)
-		CAudio::Instance()->Play(AUDIO_CHARGE_LOOP, true);
+    if (x87_1.GetSprintDegree() == 1)
+        CAudio::Instance()->Play(AUDIO_SPRINT, false);
 
-	if (x87_1.GetChargeAttack() == 0)
-	{
-		for (int i = 0; i < 2; i++)
-			isplay[i] = false;
-	}
-	if (x87_1.GetIsAttacking() && x87_1.GetDetermineCharge() == 1)
-		CAudio::Instance()->Play(AUDIO_CANNON1, false);
-	if (x87_1.GetChargeAttack() > 5 && x87_1.GetChargeAttack() <= 50 && !isplay[0])
-	{
-		CAudio::Instance()->Play(AUDIO_CANNON2, false);
-		isplay[0] = true;
-	}
-	if (x87_1.GetChargeAttack() > 50 && !isplay[1])
-	{
-		CAudio::Instance()->Play(AUDIO_CANNON3, false);
-		CAudio::Instance()->Play(AUDIO_CANNON3_2, false);
-		isplay[1] = true;
-	}
+    if (x87_1.getInjuredDelay() == 1)
+        CAudio::Instance()->Play(AUDIO_INJURE, false);
+
+    if (x87_1.GetChargeAttack() > 0)
+    {
+        CAudio::Instance()->Stop(AUDIO_CHARGE_LOOP);
+        CAudio::Instance()->Stop(AUDIO_CHARGE);
+    }
+
+    if (x87_1.GetCharge() == 6)
+        CAudio::Instance()->Play(AUDIO_CHARGE, false);
+
+    if (x87_1.GetCharge() == 50)
+        CAudio::Instance()->Play(AUDIO_CHARGE_LOOP, true);
+
+    if (x87_1.GetChargeAttack() == 0)
+    {
+        for (int i = 0; i < 2; i++)
+            isplay[i] = false;
+    }
+
+    if (x87_1.GetIsAttacking() && x87_1.GetDetermineCharge() == 1)
+        CAudio::Instance()->Play(AUDIO_CANNON1, false);
+
+    if (x87_1.GetChargeAttack() > 5 && x87_1.GetChargeAttack() <= 50 && !isplay[0])
+    {
+        CAudio::Instance()->Play(AUDIO_CANNON2, false);
+        isplay[0] = true;
+    }
+
+    if (x87_1.GetChargeAttack() > 50 && !isplay[1])
+    {
+        CAudio::Instance()->Play(AUDIO_CANNON3, false);
+        CAudio::Instance()->Play(AUDIO_CANNON3_2, false);
+        isplay[1] = true;
+    }
 }
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
@@ -478,15 +510,15 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     CAudio::Instance()->Load(AUDIO_DING,  "sounds\\ding.wav");	// 載入編號0的聲音ding.wav
     CAudio::Instance()->Load(AUDIO_LAKE,  "sounds\\lake.mp3");	// 載入編號1的聲音lake.mp3
     CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\Jakob.wav");	// 載入編號2的聲音ntut.mid
-	CAudio::Instance()->Load(AUDIO_JUMP, "sounds\\jump.wav");
-	CAudio::Instance()->Load(AUDIO_SPRINT, "sounds\\sprint.wav");
-	CAudio::Instance()->Load(AUDIO_INJURE, "sounds\\injure.wav");
-	CAudio::Instance()->Load(AUDIO_CANNON1, "sounds\\cannon1.wav");
-	CAudio::Instance()->Load(AUDIO_CANNON2, "sounds\\cannon2.wav");
-	CAudio::Instance()->Load(AUDIO_CANNON3, "sounds\\cannon3.wav");
-	CAudio::Instance()->Load(AUDIO_CANNON3_2, "sounds\\cannon3-2.wav");
-	CAudio::Instance()->Load(AUDIO_CHARGE, "sounds\\charge.wav");
-	CAudio::Instance()->Load(AUDIO_CHARGE_LOOP, "sounds\\charge-loop.wav");
+    CAudio::Instance()->Load(AUDIO_JUMP, "sounds\\jump.wav");
+    CAudio::Instance()->Load(AUDIO_SPRINT, "sounds\\sprint.wav");
+    CAudio::Instance()->Load(AUDIO_INJURE, "sounds\\injure.wav");
+    CAudio::Instance()->Load(AUDIO_CANNON1, "sounds\\cannon1.wav");
+    CAudio::Instance()->Load(AUDIO_CANNON2, "sounds\\cannon2.wav");
+    CAudio::Instance()->Load(AUDIO_CANNON3, "sounds\\cannon3.wav");
+    CAudio::Instance()->Load(AUDIO_CANNON3_2, "sounds\\cannon3-2.wav");
+    CAudio::Instance()->Load(AUDIO_CHARGE, "sounds\\charge.wav");
+    CAudio::Instance()->Load(AUDIO_CHARGE_LOOP, "sounds\\charge-loop.wav");
     //
     // 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
     //
@@ -501,7 +533,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     const char KEY_JUMP  = 0x5A;  // keyboard按鍵Z
     const char KEY_SPRINT = 0x20; // keyboard空白鍵
     const char KEY_ATTACK = 0x58; // keyboard按鍵X
-	const char KEY_CHEAT = 0x43;  // keyboard按鍵C
+    const char KEY_CHEAT = 0x43;  // keyboard按鍵C
 
     if (nChar == KEY_LEFT)
         x87_1.SetMovingLeft(true);
@@ -525,8 +557,12 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
     if (nChar == KEY_ATTACK)
         x87_1.SetKeyAttackingState(true);
-	if (nChar == KEY_CHEAT)
-		x87_1.SetLife(64);
+
+    if (nChar == KEY_CHEAT)
+    {
+        x87_1.SetLife(64);
+        fireDragonMap.setLifeToZero();
+    }
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)

@@ -19,19 +19,26 @@ void Boss::Initialize()
     screen_x = screen_y = 0;
     life = 80;
     delayTime = 0;
+    isLocked = 0;
+    isAlive = true;
+    skill = 0;
 }
 
 void Boss::LoadBitMap()
 {
-    boss.LoadBitmap("RES\\bitmap3.bmp", RGB(255, 255, 255));
+    boss.LoadBitmap("RES\\boss\\bossleft.bmp", RGB(255, 255, 255));
+    cannon.LoadBitMap();
 }
 
 void Boss::OnShow()
 {
-    boss.SetTopLeft(screen_x, screen_y - 1492);
+    boss.SetTopLeft(x + screen_x, y + screen_y - 1492);
 
     if (life > 0)
         boss.ShowBitmap();
+
+    if (cannon.GetUsingState())
+        cannon.OnShow();
 }
 
 int Boss::getX()
@@ -56,10 +63,7 @@ int Boss::getScreenY()
 
 bool Boss::getAlive()
 {
-    if (life > 0)
-        return true;
-
-    return false;
+    return isAlive;
 }
 
 void Boss::setXY(int nx, int ny)
@@ -77,37 +81,54 @@ void Boss::setScreen_XY(int nx, int ny)
 void Boss::deductLife(int damage)
 {
     life -= damage;
+
+    if (life < 0)
+        isAlive = false;
 }
 
 void Boss::OnMove()
 {
-    if (delayTime == 180)
-    {
-        cannon.setCannon(1);
-        cannon.SetX(x - 20);
-        cannon.SetY(y - 20);
-        cannon.OnMove();
-    }
-    else if (delayTime == 120)
-    {
-        cannon.setCannon(2);
-        cannon.SetX(x - 20);
-        cannon.SetY(y - 20);
-        cannon.OnMove();
-    }
-    else if (delayTime == 60)
-    {
-        cannon.setCannon(3);
-        cannon.SetX(x - 20);
-        cannon.SetY(y - 20);
-        cannon.OnMove();
-    }
+    TRACE("\n---Test1: %d %d---\n", delayTime, isLocked);
 
-    delayTime++;
-
-    if (delayTime > 180)
+    if (isLocked == 1)
     {
-        delayTime = 0;
+        if (skill == 2 && delayTime >= 150 && cannon.GetUsingState() == false)
+        {
+            cannon.setCannon(1);
+            cannon.SetX(x - 20);
+            cannon.SetY(y - 20);
+            cannon.SetScreenXY(x + screen_x - 20, y + screen_y - 20 - 1492);
+            cannon.SetUsingState(true);
+        }
+        else if (skill == 1 && delayTime >= 100 && cannon.GetUsingState() == false)
+        {
+            cannon.setCannon(2);
+            cannon.SetX(x - 20);
+            cannon.SetY(y - 20);
+            cannon.SetScreenXY(x + screen_x - 20, y + screen_y - 20 - 1492);
+            cannon.SetUsingState(true);
+            cannon.SetLastMovingState(1);
+            ++skill;
+        }
+        else if (skill == 0 && delayTime >= 50 && cannon.GetUsingState() == false)
+        {
+            cannon.setCannon(3);
+            cannon.SetX(x - 20);
+            cannon.SetY(y - 20);
+            cannon.SetScreenXY(x + screen_x - 20, y + screen_y - 20 - 1492);
+            cannon.SetUsingState(true);
+            cannon.SetLastMovingState(1);
+            ++skill;
+        }
+
+        cannon.OnMove();
+        delayTime++;
+
+        if (delayTime > 150)
+        {
+            delayTime = 0;
+            skill = 0;
+        }
     }
 }
 
@@ -117,5 +138,29 @@ void Boss::DeterminAttack(int RockX, int RockY)
         AttackDirection = 0;
     else if (RockX - x > 0)
         AttackDirection = 1;
+
+    if (((RockX - x) < 600 && (RockX - x) > 0) || ((x - RockX) < 600 && (x - RockX) > 0))
+    {
+        isLocked = 1;
+    }
+
+    OnMove();
+}
+bool Boss::MonsterCollision(int RockX, int RockY)
+{
+    //TRACE("\n------%d %d %d %d-------\n", RockX, RockX, x, y);
+    if (!isAlive)
+        return false;
+    else if (x + 130 > RockX && RockX + 140 > x && y + 171 > RockY && RockY + 200 > y)
+        return true;
+    else
+        return false;
+}
+int Boss::MonsterCannonCollision(int RockX, int RockY)
+{
+    if (isAlive)
+        return cannon.collision(RockX, RockY);
+
+    return false;
 }
 }

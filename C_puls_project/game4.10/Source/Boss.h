@@ -17,6 +17,8 @@ class Boss
         void deductLife(int damage);
         void OnMove();
         void DeterminAttack(int RockX, int RockY);
+        bool MonsterCollision(int, int);
+        int MonsterCannonCollision(int, int);
     private:
         CMovingBitmap boss;
         BossCannon cannon;
@@ -25,5 +27,8 @@ class Boss
         int life;
         int delayTime;
         int AttackDirection;
+        int isLocked;
+        bool isAlive;
+        int skill;
 };
 }
