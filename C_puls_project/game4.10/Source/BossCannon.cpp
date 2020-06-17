@@ -91,7 +91,7 @@ void BossCannon::OnShow()
     if (y1 <= 2700)
         y1 = screenY;
 
-    bossCannonleft.SetTopLeft(x1 + 160, y1 - 85);
+    bossCannonleft.SetTopLeft(x1, y1);
 
     if (usingState == true)
         bossCannonleft.ShowBitmap();
@@ -167,7 +167,7 @@ int BossCannon::collision(int x, int y)
             {
                 isHitSomething = 1;
                 usingState = false;
-                return 5;
+                return 16;
             }
         }
         else if (lastMovingState == 1)
@@ -175,7 +175,7 @@ int BossCannon::collision(int x, int y)
             if ((x1 <= x + 160) && (x1 >= x) && (y1 <= y + 200) && (y1 + 60 >= y))
             {
                 isHitSomething = 1;
-                return 5;
+                return 16;
             }
         }
     }

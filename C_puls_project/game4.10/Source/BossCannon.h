@@ -1,10 +1,10 @@
 namespace game_framework
 {
 /*enum skill {
-    skill_one,				//劍氣
-    skill_two,				//直線炮彈
-    skill_three,			//捶地板
-    skill_four				//砍擊
+	skill_one,				//劍氣
+	skill_two,				//直線炮彈
+	skill_three,			//捶地板
+	skill_four				//砍擊
 };*/
 class BossCannon
 {

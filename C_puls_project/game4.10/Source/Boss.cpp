@@ -132,6 +132,12 @@ void Boss::OnMove()
     }
 }
 
+void Boss::FixCannonScreenXY(int fixX, int fixY)
+{
+    cannon.AddScreenX_fix(-fixX);
+    cannon.AddScreenY_fix(-fixY);
+}
+
 void Boss::DeterminAttack(int RockX, int RockY)
 {
     if (x - RockX > 0)

@@ -19,6 +19,7 @@ class Boss
         void DeterminAttack(int RockX, int RockY);
         bool MonsterCollision(int, int);
         int MonsterCannonCollision(int, int);
+        void FixCannonScreenXY(int, int);
     private:
         CMovingBitmap boss;
         BossCannon cannon;

@@ -10,7 +10,6 @@ class Terrain     //地形(箱子、方塊)
         void MoveScreen();
         void GetLastRockmanXY(int x, int y);
         void GetNowRockmanXY(int x, int y);
-        void setLifeToZero();
         int GetLastX();
         int GetLastY();
         int crashleft();
@@ -24,6 +23,8 @@ class Terrain     //地形(箱子、方塊)
         Nightmare getNightmare(int index);
         Bat getBat(int index);
         void setMonsterLife(int index, int damage, int monsterNum);
+        int getMonsterLife(int index, int monsterNum);
+        void setLifeToZero();
         ////////////////////////////////
     protected:
         CMovingBitmap	background;	// 背景圖
