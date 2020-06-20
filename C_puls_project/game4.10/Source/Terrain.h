@@ -18,12 +18,16 @@ class Terrain     //地形(箱子、方塊)
         int crashdown();
         bool MonsterCollision();
         int MosterCannonCollision();
+		bool GetIsBossCannon();
         //////////////////////// Monster
         Monster getMonster(int index);
         Nightmare getNightmare(int index);
         Bat getBat(int index);
+		Boss getBoss();
         void setMonsterLife(int index, int damage, int monsterNum);
         int getMonsterLife(int index, int monsterNum);
+		bool IsBossStage();
+		bool IsBossDead();
         void setLifeToZero();
         ////////////////////////////////
     protected:
@@ -42,5 +46,6 @@ class Terrain     //地形(箱子、方塊)
         int lastX, lastY;
         int nowX, nowY;
         int map[31][315];
+		bool isBossCannon;
 };
 }

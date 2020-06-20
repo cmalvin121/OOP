@@ -239,6 +239,7 @@ void Rockman::OnMove()
 		injureDelay++;
 		isInjured = false;
 	}
+	//TRACE("x,y(rockman):%d,%d\n", x, y);
 }
 
 void Rockman::SetMovingLeft(bool flag)

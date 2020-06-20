@@ -63,7 +63,7 @@ namespace game_framework {
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的遊戲開頭畫面物件
 /////////////////////////////////////////////////////////////////////////////
-
+	bool isWin;
 CGameStateInit::CGameStateInit(CGame* g)
     : CGameState(g)
 {
@@ -123,13 +123,6 @@ void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
     const char KEY_UP = 0x26; // keyboard上箭頭
     const char KEY_DOWN = 0x28; // keyboard下箭頭
     const char KEY_ENTER = 0x0D;
-
-    if (isplaysound)
-    {
-        CAudio::Instance()->Play(AUDIO_START, true);
-        isplaysound = false;
-    }
-
     if (nChar == KEY_UP)
     {
         option--;
@@ -187,6 +180,11 @@ void CGameStateInit::OnShow()
     //
     // Demo螢幕字型的使用，不過開發時請盡量避免直接使用字型，改用CMovingBitmap比較好
     //
+	if (isplaysound)
+	{
+		CAudio::Instance()->Play(AUDIO_START, true);
+		isplaysound = false;
+	}
     gameStartBackground.ShowBitmap();
 
     if (startGuide == true)
@@ -236,6 +234,7 @@ void CGameStateOver::OnMove()
 {
     counter--;
     CAudio::Instance()->Stop(AUDIO_NTUT);
+	CAudio::Instance()->Stop(AUDIO_BOSS_STAGE);
     CAudio::Instance()->Stop(AUDIO_CHARGE_LOOP);
     CAudio::Instance()->Stop(AUDIO_CHARGE);
 
@@ -254,8 +253,10 @@ void CGameStateOver::OnInit()
     // 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
     //     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
     //
-    youdead.LoadBitmap("RES\\gamestart\\youdead.bmp", RGB(255, 255, 255));
-    youdead.SetTopLeft(0, 0);
+	youdead.LoadBitmap("RES\\gamestart\\youdead.bmp", RGB(255, 255, 255));
+	youdead.SetTopLeft(0, 0);
+	youwin.LoadBitmap("RES\\gamestart\\win.bmp", RGB(255, 255, 255));
+	youwin.SetTopLeft(0, 0);
     ShowInitProgress(66);	// 接個前一個狀態的進度，此處進度視為66%
     //
     // 開始載入資料
@@ -265,10 +266,12 @@ void CGameStateOver::OnInit()
     //
     ShowInitProgress(100);
 }
-
 void CGameStateOver::OnShow()
 {
-    youdead.ShowBitmap();
+	if (isWin)
+		youwin.ShowBitmap();
+	else
+		youdead.ShowBitmap();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -296,6 +299,8 @@ void CGameStateRun::OnBeginState()
     CAudio::Instance()->Play(AUDIO_NTUT, true);			// 撥放 MIDI
     CAudio::Instance()->Stop(AUDIO_START);
     isplayboom = false;
+	isWin = false;
+	isplayBossStage = false;
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
@@ -387,7 +392,21 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
                 }
             }
         }
+		zero_fake = fireDragonMap.getBoss();
+		monster_x = zero_fake.getX();
+		monster_y = zero_fake.getY();
+		if (_cannon[i].GetUsingState())
+		{
+			damage = _cannon[i].collision(monster_x, monster_y, zero_fake.getAlive(), 4);
 
+			if (zero_fake.getAlive() == false)
+				damage = 0;
+			fireDragonMap.setMonsterLife(0, damage, 4);
+			if (damage > 0)
+				_cannon[i].SetUsingState(0);
+			if (fireDragonMap.IsBossDead())
+				isplayboom = true;
+		}
         _cannon[i].OnMove();
     }
 
@@ -395,10 +414,16 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     int injureMC = fireDragonMap.MosterCannonCollision();
 
     if (fireDragonMap.MonsterCollision())
-        x87_1.SetInjuredState(true, 2);
+	{
+		if(fireDragonMap.IsBossStage())
+			x87_1.SetInjuredState(true, 4);
+		else
+			x87_1.SetInjuredState(true, 2);
+	}
     else if (injureMC != 0)
     {
-        isplayboom = true;
+		if(!fireDragonMap.GetIsBossCannon())
+			isplayboom = true;
         x87_1.SetInjuredState(true, injureMC);
     }
 
@@ -464,7 +489,11 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 
     if (life.GetInteger() <= 0)//血量歸0，GAME OVER
         GotoGameState(GAME_STATE_OVER);
-
+	else if(fireDragonMap.IsBossDead())
+	{
+		isWin = true;
+		GotoGameState(GAME_STATE_OVER);
+	}
     life.SetInteger(x87_1.Getlife());
     PlayRockmanSound();
 }
@@ -521,6 +550,13 @@ void CGameStateRun::PlayRockmanSound()
         CAudio::Instance()->Play(AUDIO_CANNON3_2, false);
         isplay[1] = true;
     }
+
+	if(fireDragonMap.IsBossStage()&& !isplayBossStage)
+	{
+		CAudio::Instance()->Stop(AUDIO_NTUT);
+		CAudio::Instance()->Play(AUDIO_BOSS_STAGE, true);
+		isplayBossStage = true;
+	}
 }
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
@@ -556,6 +592,16 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     CAudio::Instance()->Load(AUDIO_CHARGE_LOOP, "sounds\\charge-loop.wav");
     CAudio::Instance()->Load(AUDIO_BOOM, "sounds\\boom.wav");
     CAudio::Instance()->Load(AUDIO_ENEMY_FIRE, "sounds\\enemyfire.wav");
+	CAudio::Instance()->Load(AUDIO_BOSS_STAGE, "sounds\\boss_stage.mp3");
+	CAudio::Instance()->Load(AUDIO_BOSS_SPRINT, "sounds\\boss\\bossSprint.wav");
+	CAudio::Instance()->Load(AUDIO_BOSS_SPRINT_2, "sounds\\boss\\sprint_zero.wav");
+	CAudio::Instance()->Load(AUDIO_BOSS_FIRE, "sounds\\boss\\fire.wav");
+	CAudio::Instance()->Load(AUDIO_BOSS_CHOP, "sounds\\boss\\chop.wav");
+	CAudio::Instance()->Load(AUDIO_BOSS_DES, "sounds\\boss\\destroylight.wav");
+	CAudio::Instance()->Load(AUDIO_BOSS_DES_2, "sounds\\boss\\destroylight_zero.wav");
+	CAudio::Instance()->Load(AUDIO_BOSS_KILL, "sounds\\boss\\kill.wav");
+	CAudio::Instance()->Load(AUDIO_BOSS_KILL_2, "sounds\\boss\\kill_zero.wav");
+	CAudio::Instance()->Load(AUDIO_BOSS_DEAD, "sounds\\boss\\dead_zero.wav");
     //
     // 此OnInit動作會接到CGameStaterOver::OnInit()，所以進度還沒到100%
     //

@@ -185,6 +185,11 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive,int monsterNum)
 		monsWidth = 120;
 		monsHeight = 160;
 	}
+	else if (monsterNum == 4)//³Ç¬¥Åé«¬
+	{
+		monsWidth = 156;
+		monsHeight = 171;
+	}
 	if (!MonsterisAlive)
 	{
 		isHitSomething = 0;

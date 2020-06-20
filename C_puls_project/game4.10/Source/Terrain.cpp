@@ -111,7 +111,7 @@ void Terrain::Initialize()
     //X6_1[7].setXY(23360, 1600);
     //X6_1[7].setScreenXY(23360, 1600);
     boss.Initialize();
-    boss.setXY(23360, 1600);
+    boss.setXY(24560, 1660);
     ////////////////////////////////
     srand((unsigned)time(NULL));
     X6_2[0].Initialize();
@@ -707,6 +707,7 @@ void Terrain::Initialize()
     map[22][283] = 2;
     map[23][283] = 2;
     map[24][283] = 2;
+	//--------------------boss stage
     map[23][309] = 1;
     map[23][308] = 1;
     map[23][307] = 1;
@@ -726,6 +727,7 @@ void Terrain::Initialize()
     map[23][293] = 1;
     map[23][292] = 1;
     map[23][291] = 1;
+	//-------------------------boss stage
     map[24][310] = 2;
     map[24][311] = 2;
     map[24][312] = 2;
@@ -819,6 +821,10 @@ Bat Terrain::getBat(int index)
 {
     return X4_1[index];
 }
+Boss Terrain::getBoss()
+{
+	return boss;
+}
 void Terrain::GetLastRockmanXY(int x, int y)
 {
     lastX = x;
@@ -911,8 +917,8 @@ void Terrain::MoveScreen()
     }
 
     boss.setScreen_XY(picX, picY);
-    boss.FixCannonScreenXY((nowX - lastX), (nowY - lastY));
     boss.DeterminAttack(nowX, nowY);
+	boss.FixCannonScreenXY((nowX - lastX), (nowY - lastY));
     background.SetTopLeft(picX, picY - 1492);
     background2.SetTopLeft(picX + background.Width(), picY - 1492);
     background3.SetTopLeft(picX + background.Width() + background2.Width(), picY - 1492);
@@ -1024,7 +1030,7 @@ bool Terrain::MonsterCollision()
 int Terrain::MosterCannonCollision()
 {
     int tmp;
-
+	isBossCannon = false;
     for (int i = 0; i < 8; i++)
     {
         tmp = X6_1[i].MonsterCannonCollision(nowX, nowY);
@@ -1040,22 +1046,36 @@ int Terrain::MosterCannonCollision()
         if (tmp != 0)
             return tmp;
     }
-
     tmp = boss.MonsterCannonCollision(nowX, nowY);
-
     if (tmp != 0)
-        return tmp;
-
+	{
+		isBossCannon = true;
+		return tmp;
+	}
     return 0;
+}
+bool Terrain::IsBossStage()
+{
+	return boss.GetStartAttack();
+}
+bool Terrain::IsBossDead()
+{
+	return !boss.getAlive();
+}
+bool Terrain::GetIsBossCannon()
+{
+	return isBossCannon;
 }
 void Terrain::setMonsterLife(int index, int damage, int monsterNum)
 {
-    if (monsterNum == 1)
-        X6_1[index].deductLife(damage);
-    else if (monsterNum == 2)
-        X6_2[index].deductLife(damage);
-    else if (monsterNum == 3)
-        X4_1[index].deductLife(damage);
+	if (monsterNum == 1)
+		X6_1[index].deductLife(damage);
+	else if (monsterNum == 2)
+		X6_2[index].deductLife(damage);
+	else if (monsterNum == 3)
+		X4_1[index].deductLife(damage);
+	else if (monsterNum == 4)
+		boss.deductLife(damage);
 }
 int Terrain::getMonsterLife(int index, int monsterNum)
 {
@@ -1065,6 +1085,8 @@ int Terrain::getMonsterLife(int index, int monsterNum)
         return X6_2[index].getLife();
     else if (monsterNum == 3)
         return X4_1[index].getLife();
+	else if (monsterNum == 4)
+		return boss.getLife();
 
     return 0;
 }

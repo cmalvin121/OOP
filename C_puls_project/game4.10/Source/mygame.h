@@ -73,7 +73,19 @@ enum AUDIO_ID {				// 定義各種音效的編號
 	AUDIO_CHARGE,			// 12
 	AUDIO_CHARGE_LOOP,		// 13
 	AUDIO_BOOM,				// 14
-	AUDIO_ENEMY_FIRE		// 15
+	AUDIO_ENEMY_FIRE,		// 15
+	AUDIO_BOSS_STAGE,		// 16
+	AUDIO_BOSS_SPRINT,		// 17
+	AUDIO_BOSS_SPRINT_2,	// 18
+	AUDIO_BOSS_FIRE,		// 19
+	AUDIO_BOSS_CHOP,		// 20
+	AUDIO_BOSS_DES,			// 21
+	AUDIO_BOSS_DES_2,		// 22
+	AUDIO_BOSS_KILL,		// 23
+	AUDIO_BOSS_KILL_2,		// 24
+	AUDIO_BOSS_DEAD,		// 25
+
+
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -138,10 +150,10 @@ class CGameStateRun : public CGameState {
         Monster monster[8];			//怪物
 		Nightmare nightmare[6];		//夢魘
 		Bat bat[6];					//蝙蝠
+		Boss zero_fake;
 		bool isplay[2] = { false };
 		bool isplayboom;
-        //const int monster_num, terrain_num;
-        //int map[6][5];
+		bool isplayBossStage=false;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -160,6 +172,7 @@ class CGameStateOver : public CGameState {
     private:
         int counter;	// 倒數之計數器
 		CMovingBitmap youdead;
+		CMovingBitmap youwin;
 };
 
 }

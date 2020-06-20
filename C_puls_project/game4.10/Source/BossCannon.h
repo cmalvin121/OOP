@@ -14,6 +14,7 @@ class BossCannon
         void setCannon(int t);
         void OnMove();						//移動圖形
         void OnShow();						//顯示圖形
+		void SetVelocity(int RockX, int RockY);
         void SetLastMovingState(int flag);		//設定上次移動狀態
         void SetX(int x);
         void SetY(int y);
@@ -28,8 +29,20 @@ class BossCannon
         int x1, y1;								//腳色當前座標
         int screenX, screenY;					//畫面的座標
         int hitX, hitY;							//子彈擊中座標
-        CMovingBitmap bossCannonleft;				//圖片:
-        int velocity_cannon;					//洛克炮速度
+        CMovingBitmap hugeSword;				
+		CMovingBitmap hugeSwordLeft;
+		CAnimation flySword;
+		CAnimation flySwordLeft;
+		CAnimation destroyLight;
+		CAnimation cannon;
+		CAnimation cannonLeft;
+		void LoadFlySwordBitMap();
+		void LoadFlySwordLeftBitMap();
+		void LoadDestroyLightBitMap();
+		void LoadCannonBitMap();
+		void LoadCannonLeftBitMap();
+        int velocity_cannon_x;					//洛克炮速度
+		int velocity_cannon_y;					//洛克炮速度
         int lastMovingState;					//上次的移動方向
         int isHitSomething;						//是否擊中到東西
         bool catchAction;						//0:抓取動作，1:不抓取動作
