@@ -472,11 +472,6 @@ void Boss::OnMove(int RockX, int RockY)
 		injureDelay++;
 		isInjured = false;
 	}
-	if (isPlaySound && !isAlive)
-	{
-		CAudio::Instance()->Play(25, false);
-		isPlaySound = false;
-	}
 }
 
 void Boss::FixCannonScreenXY(int fixX, int fixY)

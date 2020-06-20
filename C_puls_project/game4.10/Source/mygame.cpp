@@ -499,6 +499,8 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
 }
 void CGameStateRun::PlayRockmanSound()
 {
+	if (fireDragonMap.IsBossDead() && isplayboom)
+		CAudio::Instance()->Play(25, false);
     if (isplayboom)
     {
         CAudio::Instance()->Play(AUDIO_BOOM, false);
