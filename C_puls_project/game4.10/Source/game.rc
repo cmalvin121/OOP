@@ -62,13 +62,6 @@ END
 // Bitmap
 //
 
-IDB_BALL                BITMAP                  "..\\res\\ball.bmp"
-
-IDB_ERASER1             BITMAP                  "..\\res\\eraser1.bmp"
-
-IDB_BACKGROUND          BITMAP                  "..\\res\\ntutcsie.bmp"
-
-IDB_CORNER              BITMAP                  "..\\res\\corner.bmp"
 
 IDB_0                   BITMAP                  "..\\res\\bmp0.bmp"
 
@@ -92,27 +85,9 @@ IDB_9                   BITMAP                  "..\\res\\bmp9.bmp"
 
 IDB_MINUS               BITMAP                  "..\\res\\bmp10.bmp"
 
-IDB_CENTER              BITMAP                  "..\\res\\center.bmp"
-
-IDB_ERASER2             BITMAP                  "..\\res\\eraser2.bmp"
-
-IDB_ERASER3             BITMAP                  "..\\res\\eraser3.bmp"
-
 IDB_CONTINUE            BITMAP                  "..\\res\\continue.bmp"
 
-IDB_HELP                BITMAP                  "..\\res\\help.bmp"
-
 IDB_LOADING             BITMAP                  "..\\res\\loading.bmp"
-
-rock_x87                BITMAP                  "..\\res\\bitmap3.bmp"
-
-GUO_DONG                BITMAP                  "..\\res\\dong.bmp"
-
-IDB_BLUE                BITMAP                  "..\\res\\bmp00001.bmp"
-
-IDB_GREEN               BITMAP                  "..\\res\\bmp00002.bmp"
-
-test                    BITMAP                  "..\\res\\test.bmp"
 
 rock_x87_super_armor    BITMAP                  "..\\res\\super armor.bmp"
 

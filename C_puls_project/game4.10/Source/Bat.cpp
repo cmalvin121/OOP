@@ -17,8 +17,8 @@ void Bat::Initialize()
     life = 4;
     isAlive = true;
     AttackDirection = 0;
-    monsBoom.Reset();
     AttackMode = 0;
+	monsBoom.Reset();
 }
 void Bat::LoadBitMap()
 {
@@ -84,7 +84,6 @@ int Bat::getScreenX()
 {
     return s_x;
 }
-
 int Bat::getScreenY()
 {
     return s_y;
@@ -100,7 +99,6 @@ int Bat::getLife()
 void Bat::deductLife(int damage)
 {
     life -= damage;
-
     if (life <= 0)
         isAlive = false;
 }
@@ -110,7 +108,6 @@ void Bat::moveAttack(int RockX, int RockY)
         x -= 30;
     else if (RockX > x)
         x += 30;
-
     if (RockY <= y)
         y -= 20;
     else if (RockY > y)
@@ -120,15 +117,12 @@ void Bat::DeterminAttack(int RockX, int RockY)
 {
     monsMovingRight.OnMove();
     monsMovingLeft.OnMove();
-
     if (((RockX - x) < 1000 && (RockX - x) > 0) || ((x - RockX) < 1000 && (x - RockX) > 0) || AttackMode == 1)
     {
         AttackMode = 1;
-
         if (isAlive)
             moveAttack(RockX, RockY);
     }
-
     if (x - RockX > 0)
         AttackDirection = 0;
     else if (RockX - x > 0)
@@ -160,10 +154,8 @@ void Bat::OnShowBoom()
 {
     if (monsBoom.IsFinalBitmap())
         monsBoom.setToSpecifyBitmap(7);
-
     monsBoom.OnMove();
     monsBoom.SetTopLeft(x + s_x, y + s_y - 1492);
-
     if (isAlive == false && !monsBoom.IsFinalBitmap())
         monsBoom.OnShow();
 }

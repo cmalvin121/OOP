@@ -17,12 +17,12 @@ namespace game_framework
 		s_x = s_y = 0;
 		life = 10;
 		isAlive = true;
-		AttackDirection = 0;
 		AttackDelay = 49;
 		determinActionDelay = 0;
 		moveDelay = 0;
-		monsBoom.Reset();
+		AttackDirection = 0;
 		AttackMode = 0;
+		monsBoom.Reset();
 		firesound = false;
 		if (rand() % 2)
 			moveDelay = 200;
@@ -122,7 +122,6 @@ namespace game_framework
 	{
 		return s_x;
 	}
-
 	int Nightmare::getScreenY()
 	{
 		return s_y;
@@ -143,11 +142,8 @@ namespace game_framework
 	void Nightmare::deductLife(int damage)
 	{
 		life -= damage;
-
 		if (life <= 0)
 			isAlive = false;
-
-		//TRACE("\n\n--------------- life = %d --------------\n\n", life);
 	}
 	void Nightmare::moveAttack(int RockX, int RockY)
 	{
@@ -292,10 +288,8 @@ namespace game_framework
 	{
 		if (monsBoom.IsFinalBitmap())
 			monsBoom.setToSpecifyBitmap(7);
-
 		monsBoom.OnMove();
 		monsBoom.SetTopLeft(x + s_x, y + s_y - 1492);
-
 		if (isAlive == false && !monsBoom.IsFinalBitmap())
 			monsBoom.OnShow();
 	}

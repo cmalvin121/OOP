@@ -68,7 +68,6 @@ int Monster::getScreenX()
 {
     return s_x;
 }
-
 int Monster::getScreenY()
 {
     return s_y;
@@ -89,24 +88,19 @@ int Monster::getLife()
 void Monster::deductLife(int damage)
 {
     life -= damage;
-
     if (life <= 0)
         isAlive = false;
-
-    //TRACE("\n\n--------------- life = %d --------------\n\n", life);
 }
 void Monster::DeterminAttack(int RockX, int RockY)
 {
 	if ((x - RockX > 400 || RockX - x > 400) && AttackDelay < 49)
         AttackDelay++;
-    else if (((x - RockX < 400) && (x - RockX > 0)) || ((RockX - x < 400) && (RockX - x > 0)))//往左對主角攻擊,往右對主角攻擊
+    else if (((x - RockX < 400) && (x - RockX > 0)) || ((RockX - x < 400) && (RockX - x > 0)))
         AttackDelay++;
-
     if (x - RockX > 0)
         AttackDirection = 0;
     else if (RockX - x > 0)
         AttackDirection = 1;
-
 	if (AttackDelay == 50 && isAlive)
 	{
 		AttackDelay = 0;
@@ -118,7 +112,6 @@ void Monster::DeterminAttack(int RockX, int RockY)
 		cannon.SetCatchAction(1);
 	}
 	cannon.OnMove();
-
 }
 bool Monster::MonsterCollision(int RockX, int RockY)
 {
@@ -166,10 +159,8 @@ void Monster::OnShowBoom()
 {
     if (monsBoom.IsFinalBitmap())
         monsBoom.setToSpecifyBitmap(7);
-
     monsBoom.OnMove();
     monsBoom.SetTopLeft(s_x, s_y - 1492);
-
     if (isAlive == false && !monsBoom.IsFinalBitmap())
         monsBoom.OnShow();
 }

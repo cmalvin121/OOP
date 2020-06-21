@@ -54,7 +54,6 @@ void Rockman::JumpDropping()
         velocity_jump -= 10;
     else if (jumpDegree >= 5)
         velocity_jump += 10;
-
     y += velocity_jump;
     jumpDegree--;
 }
@@ -63,20 +62,15 @@ void Rockman::KickWall()
     if (lastMovingState == 1) //½ðÀð:¥ª
     {
         x += 20;
-
         if (keepkeydownSprinting)
             x += 40;
-
         kickWallDegree++;
     }
-
     if (lastMovingState == 0)//½ðÀð:¥k
     {
         x -= 20;
-
         if (keepkeydownSprinting)
             x -= 40;
-
         kickWallDegree++;
     }
 }
@@ -87,7 +81,6 @@ void Rockman::setkickWall()//½ðÀð
         kickWallDegree = 0;
         isKickWall = false;
     }
-
     if (crashState_wall > 0 && isJumping)
     {
         isKickWall = true;
@@ -97,7 +90,6 @@ bool Rockman::showDropping()
 {
     if (((!isJumping) && (jumpDegree >= 3)) || isDropping)
         return true;
-
     return false;
 }
 void Rockman::OnMove()
@@ -144,14 +136,11 @@ void Rockman::OnMove()
             x += velocity_sprint;
         else if (lastMovingState == 1 && (!isInjured || injureDelay < 30))
             x -= velocity_sprint;
-
         if (sprintDegree < 8)
             velocity_sprint += 7;
         else
             velocity_sprint -= 7;
-
         sprintDegree++;
-
         if (sprintDegree == 20)
             isSprinting = false;
     }
@@ -165,7 +154,6 @@ void Rockman::OnMove()
         sprintDegree = 0;
         velocity_sprint = initial_velocity_sprint;
     }
-
 	if ((isMovingLeft) && (x >= 0) && !isKickWall && (!isInjured || injureDelay < 30))//©¹¥ª²¾°Ê
     {
         if ((keepkeydownSprinting) && (jumpDegree > 0))//¼u®g¸õÅD
@@ -181,23 +169,18 @@ void Rockman::OnMove()
         else if (!isSprinting)//©¹¥k²¾°Ê
             x += STEP_SIZE;
     }
-
     if ((isJumping) && (jumpDegree < 10))//¸õÅD
     {
 		if((!isInjured || injureDelay < 30))
 			y -= velocity_jump;
-
         if (jumpDegree < 4 )
             velocity_jump += 10;
         else if (jumpDegree >= 4)
             velocity_jump -= 10;
-
         jumpDegree++;
-
         if (jumpDegree == 10)
             isJumping = false;
     }
-
     if ((!isJumping) && (jumpDegree > 0))//¸õÅD¸¨¤U¡BÂHÀð·Æ¸¨¡C
     {
         if (crashState_wall != 0)
@@ -212,20 +195,15 @@ void Rockman::OnMove()
             isKickWallSlide = false;
         }
     }
-
     Dropping();
     isAlreadyOnGround();
-
     if (isKickWall)
         KickWall();
-
     setkickWall();
-
     if (keepkeydownAttacking)
     {
         if (determineCharge <= 50)
             determineCharge++;
-
         if (determineCharge > 5)
             charge = determineCharge;
     }
@@ -239,20 +217,16 @@ void Rockman::OnMove()
 		injureDelay++;
 		isInjured = false;
 	}
-	//TRACE("x,y(rockman):%d,%d\n", x, y);
 }
-
 void Rockman::SetMovingLeft(bool flag)
 {
     isMovingLeft = flag;
-
     if (flag == true)
         lastMovingState = 1;
 }
 void Rockman::SetMovingRight(bool flag)
 {
     isMovingRight = flag;
-
     if (flag == true)
         lastMovingState = 0;
 }
@@ -295,13 +269,11 @@ bool Rockman::GetJumping()
 //------------------------------------------
 void Rockman::SetCrashState(int state)
 {
-    //TRACE("crashstate:%d\n", state);
     crashState = state;
 }
 void Rockman::SetCrashStateWall(int state)
 {
     crashState_wall = state;
-
     if (crashState_wall != 0)
     {
         if (jumpDegree == 1)
@@ -311,13 +283,11 @@ void Rockman::SetCrashStateWall(int state)
             animation_kickWallLeftAttack.Reset();
             animation_kickWallRightAttack.Reset();
         }
-
         if (!isMovingLeft)
         {
             animation_kickWallSlideLeft.Reset();
             animation_kickWallSlideLeftAttack.Reset();
         }
-
         if (!isMovingRight)
         {
             animation_kickWallSlideRight.Reset();
@@ -336,7 +306,6 @@ bool Rockman::GetDropping()
 {
     if (crashState_wall != 0)
         isDropping = false;
-
     return isDropping;
 }
 void Rockman::isAlreadyOnGround()
@@ -423,7 +392,6 @@ void Rockman::setCannon(int x, int y, int lastMovingState)
     {
         if (rockcannon[i].GetUsingState() == false)
         {
-            //TRACE("\n\n%d  %d\n\n", x, y);				//¶Çªº®y¼Ð
             rockcannon[i].SetUsingState(true);
 
 			if (isKickWallSlide&&crashState_wall != 0)
@@ -435,7 +403,6 @@ void Rockman::setCannon(int x, int y, int lastMovingState)
             }
             else
                 rockcannon[i].SetLastMovingState(lastMovingState);
-
             rockcannon[i].SetX(x);
             rockcannon[i].SetY(y);
             rockcannon[i].SetCatchAction(1);
@@ -447,7 +414,6 @@ void Rockman::setCannon(int x, int y, int lastMovingState)
 void Rockman::SetInjuredState(bool state,int injureValue)
 {
 	isInjured = state;
-	//TRACE("isInjured:%d\n", state);
 	if (injureDelay == 30)
 	{
 		animation_InjureLeft.Reset();
@@ -477,7 +443,6 @@ int Rockman::GetX()
 {
     return x;
 }
-
 int Rockman::GetY()
 {
     return y;
@@ -486,7 +451,6 @@ void Rockman::SetX(int X_BT)
 {
     x = X_BT;
 }
-
 void Rockman::SetY(int Y_BT)
 {
     y = Y_BT;
@@ -807,20 +771,16 @@ void Rockman::LoadAttackBitmap()
     LoadKickWallRightAttackBitmap();
     LoadKickWallSlideLeftAttackBitmap();
     LoadKickWallSlideRightAttackBitmap();
-
     for (int i  = 0; i < 20; i++)
         rockcannon[i].LoadBitmap();
 }
 void Rockman::OnShow()
 {
     int tmp = x, tmp2 = y;
-
     if (x >= 900)
         x = 900;
-
     if (y <= 2700)
         y = 380;
-
     animationRight.SetTopLeft(x, y);
     animationLeft.SetTopLeft(x, y);
     animationMovingRight.SetTopLeft(x, y);
@@ -864,14 +824,11 @@ void Rockman::OnShow()
             animation_kickWallLeft.setToSpecifyBitmap(3);
             animation_kickWallLeftAttack.setToSpecifyBitmap(3);
         }
-
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animation_kickWallSlideLeftAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -888,14 +845,11 @@ void Rockman::OnShow()
             animation_kickWallRight.setToSpecifyBitmap(3);
             animation_kickWallRightAttack.setToSpecifyBitmap(3);
         }
-
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animation_kickWallRightAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -912,14 +866,11 @@ void Rockman::OnShow()
             animation_jumpRight.setToSpecifyBitmap(7);
             animation_jumpRightAttack.setToSpecifyBitmap(7);
         }
-
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animation_jumpRightAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -936,14 +887,11 @@ void Rockman::OnShow()
             animation_jumpLeft.setToSpecifyBitmap(7);
             animation_jumpLeftAttack.setToSpecifyBitmap(7);
         }
-
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animation_jumpLeftAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -960,14 +908,11 @@ void Rockman::OnShow()
             animation_kickWallSlideLeft.setToSpecifyBitmap(3);
             animation_kickWallSlideLeftAttack.setToSpecifyBitmap(3);
         }
-
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animation_kickWallSlideLeftAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -984,14 +929,11 @@ void Rockman::OnShow()
             animation_kickWallSlideRight.setToSpecifyBitmap(3);
             animation_kickWallSlideRightAttack.setToSpecifyBitmap(3);
         }
-
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animation_kickWallSlideRightAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -1005,14 +947,11 @@ void Rockman::OnShow()
     {
         animation_jumpRight.setToSpecifyBitmap(7);
         animation_jumpRightAttack.setToSpecifyBitmap(7);
-
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animation_jumpRightAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -1026,14 +965,11 @@ void Rockman::OnShow()
     {
         animation_jumpLeft.setToSpecifyBitmap(7);
         animation_jumpLeftAttack.setToSpecifyBitmap(7);
-
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animation_jumpLeftAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -1048,10 +984,8 @@ void Rockman::OnShow()
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animation_sprintRightAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -1066,10 +1000,8 @@ void Rockman::OnShow()
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animation_sprintLeftAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -1084,10 +1016,8 @@ void Rockman::OnShow()
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animationMovingRightAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -1102,10 +1032,8 @@ void Rockman::OnShow()
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animationMovingLeftAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -1120,10 +1048,8 @@ void Rockman::OnShow()
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animationRightAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -1138,10 +1064,8 @@ void Rockman::OnShow()
         if (((isAttacking) && (charge == 0)) || (chargeAttack > 5))
         {
             animationLeftAttack.OnShow();
-
             if (keepkeydownAttacking == false)
                 attackActionDelay++;
-
             if (attackActionDelay >= 20)
             {
                 attackActionDelay = 0;
@@ -1151,7 +1075,6 @@ void Rockman::OnShow()
         else
             animationLeft.OnShow();
     }
-
     for (int i = 0; i < 20; i++)
     {
         if (rockcannon[i].GetUsingState())
@@ -1159,7 +1082,6 @@ void Rockman::OnShow()
 		else
 			rockcannon[i].OnShowHit();
     }
-
     x = tmp;
     y = tmp2;
 	//--------Åã¥Ü¥Í©R­È-------------

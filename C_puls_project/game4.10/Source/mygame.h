@@ -1,43 +1,3 @@
-/*
- * mygame.h: 本檔案儲遊戲本身的class的interface
- * Copyright (C) 2002-2008 Woei-Kae Chen <wkc@csie.ntut.edu.tw>
- *
- * This file is part of game, a free game development framework for windows.
- *
- * game is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * game is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *	 2004-03-02 V4.0
- *      1. Add CGameStateInit, CGameStateRun, and CGameStateOver to
- *         demonstrate the use of states.
- *   2005-09-13
- *      Rewrite the codes for CBall and CEraser.
- *   2005-09-20 V4.2Beta1.
- *   2005-09-29 V4.2Beta2.
- *   2006-02-08 V4.2
- *      1. Rename OnInitialUpdate() -> OnInit().
- *      2. Replace AUDIO_CANYON as AUDIO_NTUT.
- *      3. Add help bitmap to CGameStateRun.
- *   2006-09-09 V4.3
- *      1. Rename Move() and Show() as OnMove and OnShow() to emphasize that they are
- *         event driven.
- *   2008-02-15 V4.4
- *      1. Add namespace game_framework.
- *      2. Replace the demonstration of animation as a new bouncing ball.
- *      3. Use ShowInitProgress(percent) to display loading progress.
-*/
-//
 #include "BossCannon.h"
 #include "Boss.h"
 #include "Trashcannon.h"
@@ -48,15 +8,7 @@
 #include "Terrain.h"
 #include "RockCannon.h"
 #include "Rockman.h"
-#include "CEraser.h"
-#include "CBall.h"
-#include "CBouncingBall.h"
-
 namespace game_framework {
-/////////////////////////////////////////////////////////////////////////////
-// Constants
-/////////////////////////////////////////////////////////////////////////////
-
 enum AUDIO_ID {				// 定義各種音效的編號
     AUDIO_OPTIONMOVE,		// 0
     AUDIO_ENTER,			// 1
@@ -84,8 +36,6 @@ enum AUDIO_ID {				// 定義各種音效的編號
 	AUDIO_BOSS_KILL,		// 23
 	AUDIO_BOSS_KILL_2,		// 24
 	AUDIO_BOSS_DEAD,		// 25
-
-
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -102,29 +52,26 @@ class CGameStateInit : public CGameState {
     protected:
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
-        CMovingBitmap logo;								// csie的logo
-        CMovingBitmap gameStartBackground;
-        CMovingBitmap option1;
-        CMovingBitmap option2;
-        CMovingBitmap option3;
-		CMovingBitmap option4;
-        CMovingBitmap option1Select;
-        CMovingBitmap option2Select;
-        CMovingBitmap option3Select;
-		CMovingBitmap option4Select;
-        CMovingBitmap controlGuide;
-		CMovingBitmap about;
-        int option;
-        bool startGuide;
-		bool startabout;
-		bool isplaysound;
+        CMovingBitmap gameStartBackground;				//圖片:遊戲選項主畫面
+        CMovingBitmap option1;							//圖片:遊戲選項1(開始遊戲)
+        CMovingBitmap option2;							//圖片:遊戲選項2(操作指南)
+        CMovingBitmap option3;							//圖片:遊戲選項3(關於)
+		CMovingBitmap option4;							//圖片:遊戲選項4(結束遊戲)
+        CMovingBitmap option1Select;					//圖片:遊戲選項1選擇(開始遊戲)
+        CMovingBitmap option2Select;					//圖片:遊戲選項2選擇(操作指南)
+        CMovingBitmap option3Select;					//圖片:遊戲選項3選擇(關於)
+		CMovingBitmap option4Select;					//圖片:遊戲選項4選擇(結束遊戲)
+        CMovingBitmap controlGuide; 					//圖片:操作指南畫面
+		CMovingBitmap about;							//圖片:關於畫面
+        int option;										//當前選項
+        bool startGuide;								//是否開始操作指南
+		bool startabout;								//是否開始關於畫面
+		bool isplaysound;								//是否播放音效
 };
-
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
 // 每個Member function的Implementation都要弄懂
 /////////////////////////////////////////////////////////////////////////////
-
 class CGameStateRun : public CGameState {
     public:
         CGameStateRun(CGame* g);
@@ -143,19 +90,18 @@ class CGameStateRun : public CGameState {
         void OnShow();									// 顯示這個狀態的遊戲畫面
 		void PlayRockmanSound();
     private:
-        Rockman x87_1;				// 洛克人
-        Terrain fireDragonMap;		// 地圖:火龍
-        CInteger  life;				// 生命值
-        RockCannon* _cannon;		//子彈的陣列
-        Monster monster[8];			//怪物
-		Nightmare nightmare[6];		//夢魘
-		Bat bat[6];					//蝙蝠
-		Boss zero_fake;
-		bool isplay[2] = { false };
-		bool isplayboom;
-		bool isplayBossStage=false;
+        Rockman x87_1;									//洛克人
+        Terrain fireDragonMap;							//地圖:火龍
+        CInteger  life;									//生命值
+        RockCannon* _cannon;							//洛克人子彈的陣列
+        Monster monster[8];								//垃圾怪
+		Nightmare nightmare[6];							//夢魘
+		Bat bat[6];										//蝙蝠
+		Boss zero_fake;									//夢魘傑洛
+		bool isplay[2] = { false };						//是否播放音效
+		bool isplayboom;								//是否播放爆炸音效
+		bool isplayBossStage = false;					//是否進入BOSS戰鬥
 };
-
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的結束狀態(Game Over)
 // 每個Member function的Implementation都要弄懂
@@ -170,9 +116,8 @@ class CGameStateOver : public CGameState {
         void OnMove();									// 移動遊戲元素
         void OnShow();									// 顯示這個狀態的遊戲畫面
     private:
-        int counter;	// 倒數之計數器
-		CMovingBitmap youdead;
-		CMovingBitmap youwin;
-};
-
+        int counter;									// 倒數之計數器
+		CMovingBitmap youdead;							// 圖片:你死了
+		CMovingBitmap youwin;							// 圖片:你贏了
+};																	 
 }

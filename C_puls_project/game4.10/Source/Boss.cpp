@@ -12,16 +12,17 @@ namespace game_framework
 Boss::Boss()
 {
 }
-
 void Boss::Initialize()
 {
     x = y = 0;
     screen_x = screen_y = 0;
     life = 48;
     isAlive = true;
-    skill = 0;
-	commandProcess = 0;
+	startAttack = false;
+	isfire = false;
 	attackDelay = 0;
+	AttackDirection = 0;
+	KillDirection = 0;
 	AttackCommand[0] = 0;
 	AttackCommand[1] = 2;
 	AttackCommand[2] = 2;
@@ -37,15 +38,14 @@ void Boss::Initialize()
 	AttackCommand[12] = 5;
 	AttackCommand[13] = 0;
 	AttackCommand[14] = 1;
+	commandProcess = 0;
 	reverse = 0;
-	KillDirection = 0;
-	isfire = false;
-	startAttack = false;
+	skill = 0;
 	isInjured = false;
-	isPlaySound = false;
-	destroyLightCount = 0;
 	injureDelay = 30;
 	injureShine = 3;
+	isPlaySound = false;
+	destroyLightCount = 0;
 	for (int i = 0; i < 6; i++)
 		cannon[i].SetUsingState(false);
 }
@@ -378,22 +378,18 @@ void Boss::OnShow()
 	if (injureShine > 4)
 		injureShine = 0;
 }
-
 int Boss::getX()
 {
     return x;
 }
-
 int Boss::getY()
 {
     return y;
 }
-
 int Boss::getScreenX()
 {
     return screen_x;
 }
-
 int Boss::getScreenY()
 {
     return screen_y;
@@ -406,19 +402,16 @@ bool Boss::getAlive()
 {
     return isAlive;
 }
-
 void Boss::setXY(int nx, int ny)
 {
     x = nx;
     y = ny;
 }
-
 void Boss::setScreen_XY(int nx, int ny)
 {
     screen_x = nx;
     screen_y = ny;
 }
-
 void Boss::deductLife(int damage)
 {
 	if (damage > 0)
@@ -430,7 +423,6 @@ void Boss::deductLife(int damage)
     if (life <= 0)
         isAlive = false;
 }
-
 void Boss::OnMove(int RockX, int RockY)
 {
 	if (life > 24 && skill == 5)
@@ -473,7 +465,6 @@ void Boss::OnMove(int RockX, int RockY)
 		isInjured = false;
 	}
 }
-
 void Boss::FixCannonScreenXY(int fixX, int fixY)
 {
 	for (int i = 0; i < 6; i++)
@@ -760,7 +751,6 @@ void Boss::DeterminAttack(int RockX, int RockY)
 }
 bool Boss::MonsterCollision(int RockX, int RockY)
 {
-    //TRACE("\n------%d %d %d %d-------\n", RockX, RockX, x, y);
     if (!isAlive)
         return false;
     else if (x + 156 > RockX && RockX + 160 > x && y + 171 > RockY && RockY + 200 > y)

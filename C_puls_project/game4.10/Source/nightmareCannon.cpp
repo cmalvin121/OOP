@@ -12,17 +12,17 @@ namespace game_framework
 	{
 		x1 = 0;
 		y1 = 700;
-		velocity_cannon_x = 60;
-		velocity_cannon_y = 0;
-		lastMovingState = 0;
-		catchAction = 0;
 		screenX = 0;
 		screenY = 0;
-		showLock = 0;
-		usingState = false;
-		distance = 0;
-		isHitSomething = 0;
 		hitX = hitY = 0;
+		velocity_cannon_x = 60;
+		velocity_cannon_y = 0;
+		distance = 0;
+		lastMovingState = 0;
+		usingState = false;
+		catchAction = 0;
+		showLock = 0;
+		isHitSomething = 0;
 		isCatchHitXY = false;
 		boomsound = false;
 	}
@@ -113,7 +113,6 @@ namespace game_framework
 		velocity_cannon_y = (int)(v_y * 60 / sqrt(pow(v_x, 2) + pow(v_y, 2)));
 		if (RockY < y1)
 			velocity_cannon_y = velocity_cannon_y * -1;
-
 	}
 	void NightmareCannon::HitAnimationLock()
 	{
@@ -133,7 +132,6 @@ namespace game_framework
 			if ((x1 + 58 >= x) && (x1 <= x + 160) && (y1 <= y + 200) && (y1 + 55 >= y))
 			{
 				isHitSomething = 2;
-				TRACE("isHitSomethingMC:%d\n", isHitSomething);
 				SetHitXY();
 				return 2;
 			}
@@ -143,7 +141,6 @@ namespace game_framework
 			if ((x1 <= x + 160) && (x1 >= x) && (y1 <= y + 200) && (y1 + 55 >= y))
 			{
 				isHitSomething = 2;
-				TRACE("isHitSomethingMC:%d\n", isHitSomething);
 				SetHitXY();
 				return 2;
 			}
@@ -167,10 +164,8 @@ namespace game_framework
 			hitX = screenX;
 			hitY = screenY;
 		}
-
 		if (catchAction == 0)
 			showLock = 0;
-
 		if (usingState)
 		{
 			if (lastMovingState == 0)

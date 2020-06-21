@@ -13,17 +13,17 @@ BossCannon::BossCannon()
 {
     x1 = 0;
     y1 = 700;
+	screenX = 0;
+	screenY = 0;
+	hitX = hitY = 0;
     velocity_cannon_x = 30;
 	velocity_cannon_y = 30;
+	distance = 0;
     lastMovingState = 0;
+	usingState = false;
     catchAction = 0;
-    screenX = 0;
-    screenY = 0;
     showLock = 0;
-    usingState = false;
-    distance = 0;
     isHitSomething = 0;
-    hitX = hitY = 0;
     isCatchHitXY = false;
 }
 void BossCannon::LoadFlySwordBitMap() 
@@ -111,8 +111,7 @@ void BossCannon::OnMove()
         distance = 0;
         isHitSomething = 0;
     }
-
-    if (type == 1 || type == 2)			//1 = 劍氣  2 = 直線炮彈
+    if (type == 1 || type == 2)
     {
 		velocity_cannon_x = 30;
 		if (type == 1)
@@ -132,19 +131,17 @@ void BossCannon::OnMove()
                 x1 += velocity_cannon_x;
                 screenX += velocity_cannon_x;
                 distance += velocity_cannon_x;
-                //TRACE("\n------Hiiiii-----\n");
             }
         }
 		cannon.OnMove();
 		cannonLeft.OnMove();
     }
-    else if (type == 3)				//3 = 捶地板
+    else if (type == 3)
     {
 		velocity_cannon_y = 50;
 		distance += 50;
         if (catchAction == 0)
             showLock = 0;
-
         if (usingState)
         {
             y1 -= velocity_cannon_y;
@@ -153,11 +150,10 @@ void BossCannon::OnMove()
         }
 		destroyLight.OnMove();
     }
-	else if (type == 4)				//4 = 飛刀
+	else if (type == 4)
 	{
 		if (catchAction == 0)
 			showLock = 0;
-
 		if (usingState)
 		{
 			CONST int velocity_cannon = 60;
@@ -179,18 +175,14 @@ void BossCannon::OnMove()
 		flySword.OnMove();
 		flySwordLeft.OnMove();
 	}
-	TRACE("x,y,screenX,screenY:%d,%d,%d,%d\n", x1, y1, screenX, screenY);
 }
 void BossCannon::OnShow()
 {
     int tmp = x1, tmp2 = y1;
-
     if (x1 >= 900)
         x1 = screenX;
-
     if (y1 <= 2700)
         y1 = screenY;
-
 	if (type == 1 && lastMovingState == 0)
 	{
 		hugeSword.SetTopLeft(x1, y1);
@@ -226,13 +218,9 @@ void BossCannon::OnShow()
 		flySwordLeft.SetTopLeft(x1, y1);
 		flySwordLeft.OnShow();
 	}
-    /*if (usingState == true)
-        bossCannonleft.ShowBitmap();*/
-
     x1 = tmp;
     y1 = tmp2;
 }
-
 void BossCannon::SetLastMovingState(int flag)
 {
     if (catchAction == 0)
@@ -252,7 +240,6 @@ void BossCannon::AddScreenX_fix(int fix)
 {
     if (usingState == true)
         screenX += fix;
-
     if (usingState == false)
         hitX += fix;
 }
@@ -260,7 +247,6 @@ void BossCannon::AddScreenY_fix(int fix)
 {
     if (usingState == true)
         screenY += fix;
-
     if (usingState == false)
         hitY += fix;
 }
@@ -293,11 +279,8 @@ bool BossCannon::GetUsingState()
 }
 int BossCannon::collision(int x, int y)
 {
-    //TRACE("\n---Test2: %d %d ; %d %d---\n", x, y, x1, y1);
-
     if (!usingState)
         return 0;
-
     if (type == 1)
     {
         if (lastMovingState == 0)
@@ -324,7 +307,6 @@ int BossCannon::collision(int x, int y)
             if ((x1 + 32 >= x) && (x1 <= x + 160) && (y1 <= y + 200) && (y1 + 109 >= y))
             {
                 isHitSomething = 4;
-                //TRACE("isHitSomethingMC:%d\n", isHitSomething);
                 return 4;
             }
         }
@@ -333,7 +315,6 @@ int BossCannon::collision(int x, int y)
 			if ((x1 + 58 <= x + 160) && (x1 + 58 + 160 >= x) && (y1 <= y + 200) && (y1 + 109 >= y))
             {
                 isHitSomething = 4;
-                //TRACE("isHitSomethingMC:%d\n", isHitSomething);
                 return 4;
             }
         }
@@ -343,13 +324,11 @@ int BossCannon::collision(int x, int y)
 		if ((x1 + 7 + 94 >= x) && (x1 + 7 <= x + 160) && (y1 <= y + 200) && (y1 + 225 >= y))
         {
             isHitSomething = 4;
-            //TRACE("isHitSomethingMC:%d\n", isHitSomething);
             return 4;
         }
     }
 	else if (type == 4)
 	{
-
 		if (lastMovingState == 0)
 		{
 			if ((x1 + 108 >= x) && (x1 <= x + 160) && (y1 <= y + 200) && (y1 + 167 >= y))

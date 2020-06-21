@@ -12,35 +12,35 @@ class Rockman
         void SetMovingLeft(bool);		//設定是否往左
         void SetMovingRight(bool);		//設定是否往右
         void SetJumping(bool);			//設定是否正在跳躍
+		int GetJumpDegree();			//取得跳躍高度
+		void JumpDropping();			//跳躍後落下
+		bool GetJumping();				//回傳跳躍狀態
+		void Dropping();				//是否正在降落
+		bool GetDropping();				//回傳落下狀態
+		void isAlreadyOnGround();		//是否正在地面
         void SetSprinting(bool);		//設定是否正在衝刺
         void SetKeySprintState(bool);	//設定衝刺按鍵是否按住
+		int GetSprintDegree();			//取得衝刺長度
+		void setkickWall();				//判斷是否正在踢牆
+		void KickWall();				//踢牆
         void SetAttacking(bool);		//設定是否正在攻擊
         void SetKeyAttackingState(bool);//設定攻擊按鍵是否按住
-        int GetJumpDegree();			//取得跳躍高度
-        int GetSprintDegree();			//取得衝刺長度
 		int GetDetermineCharge();		//取得判斷聚氣
         int GetCharge();				//取得聚氣程度
 		int GetChargeAttack();			//取得衝能攻擊
 		bool GetIsAttacking();			//取得是否正在攻擊
-        int GetX();						//return x;
-        int GetY();						//return y;
+        int GetX();						//取得X;
+        int GetY();						//取得Y;
         void SetX(int);					//設定X
         void SetY(int);					//設定Y
-        void JumpDropping();			//跳躍後落下
-        void Dropping();				//是否正在降落
-        bool GetDropping();				//回傳落下狀態
-		bool GetJumping();				//回傳跳躍狀態
-        void isAlreadyOnGround();		//是否正在地面
         void SetCrashState(int);		//設定碰撞狀態
         void SetCrashStateWall(int);    //設定碰撞牆壁狀態
 		int getInjuredDelay();			//回傳受傷狀態
         void SetInjuredState(bool, int);//設定受傷狀態
         void SetLife(int);				//設定生命值(作弊)
-        void setkickWall();				//判斷是否正在踢牆
-        void KickWall();				//踢牆
+		int Getlife();					//取得生命值
         void setCannon(int x, int y, int lastMovingState);			//設置子彈
         RockCannon* getCannon();		//return rockcannon[20]
-		int Getlife();					//取得生命值
 		void SetFixCannonScreen(int,int);	//修正洛克炮螢幕座標XY
     private:
         bool isMovingLeft;			// 是否正在往左移動
@@ -115,17 +115,17 @@ class Rockman
         int jumpDegree, sprintDegree;					//跳躍高度、衝刺長度
         int velocity_jump, initial_velocity_jump;		//當前跳躍速度、初始跳躍速度
         int velocity_sprint, initial_velocity_sprint;	//當前衝刺速度、初始衝刺速度
+		int dropDegree, landLevel;						//降落位置、降落基準點
+		int velocity_drop, initial_velocity_drop;		//當前降落速度、初始降落速度
+		int kickWallDegree;								//踢牆程度
+		bool isKickWall;								//是否正在踢牆
+		bool isKickWallSlide;							//是否正在踢牆滑落
         int charge, chargeAttack;						//聚氣程度、聚氣攻擊(三段式)
         int determineCharge;							//判斷是否正在聚氣
         int attackActionDelay;							//攻擊動作延遲
         RockCannon rockcannon[20];						//物件:洛克炮
-        int dropDegree, landLevel;						//降落位置、降落基準點
-        int velocity_drop, initial_velocity_drop;		//當前降落速度、初始降落速度
         int crashState;									//碰撞狀態
         int crashState_wall;							//是否碰撞牆壁
-        int kickWallDegree;								//踢牆程度
-        bool isKickWall;								//是否正在踢牆
-        bool isKickWallSlide;							//是否正在踢牆滑落
         int life;										//洛克人生命值
         int injureDelay;								//受傷無敵時間
         int injureShine;								//受傷無敵閃爍變數

@@ -11,19 +11,18 @@ RockCannon::RockCannon()
 {
     x1 = 0;
     y1 = 700;
-    velocity_cannon = 35;
-    nowCharge = 0;
-    lastMovingState = 0;
-    catchAction = 0;
-    screenX = 0;
-    screenY = 0;
-    showLock = 0;
-    usingState = false;
-    distance = 0;
-	isHitSomething = 0;
+	screenX = 0;
+	screenY = 0;
 	hitX = hitY = 0;
+	nowCharge = 0;
+    velocity_cannon = 35;
+	distance = 0;
+    lastMovingState = 0;
+	usingState = false;
+    catchAction = 0;
+	showLock = 0;
+	isHitSomething = 0;
 	isCatchHitXY = false;
-
 }
 void RockCannon::SetNowCharge(int charge)
 {
@@ -51,7 +50,6 @@ void RockCannon::SetFixScreen(int fixX,int fixY)
 		screenY += fixY;
 		screenX += fixX;
 	}
-
 	if (usingState == false)
 	{
 		hitY += fixY;
@@ -60,7 +58,6 @@ void RockCannon::SetFixScreen(int fixX,int fixY)
 }
 void RockCannon::SetHitXY()
 {
-//	TRACE("isCatchHitXY:%d\n", isCatchHitXY);
 	if(!isCatchHitXY)
 	{
 		hitX = screenX;
@@ -97,7 +94,6 @@ void RockCannon::SetScreen()
     {
         if (x1 >= 900)
             screenX = 900 + 170;
-
         if (y1 <= 2700)
         {
             if (nowCharge > 50)
@@ -112,7 +108,6 @@ void RockCannon::SetScreen()
         {
             if (x1 >= 900)
                 screenX = 900 - 222;
-
             if (y1 <= 2700)
                 screenY = 380;
         }
@@ -120,7 +115,6 @@ void RockCannon::SetScreen()
         {
             if (x1 >= 900)
                 screenX = 900;
-
             if (y1 <= 2700)
                 screenY = 380 + 84;
         }
@@ -202,7 +196,6 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive,int monsterNum)
             if ((x1 + 222 >= x) && (x1 <= x + monsWidth) && (y1 <= y + monsHeight) && (y1 + 180 >= y))
 			{
 				isHitSomething = 8;
-				TRACE("isHitSomething:%d\n", isHitSomething);
 				SetHitXY();
 				return 8;
 			}
@@ -212,7 +205,6 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive,int monsterNum)
             if ((x1 <= x + monsWidth) && (x1 >= x) && (y1 <= y + monsHeight) && (y1 + 180 >= y))
 			{
 				isHitSomething = 8;
-				TRACE("isHitSomething:%d\n", isHitSomething);
 				SetHitXY();
 				return 8;
 			}
@@ -225,7 +217,6 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive,int monsterNum)
             if ((x1 + 40 >= x) && (x1 <= x + monsWidth) && (y1 <= y + monsHeight) && (y1 + 27 >= y))
 			{
 				isHitSomething = 2;
-				TRACE("isHitSomething:%d\n", isHitSomething);
 				SetHitXY();
 				return 2;
 			}
@@ -235,7 +226,6 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive,int monsterNum)
             if ((x1 <= x + monsWidth) && (x1 >= x) && (y1 <= y + monsHeight) && (y1 + 27 >= y))
 			{
 				isHitSomething = 2;
-				TRACE("isHitSomething:%d\n", isHitSomething);
 				SetHitXY();
 				return 2;
 			}
@@ -248,7 +238,6 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive,int monsterNum)
             if ((x1 + 19 >= x) && (x1 <= x + monsWidth) && (y1 <= y + monsHeight) && (y1 + 12 >= y))
 			{
 				isHitSomething = 1;
-				TRACE("isHitSomething:%d\n", isHitSomething);
 				SetHitXY();
 				return 1;
 			}
@@ -258,7 +247,6 @@ int RockCannon::collision(int x, int y,bool MonsterisAlive,int monsterNum)
             if ((x1 <= x + monsWidth) && (x1 >= x) && (y1 <= y + monsHeight) && (y1 + 12 >= y))
 			{
 				isHitSomething = 1;
-				TRACE("isHitSomething:%d\n", isHitSomething);
 				SetHitXY();
 				return 1;
 			}
@@ -276,10 +264,8 @@ void RockCannon::OnMove()
         x1 = 0;
         y1 = 0;
     }
-
     if (catchAction == 0)
         showLock = 0;
-
     if (usingState)
     {
         normalCannon.OnMove();
@@ -288,7 +274,6 @@ void RockCannon::OnMove()
         normalCannonLeft.OnMove();
         chargeCannonLeft.OnMove();
         superChargeCannonLeft.OnMove();
-
         if (nowCharge > 50)
         {
             if (lastMovingState == 0)
@@ -332,14 +317,10 @@ void RockCannon::OnShow()
 {
 	if (showLock == 0)
         SetScreen();
-
-    //TRACE("nowCharge:%d\n", nowCharge);
     showLock = 1;
     int tmp = x1, tmp2 = y1;
-
     if (x1 >= 900)
         x1 = screenX;
-
     if (y1 <= 2700)
         y1 = screenY;
     normalCannon.SetTopLeft(x1, y1);
@@ -378,11 +359,6 @@ void RockCannon::OnShowHit()
 	HitAnimationLock();
 	if (lastMovingState == 0 && usingState == false)
 	{
-		if (isHitSomething > 0&& !superChargeCannonHit.IsFinalBitmap())
-		{
-			TRACE("isCatchHitXY:%d\n", isCatchHitXY);
-			TRACE("isHitSomething:%d\n", isHitSomething);
-		}
 	if (isHitSomething > 0 && isHitSomething < 8)
 		normalCannonHit.OnShow();
 	else if (isHitSomething == 8)
@@ -390,11 +366,6 @@ void RockCannon::OnShowHit()
 	}
 	else if (lastMovingState == 1 && usingState == false)
 	{
-		if (isHitSomething > 0 && !superChargeCannonHit.IsFinalBitmap())
-		{
-			TRACE("isCatchHitXY:%d\n", isCatchHitXY);
-			TRACE("isHitSomething:%d\n", isHitSomething);
-		}
 	if (isHitSomething > 0 && isHitSomething < 8)
 		normalCannonHitLeft.OnShow();
 	else if (isHitSomething == 8)

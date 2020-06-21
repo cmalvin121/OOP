@@ -11,16 +11,16 @@ namespace game_framework
 	{
 		x1 = 0;
 		y1 = 700;
-		velocity_cannon = 30;
-		lastMovingState = 0;
-		catchAction = 0;
 		screenX = 0;
 		screenY = 0;
-		showLock = 0;
-		usingState = false;
-		distance = 0;
-		isHitSomething = 0;
 		hitX = hitY = 0;
+		velocity_cannon = 30;
+		distance = 0;
+		lastMovingState = 0;
+		usingState = false;
+		catchAction = 0;
+		showLock = 0;
+		isHitSomething = 0;
 		isCatchHitXY = false;
 		boomsound = false;
 	}
@@ -112,7 +112,6 @@ namespace game_framework
 			if ((x1 + 32 >= x) && (x1 <= x + 160) && (y1 <= y + 200) && (y1 + 32 >= y))
 			{
 				isHitSomething = 2;
-				TRACE("isHitSomethingMC:%d\n", isHitSomething);
 				SetHitXY();
 				return 2;
 			}
@@ -122,7 +121,6 @@ namespace game_framework
 			if ((x1 <= x + 160) && (x1 >= x) && (y1 <= y + 200) && (y1 + 32 >= y))
 			{
 				isHitSomething = 2;
-				TRACE("isHitSomethingMC:%d\n", isHitSomething);
 				SetHitXY();
 				return 2;
 			}
@@ -145,10 +143,8 @@ namespace game_framework
 			hitX = screenX;
 			hitY = screenY;
 		}
-
 		if (catchAction == 0)
 			showLock = 0;
-
 		if (usingState)
 		{
 			if (lastMovingState == 0)
@@ -177,7 +173,6 @@ namespace game_framework
 		int tmp = x1, tmp2 = y1;
 		if (x1 >= 900)
 			x1 = screenX;
-
 		if (y1 <= 2700)
 			y1 = screenY;
 		trashCannon.SetTopLeft(x1, y1);

@@ -25,23 +25,20 @@ void Terrain::LoadBitMap()
     block.LoadBitmap("Bitmaps\\wall.bmp");
     deadBlock.LoadBitmap("Bitmaps\\deadBlock.bmp");
     boss.LoadBitMap();
-
     for (int i = 0; i < 8; i++)
         X6_1[i].LoadBitMap();
-
     for (int i = 0; i < 6; i++)
         X6_2[i].LoadBitMap();
-
     for (int i = 0; i < 6; i++)
         X4_1[i].LoadBitMap();
 }
 void Terrain::OnShow()
 {
-    background.ShowBitmap();			// 貼上背景圖
+    background.ShowBitmap();		// 貼上背景圖
     background2.ShowBitmap();
     background3.ShowBitmap();
     background4.ShowBitmap();
-
+	/*
     for (int i = 0; i < 31; i++)//地形規劃方塊顯示
     {
         for (int j = 0; j < 315; j++)
@@ -57,23 +54,19 @@ void Terrain::OnShow()
                 deadBlock.ShowBitmap();
             }
         }
-    }
-
+    }*/
     if (boss.getAlive())
         boss.OnShow();
-
     for (int i = 0; i < 8; i++)
         if (X6_1[i].getAlive())
             X6_1[i].OnShow();
         else
             X6_1[i].OnShowBoom();
-
     for (int i = 0; i < 6; i++)
         if (X6_2[i].getAlive())
             X6_2[i].OnShow();
         else
             X6_2[i].OnShowBoom();
-
     for (int i = 0; i < 6; i++)
         if (X4_1[i].getAlive())
             X4_1[i].OnShow();
@@ -107,9 +100,6 @@ void Terrain::Initialize()
     X6_1[6].Initialize();
     X6_1[6].setXY(23120, 530);
     X6_1[6].setScreenXY(23120, 530);
-    //X6_1[7].Initialize();
-    //X6_1[7].setXY(23360, 1600);
-    //X6_1[7].setScreenXY(23360, 1600);
     boss.Initialize();
     boss.setXY(24560, 1660);
     ////////////////////////////////
@@ -154,13 +144,11 @@ void Terrain::Initialize()
     X4_1[5].Initialize();
     X4_1[5].setXY(21200, 1600);
     ////////////////////////////////
-
     for (int i = 0; i < 31; i++)
     {
         for (int j = 0; j < 315; j++)
             map[i][j] = 0;
     }
-
     map[5][5] = 1;
     map[26][0] = 1;
     map[26][1] = 1;
@@ -802,10 +790,8 @@ void Terrain::setLifeToZero()
 {
     for (int i = 0; i < 8; i++)
         X6_1[i].deductLife(10);
-
     for (int i = 0; i < 6; i++)
         X6_2[i].deductLife(10);
-
     for (int i = 0; i < 6; i++)
         X4_1[i].deductLife(10);
 }
@@ -846,50 +832,37 @@ int Terrain::GetLastY()
 void Terrain::MoveScreen()
 {
     int mon_posX, mon_posY;
-
     for (int i = 0; i < 8; i++)
     {
         mon_posX = X6_1[i].getScreenX();
         mon_posY = X6_1[i].getScreenY();
-
         if (nowX > 900)
             mon_posX -= (nowX - lastX);
-
         if (nowY < 2700)
             mon_posY -= (nowY - lastY);
-
         X6_1[i].setScreenXY(mon_posX, mon_posY);
         X6_1[i].DeterminAttack(nowX, nowY);
         X6_1[i].FixCannonScreenXY((nowX - lastX), (nowY - lastY));
-
         if (nowX <= 900)
         {
             if (i == 0)
                 X6_1[0].setScreenXY(1920, mon_posY);
-
             if (i == 1)
                 X6_1[1].setScreenXY(5360, mon_posY);
-
             if (i == 2)
                 X6_1[2].setScreenXY(7520, mon_posY);
-
             if (i == 3)
                 X6_1[3].setScreenXY(10560, mon_posY);
-
             if (i == 4)
                 X6_1[4].setScreenXY(14640, mon_posY);
-
             if (i == 5)
                 X6_1[5].setScreenXY(18240, mon_posY);
-
             if (i == 6)
                 X6_1[6].setScreenXY(23120, mon_posY);
-
             if (i == 7)
                 X6_1[7].setScreenXY(23360, mon_posY);
         }
     }
-
     if (nowX > 900)
     {
         wallX -= (nowX - lastX);
@@ -900,13 +873,11 @@ void Terrain::MoveScreen()
         wallX = 0;
         picX = 0;
     }
-
     if (nowY < 2700)
     {
         wallY -= (nowY - lastY);
         picY -= (nowY - lastY);
     }
-
     for (int i = 0; i < 6; i++)
     {
         X6_2[i].setScreenXY(picX, picY);
@@ -915,7 +886,6 @@ void Terrain::MoveScreen()
         X4_1[i].setScreenXY(picX, picY);
         X4_1[i].DeterminAttack(nowX, nowY);
     }
-
     boss.setScreen_XY(picX, picY);
     boss.DeterminAttack(nowX, nowY);
 	boss.FixCannonScreenXY((nowX - lastX), (nowY - lastY));
@@ -928,84 +898,64 @@ int Terrain::crashleft()
 {
     int map_x, map_y;
     map_x = nowX / 80;
-
     for (int i = 0; i < 200; i++)
     {
         map_y = (nowY + i) / 80;
-
         if (map[map_y][map_x] == 1)
         {
-            //TRACE("%d %d %d %d左\n", map_x, map_y, nowY, i);
             return map_x * 80 + 80;
         }
-
         if (map[map_y][map_x] == 2)
             return -1;
     }
-
     return 0;
 }
 int Terrain::crashright()
 {
     int map_x, map_y;
     map_x = (nowX + 160) / 80;
-
     for (int i = 0; i < 200; i++)
     {
         map_y = (nowY + i) / 80;
-
         if (map[map_y][map_x] == 1)
         {
-            //TRACE("%d %d %d %d右\n", map_x, map_y, nowY, i);
             return map_x * 80;
         }
-
         if (map[map_y][map_x] == 2)
             return -1;
     }
-
     return 0;
 }
 int Terrain::crashtop()
 {
     int map_x, map_y;
     map_y = nowY / 80;
-
     for (int i = 20; i <= 140; i++)
     {
         map_x = (nowX + i) / 80;
-
         if (map[map_y][map_x] == 1)
         {
-            //TRACE("%d %d上\n", map_x, map_y);
             return map_y * 80 + 80;
         }
-
         if (map[map_y][map_x] == 2)
             return -1;
     }
-
     return 0;
 }
 int Terrain::crashdown()
 {
     int map_x, map_y;
     map_y = (nowY + 200) / 80;
-
     for (int i = 20; i <= 140; i++)
     {
         map_x = (nowX + i) / 80;
-
         if (map[map_y][map_x] == 1)
         {
-            //TRACE("%d %d下\n", map_x, map_y);
             return map_y * 80;
         }
-
         if (map[map_y][map_x] == 2)
             return -1;
     }
-
     return 0;
 }
 bool Terrain::MonsterCollision()
@@ -1013,18 +963,14 @@ bool Terrain::MonsterCollision()
     for (int i = 0; i < 8; i++)
         if (X6_1[i].MonsterCollision(nowX, nowY))
             return true;
-
     for (int i = 0; i < 6; i++)
         if (X6_2[i].MonsterCollision(nowX, nowY))
             return true;
-
     for (int i = 0; i < 6; i++)
         if (X4_1[i].MonsterCollision(nowX, nowY))
             return true;
-
     if (boss.MonsterCollision(nowX, nowY))
         return true;
-
     return false;
 }
 int Terrain::MosterCannonCollision()
@@ -1034,7 +980,6 @@ int Terrain::MosterCannonCollision()
     for (int i = 0; i < 8; i++)
     {
         tmp = X6_1[i].MonsterCannonCollision(nowX, nowY);
-
         if (tmp != 0)
             return tmp;
     }
@@ -1042,7 +987,6 @@ int Terrain::MosterCannonCollision()
     for (int i = 0; i < 6; i++)
     {
         tmp = X6_2[i].MonsterCannonCollision(nowX, nowY);
-
         if (tmp != 0)
             return tmp;
     }
@@ -1087,7 +1031,6 @@ int Terrain::getMonsterLife(int index, int monsterNum)
         return X4_1[index].getLife();
 	else if (monsterNum == 4)
 		return boss.getLife();
-
     return 0;
 }
 }
