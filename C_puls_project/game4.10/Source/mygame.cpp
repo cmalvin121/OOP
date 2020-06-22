@@ -496,7 +496,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         fireDragonMap.setLifeToZero();
     }
 	if (nChar == KEY_EXIT)
-		GotoGameState(GAME_STATE_INIT);
+		PostMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);	// Ãö³¬¹CÀ¸
 }
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
