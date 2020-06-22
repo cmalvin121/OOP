@@ -98,9 +98,12 @@ class CGameStateRun : public CGameState {
 		Nightmare nightmare[6];							//夢魘
 		Bat bat[6];										//蝙蝠
 		Boss zero_fake;									//夢魘傑洛
+		bool isWin;										//是否勝利
+		int counterEnd;									//結束遊戲計數器
 		bool isplay[2] = { false };						//是否播放音效
 		bool isplayboom;								//是否播放爆炸音效
 		bool isplayBossStage = false;					//是否進入BOSS戰鬥
+		CMovingBitmap youwin;							// 圖片:你贏了
 };
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的結束狀態(Game Over)
@@ -118,6 +121,5 @@ class CGameStateOver : public CGameState {
     private:
         int counter;									// 倒數之計數器
 		CMovingBitmap youdead;							// 圖片:你死了
-		CMovingBitmap youwin;							// 圖片:你贏了
 };																	 
 }

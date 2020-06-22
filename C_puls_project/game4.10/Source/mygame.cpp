@@ -9,7 +9,6 @@ namespace game_framework {
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的遊戲開頭畫面物件
 /////////////////////////////////////////////////////////////////////////////
-	bool isWin;
 CGameStateInit::CGameStateInit(CGame* g)
     : CGameState(g)
 {
@@ -169,8 +168,6 @@ void CGameStateOver::OnInit()
     //     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
 	youdead.LoadBitmap("RES\\gamestart\\youdead.bmp", RGB(255, 255, 255));
 	youdead.SetTopLeft(0, 0);
-	youwin.LoadBitmap("RES\\gamestart\\win.bmp", RGB(255, 255, 255));
-	youwin.SetTopLeft(0, 0);
     ShowInitProgress(66);	// 接個前一個狀態的進度，此處進度視為66%
     // 開始載入資料
     // 最終進度為100%
@@ -178,10 +175,7 @@ void CGameStateOver::OnInit()
 }
 void CGameStateOver::OnShow()
 {
-	if (isWin)
-		youwin.ShowBitmap();
-	else
-		youdead.ShowBitmap();
+	youdead.ShowBitmap();
 }
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
@@ -203,6 +197,7 @@ void CGameStateRun::OnBeginState()
     CAudio::Instance()->Stop(AUDIO_START);
     isplayboom = false;
 	isWin = false;
+	counterEnd = 60;
 	isplayBossStage = false;
 }
 void CGameStateRun::OnMove()							// 移動遊戲元素
@@ -211,6 +206,17 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     int fixCannonY = x87_1.GetY();
     int fixCannonX = x87_1.GetX();
     int left, right, top, down;
+	if (isWin)
+	{
+		counterEnd--;
+		CAudio::Instance()->Stop(AUDIO_NTUT);
+		CAudio::Instance()->Stop(AUDIO_BOSS_STAGE);
+		CAudio::Instance()->Stop(AUDIO_CHARGE_LOOP);
+		CAudio::Instance()->Stop(AUDIO_CHARGE);
+		if (counterEnd < 0)
+			GotoGameState(GAME_STATE_INIT);
+		return;
+	}
     _cannon = x87_1.getCannon();
     for (int i = 0; i < 20; i++)
     {
@@ -358,10 +364,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
     if (life.GetInteger() <= 0)//血量歸0，GAME OVER
         GotoGameState(GAME_STATE_OVER);
 	else if(fireDragonMap.IsBossDead())
-	{
 		isWin = true;
-		GotoGameState(GAME_STATE_OVER);
-	}
     life.SetInteger(x87_1.Getlife());
     PlayRockmanSound();
 }
@@ -429,6 +432,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
     x87_1.LoadBitmap();
     x87_1.LoadAttackBitmap();
     fireDragonMap.LoadBitMap();
+	youwin.LoadBitmap("RES\\gamestart\\win.bmp");
+	youwin.SetTopLeft(0, 0);
     life.LoadBitmap();
     CAudio::Instance()->Load(AUDIO_NTUT,  "sounds\\Jakob.wav");
     CAudio::Instance()->Load(AUDIO_JUMP, "sounds\\jump.wav");
@@ -468,6 +473,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     const char KEY_SPRINT = 0x20; // keyboard空白鍵
     const char KEY_ATTACK = 0x58; // keyboard按鍵X
     const char KEY_CHEAT = 0x43;  // keyboard按鍵C
+	const char KEY_EXIT = 0x1B;  // keyboard按鍵ESC
     if (nChar == KEY_LEFT)
         x87_1.SetMovingLeft(true);
     if (nChar == KEY_RIGHT)
@@ -489,6 +495,8 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         x87_1.SetLife(64);
         fireDragonMap.setLifeToZero();
     }
+	if (nChar == KEY_EXIT)
+		GotoGameState(GAME_STATE_INIT);
 }
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -540,6 +548,11 @@ void CGameStateRun::OnShow()
     //
     //  貼上背景圖、撞擊數、球、擦子、彈跳的球
     //
+	if(isWin)
+	{
+		youwin.ShowBitmap();
+		return;
+	}
     fireDragonMap.OnShow();
     x87_1.OnShow();
     life.ShowBitmap();
